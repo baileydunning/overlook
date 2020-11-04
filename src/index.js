@@ -1,10 +1,13 @@
-// This is the JavaScript entry file - your code begins here
-// Do not delete or rename this file ********
+import ApiCall from './apiCall.js'
+import './css/styles.scss';
+import './images/stanley-bg.jpg'
+import {loginButton, loginView, roomsContainer, sidebar, userDashboard} from './elements.js';
 
-// An example of how you tell webpack to use a CSS (SCSS) file
-import './css/base.scss';
+loginButton.addEventListener('click', determineUser)
 
-// An example of how you tell webpack to use an image (also need to link to it in the index.html)
-import './images/turing-logo.png'
-
-console.log('This is the JavaScript entry file - your code begins here.');
+function determineUser() {
+  loginView.classList.add('hidden');
+  userDashboard.classList.remove('hidden');
+  sidebar.classList.remove('hidden');
+  roomsContainer.classList.remove('hidden');
+}
