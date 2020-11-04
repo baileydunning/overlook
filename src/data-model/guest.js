@@ -1,7 +1,7 @@
 import User from './user'
 
 export default class Guest extends User {
-  constructor() {
-    super()
+  constructor(userData, username, password) {
+    super(userData, username, password)
   }
 }
