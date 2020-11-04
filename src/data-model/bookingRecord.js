@@ -2,7 +2,7 @@ import Booking from './booking'
 
 export default class BookingRecord {
   constructor(bookingData) {
-    this.rawBookingData = bookingsData,
+    this.rawBookingData = bookingData,
     this.bookingRecord = []
     this.currentBookings = []
     this.previousBookings = []

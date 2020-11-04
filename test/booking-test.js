@@ -1,16 +1,12 @@
 import chai from 'chai';
 const expect = chai.expect;
+import {sampleTestData} from './sampleTestData.js'
 import Booking from '../src/data-model/booking';
 
-describe.only('Booking', () => {
+describe('Booking', () => {
   let booking;
   beforeEach(() => {
-    booking = new Booking({
-      "id": "5fwrgu4i7k55hl6t5",
-      "userID": 1,
-      "date": "2020/11/03",
-      "roomNumber": 24
-    })
+    booking = new Booking(sampleTestData.bookingData[0])
   })
 
   describe('Constructor', () => {
@@ -28,7 +24,7 @@ describe.only('Booking', () => {
     });
 
     it('should have a user id', () => {
-      expect(booking.userID).to.deep.equal(1);
+      expect(booking.userID).to.deep.equal(2);
     });
 
     it('should have a date', () => {
@@ -36,7 +32,7 @@ describe.only('Booking', () => {
     });
 
     it('should have a room number', () => {
-      expect(booking.roomNumber).to.deep.equal(24);
+      expect(booking.roomNumber).to.deep.equal(11);
     });
 
     it('should be instantiated with no room service charges', () => {
