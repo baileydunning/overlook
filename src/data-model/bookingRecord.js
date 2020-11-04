@@ -1,10 +1,11 @@
 import Booking from './booking'
 
 export default class BookingRecord {
-  constructor(bookingsData) {
-    this.rawBookingsData = bookingsData,
-    this.bookingsRecord = []
+  constructor(bookingData) {
+    this.rawBookingData = bookingsData,
+    this.bookingRecord = []
     this.currentBookings = []
+    this.previousBookings = []
   }
 
   createBookingsRecord() {
