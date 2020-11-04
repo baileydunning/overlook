@@ -1,13 +1,76 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-    <title>Webpack Starter Kit</title>
+    <title>Overlook</title>
   </head>
-  <body>
-    <h1>Webpack Starter Kit</h1>
+  <main>
+    <header>
+        <h1>Welcome To The Overlook Hotel</h1>
+    </header>
+    <section class="login-screen flex-column hidden">
+      <p>Get started by logging in below:</p>
+      <div class="login-form">
+        <input type="text" placeholder="Username">
+        <input type="text" placeholder="Password">
+      </div>
+    </section>
+    <body class="flex-row">
+      <section class="rooms-container flex-column">
+        <section class="room-search-container">
+          <input type="date" name="" value="">
+          <div class="roomType-checkboxes flex-row">
+            <input type="checkbox" name="roomType" value="">
+            <label for="roomType">Single Room</label>
+            <input type="checkbox" name="roomType" value="">
+            <label for="roomType">Junior Suite</label>
+            <input type="checkbox" name="roomType" value="">
+            <label for="roomType">Residential Suite</label>
+          </div>
+        </section>
+        <section class="available-rooms-display flex-row">
+          <p>this is where rooms go</p>
+        </section>
+      </section>
+      <section class="sidebar flex-column">
+        <section class="user-dashboard flex-column">
+          <h2><span id="user-name"></span> Dashboard</h2>
+          <div class="manager-stats flex-row">
+            <div class="flex-column">
+              <h3>$<span id="daily-revenue"></span></h3>
+              <h4>Daily Revenue</h4>
+            </div>
+            <div class="flex-column">
+              <h3><span id="daily-percent-rooms-occupied"></span>%</h3>
+              <h4>Rooms Occupied</h4>
+            </div>
+          </div>
+          <div class="guest-stats flex-column">
+            <h3>$<span id="total-user-spent"></span></h3>
+            <h4>Spent On Rooms</h4>
+          </div>
+        </section>
+        <section class="guest-directory flex-column">
+          <h2>Guest Directory</h2>
+          <input type="text" placeholder="Search By Name">
+          <div class="guests-container">
+            <h3>this is where guests go</h3>
+          </div>
+        </section>
+        <section class="booking-history flex-column">
+          <div class="flex-row">
+            <h2>Booking History</h2>
+            <button type="button" name="button">Add New</button>
+          </div>
+          <h3>Current Bookings:</h3>
+          <div class="current-bookings-container flex-column">
 
-    <img src="./images/turing-logo.png" alt="turing logo" height="100px" width="100px">
+          </div>
+          <h3>Previous Bookings:</h3>
+          <div class="previous-bookings-container flex-column">
 
-    <!-- Do not include the index.js or main.bundle.js file here - it is done automatically by the webpack server -->
-  </body>
+          </div>
+        </section>
+      </section>
+    </body>
+  </main>
 </html>
