@@ -15,6 +15,23 @@
       </div>
     </section>
     <body class="flex-row">
+      <section class="flex-column" id="user-dashboard">
+        <h2><span id="user-name"></span> Dashboard</h2>
+        <div class="manager-view flex-row" id="manager-stats">
+          <div class="flex-column">
+            <h3>$<span id="daily-revenue"></span></h3>
+            <h4>Daily Revenue</h4>
+          </div>
+          <div class="flex-column">
+            <h3><span id="daily-percent-rooms-occupied"></span>%</h3>
+            <h4>Rooms Occupied</h4>
+          </div>
+        </div>
+        <div class="guest-view flex-column" id="guest-stats">
+          <h3>$<span id="total-user-spent"></span></h3>
+          <h4>Spent On Rooms</h4>
+        </div>
+      </section>
       <section class="rooms-container flex-column">
         <section class="room-search-container">
           <input type="date" name="" value="">
@@ -32,35 +49,16 @@
         </section>
       </section>
       <section class="sidebar flex-column">
-        <section class="user-dashboard flex-column">
-          <h2><span id="user-name"></span> Dashboard</h2>
-          <div class="manager-stats flex-row">
-            <div class="flex-column">
-              <h3>$<span id="daily-revenue"></span></h3>
-              <h4>Daily Revenue</h4>
-            </div>
-            <div class="flex-column">
-              <h3><span id="daily-percent-rooms-occupied"></span>%</h3>
-              <h4>Rooms Occupied</h4>
-            </div>
-          </div>
-          <div class="guest-stats flex-column">
-            <h3>$<span id="total-user-spent"></span></h3>
-            <h4>Spent On Rooms</h4>
-          </div>
-        </section>
-        <section class="guest-directory flex-column">
+        <section class="manager-view flex-column" id="guest-directory">
           <h2>Guest Directory</h2>
           <input type="text" placeholder="Search By Name">
           <div class="guests-container">
-            <h3>this is where guests go</h3>
+            <p>this is where guests go</p>
           </div>
         </section>
-        <section class="booking-history flex-column">
-          <div class="flex-row">
-            <h2>Booking History</h2>
-            <button type="button" name="button">Add New</button>
-          </div>
+        <section class="guest-view flex-column" id="booking-history">
+          <h2>Booking History</h2>
+          <button type="button" name="button">Add New</button>
           <h3>Current Bookings:</h3>
           <div class="current-bookings-container flex-column">
 
