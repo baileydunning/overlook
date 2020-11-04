@@ -1,4 +1,6 @@
+import ApiCall from './apiCall.js'
 import './css/styles.scss';
+import './images/stanley-bg.jpg'
 import {loginButton, loginView, roomsContainer, sidebar, userDashboard} from './elements.js';
 
 loginButton.addEventListener('click', determineUser)
