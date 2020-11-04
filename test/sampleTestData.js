@@ -9,7 +9,7 @@ export let sampleTestData = {
     "roomType": "residential suite",
     "bidet": true,
     "bedSize": "queen",
-    "numBeds": 1,
+    "numBeds": 3,
     "costPerNight": 350},
     {"number": 11,
     "roomType": "junior suite",
