@@ -1,4 +1,4 @@
-export let sampleTestData = {
+export const sampleTestData = {
   userData: [
     {"id": 1, "name": "Mike Wazoski"},
     {"id": 2, "name": "James Sullivan"},

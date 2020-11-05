@@ -25,12 +25,9 @@ describe('BookingRecord', () => {
   });
 
   describe('Methods', () => {
-    beforeEach(() => {
-      bookingRecord.createBookingsRecord();
-    });
-
-    it('should put Bookings in the booking record', () => {
-      expect(bookingRecord.bookingRecord[0]).to.be.an.instanceof(Booking);
+    it('should put Bookings in the booking history', () => {
+      bookingRecord.createBookingHistory();
+      expect(bookingRecord.bookingHistory[0]).to.be.an.instanceof(Booking);
     });
   });
 });

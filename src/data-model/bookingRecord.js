@@ -1,15 +1,15 @@
-import Booking from './booking'
+import Booking from './booking';
 
 export default class BookingRecord {
   constructor(bookingData) {
     this.rawBookingData = bookingData,
-    this.bookingRecord = [],
+    this.bookingHistory = [],
     this.currentBookings = [],
     this.previousBookings = []
   }
 
-  createBookingsRecord() {
-    this.bookingRecord = this.rawBookingData.reduce((acc, booking) => {
+  createBookingHistory() {
+    this.bookingHistory = this.rawBookingData.reduce((acc, booking) => {
       acc.push(new Booking(booking));
       return acc
     }, []);
