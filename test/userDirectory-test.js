@@ -62,12 +62,24 @@ describe.only('UserDirectory', () => {
       expect(userDirectory.currentUser.name).to.deep.equal("Mike Wazoski");
     });
 
+    it('should return an error when given an incorrect password', () => {
+      const result = userDirectory.chooseUser('manager', 'password123');
+
+      expect(result).to.deep.equal('Incorrect password, please try again.')
+    });
+
+    it('should return an error when the userID does not exist', () => {
+      const result = userDirectory.chooseUser('customer27', 'overlook2020');
+
+      expect(result).to.deep.equal('Sorry, this user does not exist.')
+    });
+
     it('should filter booking data for guests', () => {
       userDirectory.chooseUser('customer3', 'overlook2020');
       userDirectory.currentUser.bookingRecord.createBookingHistory();
       const result = userDirectory.currentUser.bookingRecord.bookingHistory[0].id
 
       expect(result).to.deep.equal("9s72kfncs86grssap");
-    })
+    });
   });
 });

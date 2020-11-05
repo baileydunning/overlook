@@ -14,7 +14,7 @@ export default class UserDirectory {
       if (username.toLowerCase() === 'manager') {
         this.currentUser = new Manager({id: 0, name: 'manager'}, this.rawBookingData);
       } else if (username.includes('customer')) {
-        this.loginGuest(username);
+        return this.loginGuest(username);
       }
     } else {
       return 'Incorrect password, please try again.'
@@ -58,6 +58,8 @@ export default class UserDirectory {
   }
 
   searchGuests(input) {
-
+    return this.guestList.filter(guest => {
+      return guest.name.includes(input)
+    })
   }
 }
