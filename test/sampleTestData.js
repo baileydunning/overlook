@@ -1,8 +1,9 @@
 export const sampleTestData = {
   userData: [
-    {"id":1, "name": "Mike Wazoski"},
-    {"id":2, "name": "James Sullivan"},
-    {"id":3, "name": "Randall Boggs"}
+    {"id": 1, "name": "Mike Wazoski"},
+    {"id": 2, "name": "James Sullivan"},
+    {"id": 3, "name": "Randall Boggs"},
+    {"id": 4, "name": "Boo"}
   ],
   roomData: [
     {"number": 10,

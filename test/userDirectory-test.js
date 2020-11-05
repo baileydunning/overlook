@@ -81,5 +81,14 @@ describe.only('UserDirectory', () => {
 
       expect(result).to.deep.equal("9s72kfncs86grssap");
     });
+
+    it('should be able to search guests by name', () => {
+      const result = userDirectory.searchGuests("Mike");
+      expect(result[0].name).to.deep.equal("mike wazoski");
+
+      const result2 = userDirectory.searchGuests("Bo");
+      expect(result2.length).to.deep.equal(2);
+      expect(result2[1].name).to.deep.equal("boo");
+    });
   });
 });
