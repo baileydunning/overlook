@@ -40,7 +40,7 @@ describe.only('Hotel', () => {
       expect(result).to.deep.equal(475);
     });
 
-    it.skip('should show available rooms for a given day', () => {
+    it('should show available rooms for a given day', () => {
       const result = hotel.returnAvailableRooms("2020/11/03");
 
       expect(result.length).to.deep.equal(1)

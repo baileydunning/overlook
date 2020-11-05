@@ -16,7 +16,6 @@ export default class Hotel {
   }
 
   calculateTotalRoomRevenue(date) {
-    let totalRevenue = 0;
     let bookedRoomsByDate = this.bookingRecord.bookingHistory.reduce((bookedRoomNumbers, booking) => {
       if (booking.date === date) {
         bookedRoomNumbers.push(booking.roomNumber);
@@ -24,25 +23,23 @@ export default class Hotel {
       return bookedRoomNumbers
     }, [])
 
-    bookedRoomsByDate.forEach(bookedRoom => {
+    return bookedRoomsByDate.reduce((totalRevenue, bookedRoom) => {
       this.roomRecord.roomRecord.forEach(room => {
         if (bookedRoom === room.number) {
           totalRevenue = totalRevenue += room.costPerNight;
         }
       })
-    })
-    
-    return totalRevenue;
+      return totalRevenue;
+    }, 0)
   }
 
   returnAvailableRooms(date) {
     return this.roomRecord.roomRecord.reduce((acc, room) => {
       let bookedRooms = this.bookingRecord.bookingHistory.forEach(booking => {
-        if (room.number === booking.roomNumber) {
+        if (room.number === booking.roomNumber && booking.date !== date) {
           acc.push(room)
         }
       })
-      console.log(acc)
       return acc
     }, [])
   }
