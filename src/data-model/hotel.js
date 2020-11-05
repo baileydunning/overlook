@@ -1,5 +1,5 @@
 import RoomRecord from './roomRecord';
-import GuestDirectory from './guestDirectory';
+import UserDirectory from './userDirectory';
 
 export default class Hotel {
   constructor(roomData, userData) {

@@ -4,7 +4,7 @@ import {sampleTestData} from './sampleTestData.js'
 import Room from '../src/data-model/room';
 import RoomRecord from '../src/data-model/roomRecord';
 
-describe.only('RoomRecord', () => {
+describe('RoomRecord', () => {
   let roomRecord;
   beforeEach(() => {
     roomRecord = new RoomRecord(sampleTestData.roomData)
