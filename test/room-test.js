@@ -3,7 +3,7 @@ const expect = chai.expect;
 import {sampleTestData} from './sampleTestData.js'
 import Room from '../src/data-model/room';
 
-describe.only('Room', () => {
+describe('Room', () => {
   let room;
   beforeEach(() => {
     room = new Room(sampleTestData.roomData[0]);
