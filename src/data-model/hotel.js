@@ -5,6 +5,6 @@ export default class Hotel {
   constructor(roomData, userData) {
     this.user = null,
     this.roomRecord = new RoomRecord(roomData),
-    this.guestDirectory = new GuestDirectory(userData)
+    this.userDirectory = new UserDirectory(userData)
   }
 }

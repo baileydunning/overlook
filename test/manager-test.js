@@ -22,7 +22,7 @@ describe('Manager', () => {
 
     it('should have an id', () => {
       expect(manager.id).to.deep.equal(0);
-    })
+    });
 
     it('should have a name', () => {
       expect(manager.name).to.deep.equal("Manager");
