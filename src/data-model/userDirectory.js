@@ -10,35 +10,50 @@ export default class UserDirectory {
   }
 
   chooseUser(username, password) {
-    if (username === 'manager' && password === 'overlook2020') {
-      this.currentUser = new Manager({id: 0, name: 'Manager'}, this.rawBookingData);
-    } else if (username.includes('customer') && password === 'overlook2020') {
-      this.loginGuest(username);
+    if (this.validatePassword(password) === true) {
+      if (username.toLowerCase() === 'manager') {
+        this.currentUser = new Manager({id: 0, name: 'manager'}, this.rawBookingData);
+      } else if (username.includes('customer')) {
+        this.loginGuest(username);
+      }
     } else {
-      alert('Sorry your username and/or password was incorrect. Please try again!')
+      return 'Incorrect password, please try again.'
     }
   }
 
   loginGuest(username) {
-    let userID = username.replace('customer', '').replace(/ /g, "");
-    // error handling for no available user
-    let foundUser = this.findGuest(userID);
-    const userBookingData = this.rawBookingData.filter(booking => {
-      return booking.userID === foundUser.id
-    })
-    this.currentUser = new User(foundUser, userBookingData);
+    let userID = parseInt(username.replace('customer', '').replace(/ /g, ""));
+    if (this.validateUser(userID) === true) {
+      let foundUser = this.findGuest(userID)
+      const userBookingData = this.rawBookingData.filter(booking => {
+        return booking.userID === foundUser.id
+      })
+      this.currentUser = new User(foundUser, userBookingData);
+    } else {
+      return 'Sorry, this user does not exist.'
+    }
+  }
+
+  validateUser(id) {
+    return (this.findGuest(id) !== undefined) ? true : false;
+  }
+
+  validatePassword(password) {
+    return (password === 'overlook2020') ? true : false;
   }
 
   createGuestList() {
     this.guestList = this.rawUserData.reduce((acc, user) => {
-      acc.push(user);
+      if (user !== undefined) {
+        acc.push(new User(user));
+      }
       return acc
     }, []);
   }
 
-  findGuest(id) {
+  findGuest(userID) {
     return this.guestList.find(guest => {
-      return guest.id == id;
+      return guest.id === userID;
     })
   }
 
