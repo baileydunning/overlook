@@ -31,7 +31,7 @@ export const sampleTestData = {
     "roomNumber": 11},
     {"id": "5d5dfufjslkam31d7",
     "userID": 1,
-    "date": "2020/11/03",
+    "date": "2020/10/31",
     "roomNumber": 12},
     {"id": "9s72kfncs86grssap",
     "userID": 3,

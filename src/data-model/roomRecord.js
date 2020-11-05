@@ -12,8 +12,4 @@ export default class RoomRecord {
       return acc
     }, []);
   }
-
-  showAvailableRooms(date) {
-
-  }
 }

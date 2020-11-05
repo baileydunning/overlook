@@ -3,9 +3,9 @@ import Manager from './manager';
 
 export default class UserDirectory {
   constructor(userData, bookingData) {
+    this.currentUser = null,
     this.rawUserData = userData,
     this.rawBookingData = bookingData,
-    this.currentUser = null,
     this.guestList = []
   }
 
@@ -21,6 +21,7 @@ export default class UserDirectory {
 
   loginGuest(username) {
     let userID = username.replace('customer', '').replace(/ /g, "");
+    // error handling for no available user
     let foundUser = this.findGuest(userID);
     const userBookingData = this.rawBookingData.filter(booking => {
       return booking.userID === foundUser.id

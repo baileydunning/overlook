@@ -5,10 +5,10 @@ import RoomRecord from '../src/data-model/roomRecord';
 import UserDirectory from '../src/data-model/userDirectory';
 import Hotel from '../src/data-model/hotel';
 
-describe('Hotel', () => {
+describe.only('Hotel', () => {
   let hotel;
   beforeEach(() => {
-    hotel = new Hotel(sampleTestData.roomData, sampleTestData.userData, sampleTestData.bookingData)
+    hotel = new Hotel(sampleTestData.userData, sampleTestData.roomData, sampleTestData.bookingData)
   });
 
   describe('Constructor', () => {
@@ -27,5 +27,23 @@ describe('Hotel', () => {
     it('should have a user directory', () => {
       expect(hotel.userDirectory).to.be.an.instanceof(UserDirectory);
     });
+  });
+
+  describe('Methods', () => {
+    beforeEach(() => {
+      hotel.launch("manager", "overlook2020")
+    });
+
+    it('should calculate the total room revenue by date', () => {
+      const result = hotel.calculateTotalRoomRevenue("2020/11/03");
+
+      expect(result).to.deep.equal(475);
+    });
+
+    it.skip('should show available rooms for a given day', () => {
+      const result = hotel.returnAvailableRooms("2020/11/03");
+
+      expect(result.length).to.deep.equal(1)
+    })
   });
 });
