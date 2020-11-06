@@ -46,17 +46,14 @@ export default class Hotel {
     this.percentRoomsBooked = `${((this.roomRecord.roomRecord.length - this.availableRoomsToday.length) / this.roomRecord.roomRecord.length) * 100}%`;
   }
 
-  collectBookedRoomNumbers(date) {
-    return this.bookingRecord.bookingHistory.reduce((bookedRoomNumbers, booking) => {
-      if (booking.date === date) {
-        bookedRoomNumbers.push(booking.roomNumber);
-      }
-      return bookedRoomNumbers
-    }, [])
-  }
-
   calculateTotalRoomRevenue(date) {
-    const bookedRoomNums = this.collectBookedRoomNumbers(date);
+    const bookedRoomNums = this.bookingRecord.bookingHistory.reduce((bookedRoomNumbers, booking) => {
+        if (booking.date === date) {
+          bookedRoomNumbers.push(booking.roomNumber);
+        }
+        return bookedRoomNumbers
+      }, [])
+
     return bookedRoomNums.reduce((totalRevenue, bookedRoom) => {
       this.roomRecord.roomRecord.forEach(room => {
         if (bookedRoom === room.number) {

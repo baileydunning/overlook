@@ -34,7 +34,7 @@ describe('BookingRecord', () => {
       bookingRecord.createBookingHistory();
       bookingRecord.sortBookingsByDate();
 
-      expect(bookingRecord.currentBookings.length).to.deep.equal(0);
+      expect(bookingRecord.currentBookings.length).to.deep.equal(1);
       expect(bookingRecord.previousBookings.length).to.deep.equal(3);
     })
   });
