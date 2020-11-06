@@ -8,7 +8,8 @@ export default class Hotel {
     this.roomRecord = new RoomRecord(roomData),
     this.bookingRecord = new BookingRecord(bookingData),
     this.bookedRoomsToday = [],
-    this.availableRoomsToday = []
+    this.availableRoomsToday = [],
+    this.percentRoomsBooked = 0
   }
 
   launch(username, password) {
@@ -24,9 +25,8 @@ export default class Hotel {
       }
       return acc;
     }, []);
-
     this.returnAvailableRooms(todayBookings);
-
+    this.percentRoomsBooked = `${((this.roomRecord.roomRecord.length - this.availableRoomsToday.length) / this.roomRecord.roomRecord.length) * 100}%`;
     this.bookedRoomsToday = todayBookings.map(booking => {
       const roomBooked = this.roomRecord.roomRecord.find(room => {
         return room.number === booking.roomNumber
@@ -64,9 +64,5 @@ export default class Hotel {
       })
       return totalRevenue;
     }, 0)
-  }
-
-  calculatePercentRoomsBooked(date) {
-
   }
 }

@@ -23,7 +23,13 @@ export const sampleTestData = {
     "bidet": false,
     "bedSize": "queen",
     "numBeds": 1,
-    "costPerNight": 200}
+    "costPerNight": 200},
+    {"number": 13,
+    "roomType": "suite",
+    "bidet": false,
+    "bedSize": "queen",
+    "numBeds": 2,
+    "costPerNight": 325}
   ],
   bookingData: [
     {"id": "5fwrgu4i7k55hl6t5",

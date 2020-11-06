@@ -43,11 +43,17 @@ describe.only('Hotel', () => {
     it('should show available rooms for a given day', () => {
       hotel.returnTodayBookings("2020/11/03");
 
-      expect(hotel.availableRoomsToday.length).to.deep.equal(1);
+      expect(hotel.availableRoomsToday.length).to.deep.equal(2);
 
       hotel.returnTodayBookings("2020/10/31");
 
       expect(hotel.availableRoomsToday[0].roomType).to.deep.equal("residential suite");
-    })
+    });
+
+    it('should calculate the percentage of rooms booked', () => {
+      hotel.returnTodayBookings("2020/10/31");
+
+      expect(hotel.percentRoomsBooked).to.deep.equal("25%");
+    });
   });
 });

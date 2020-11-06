@@ -6,4 +6,12 @@ export default class User {
     this.name = userData.name,
     this.bookingRecord = new BookingRecord(bookingData)
 	}
+
+  addBooking() {
+
+  }
+
+  deleteBooking() {
+    
+  }
 }
