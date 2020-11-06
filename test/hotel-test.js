@@ -5,7 +5,7 @@ import RoomRecord from '../src/data-model/roomRecord';
 import UserDirectory from '../src/data-model/userDirectory';
 import Hotel from '../src/data-model/hotel';
 
-describe.only('Hotel', () => {
+describe('Hotel', () => {
   let hotel;
   beforeEach(() => {
     hotel = new Hotel(sampleTestData.userData, sampleTestData.roomData, sampleTestData.bookingData)

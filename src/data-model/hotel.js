@@ -4,6 +4,7 @@ import UserDirectory from './userDirectory';
 
 export default class Hotel {
   constructor(userData, roomData, bookingData) {
+    this.date = new Date(),
     this.userDirectory = new UserDirectory(userData, bookingData),
     this.roomRecord = new RoomRecord(roomData),
     this.bookingRecord = new BookingRecord(bookingData),
@@ -26,7 +27,6 @@ export default class Hotel {
       return acc;
     }, []);
     this.returnAvailableRooms(todayBookings);
-    this.percentRoomsBooked = `${((this.roomRecord.roomRecord.length - this.availableRoomsToday.length) / this.roomRecord.roomRecord.length) * 100}%`;
     this.bookedRoomsToday = todayBookings.map(booking => {
       const roomBooked = this.roomRecord.roomRecord.find(room => {
         return room.number === booking.roomNumber
@@ -43,6 +43,8 @@ export default class Hotel {
     this.availableRoomsToday = this.roomRecord.roomRecord.filter(room => {
       return !bookedRoomNumbers.includes(room.number)
     })
+
+    this.percentRoomsBooked = `${((this.roomRecord.roomRecord.length - this.availableRoomsToday.length) / this.roomRecord.roomRecord.length) * 100}%`;
   }
 
   collectBookedRoomNumbers(date) {
