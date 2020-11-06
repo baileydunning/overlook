@@ -5,7 +5,7 @@ import RoomRecord from '../src/data-model/roomRecord';
 import UserDirectory from '../src/data-model/userDirectory';
 import Hotel from '../src/data-model/hotel';
 
-describe('Hotel', () => {
+describe.only('Hotel', () => {
   let hotel;
   beforeEach(() => {
     hotel = new Hotel(sampleTestData.userData, sampleTestData.roomData, sampleTestData.bookingData)
@@ -41,9 +41,13 @@ describe('Hotel', () => {
     });
 
     it('should show available rooms for a given day', () => {
-      const result = hotel.returnAvailableRooms("2020/11/03");
+      hotel.returnTodayBookings("2020/11/03");
 
-      expect(result.length).to.deep.equal(1)
+      expect(hotel.availableRoomsToday.length).to.deep.equal(1);
+
+      hotel.returnTodayBookings("2020/10/31");
+
+      expect(hotel.availableRoomsToday[0].roomType).to.deep.equal("residential suite");
     })
   });
 });

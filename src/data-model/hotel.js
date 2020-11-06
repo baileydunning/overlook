@@ -6,7 +6,9 @@ export default class Hotel {
   constructor(userData, roomData, bookingData) {
     this.userDirectory = new UserDirectory(userData, bookingData),
     this.roomRecord = new RoomRecord(roomData),
-    this.bookingRecord = new BookingRecord(bookingData)
+    this.bookingRecord = new BookingRecord(bookingData),
+    this.bookedRoomsToday = [],
+    this.availableRoomsToday = []
   }
 
   launch(username, password) {
@@ -15,15 +17,46 @@ export default class Hotel {
     this.roomRecord.createRoomRecord();
   }
 
-  calculateTotalRoomRevenue(date) {
-    let bookedRoomsByDate = this.bookingRecord.bookingHistory.reduce((bookedRoomNumbers, booking) => {
+  returnTodayBookings(date) {
+    const todayBookings = this.bookingRecord.bookingHistory.reduce((acc, booking) => {
+      if (booking.date === date) {
+        acc.push(booking);
+      }
+      return acc;
+    }, []);
+
+    this.returnAvailableRooms(todayBookings);
+
+    this.bookedRoomsToday = todayBookings.map(booking => {
+      const roomBooked = this.roomRecord.roomRecord.find(room => {
+        return room.number === booking.roomNumber
+      });
+      return booking = {bookingInfo: {booking}, roomInfo: {roomBooked}}
+    });
+  }
+
+  returnAvailableRooms(todayBookings) {
+    const bookedRoomNumbers = todayBookings.map(bookedRoom => {
+      return bookedRoom = bookedRoom.roomNumber;
+    })
+
+    this.availableRoomsToday = this.roomRecord.roomRecord.filter(room => {
+      return !bookedRoomNumbers.includes(room.number)
+    })
+  }
+
+  collectBookedRoomNumbers(date) {
+    return this.bookingRecord.bookingHistory.reduce((bookedRoomNumbers, booking) => {
       if (booking.date === date) {
         bookedRoomNumbers.push(booking.roomNumber);
       }
       return bookedRoomNumbers
     }, [])
+  }
 
-    return bookedRoomsByDate.reduce((totalRevenue, bookedRoom) => {
+  calculateTotalRoomRevenue(date) {
+    const bookedRoomNums = this.collectBookedRoomNumbers(date);
+    return bookedRoomNums.reduce((totalRevenue, bookedRoom) => {
       this.roomRecord.roomRecord.forEach(room => {
         if (bookedRoom === room.number) {
           totalRevenue = totalRevenue += room.costPerNight;
@@ -33,14 +66,7 @@ export default class Hotel {
     }, 0)
   }
 
-  returnAvailableRooms(date) {
-    return this.roomRecord.roomRecord.reduce((acc, room) => {
-      let bookedRooms = this.bookingRecord.bookingHistory.forEach(booking => {
-        if (room.number === booking.roomNumber && booking.date !== date) {
-          acc.push(room)
-        }
-      })
-      return acc
-    }, [])
+  calculatePercentRoomsBooked(date) {
+
   }
 }
