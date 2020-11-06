@@ -4,6 +4,7 @@ import './css/styles.scss';
 // import './images/stanley-bg.jpg'
 import {loginButton, loginView, roomsContainer, sidebar, userDashboard, usernameField, passwordField} from './elements.js';
 
+let today = new Date().toLocaleDateString();
 let userApi;
 let roomApi;
 let bookingApi;
@@ -30,25 +31,21 @@ function fetchAllData() {
   Promise.all([userPromise, roomPromise, bookingPromise])
   .then(data => {
     hotel = new Hotel(data[0], data[1], data[2]);
-    console.log(hotel)
   })
   .then(response => openHotel())
-  .catch(err => {
-    console.log(err);
-    alert('Sorry, we are unable to retrieve data at this time, please try again later.')
+  .catch(error => {
+    console.log(error);
+    // alert('Sorry, we are unable to retrieve data at this time, please try again later.')
   })
 }
 
 function openHotel() {
-  hotel.userDirectory.createGuestList();
-  hotel.bookingRecord.createBookingHistory();
-  hotel.roomRecord.createRoomRecord();
-  console.log(hotel)
+  hotel.launch()
+  hotel.returnTodayBookings(today);
 }
 
 function updateUI() {
-  hotel.launch()
-  console.log('hotel: ', hotel)
+
 }
 
 function loginUser(username, password) {

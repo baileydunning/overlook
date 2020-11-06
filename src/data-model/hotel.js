@@ -20,6 +20,7 @@ export default class Hotel {
 
   returnTodayBookings(date) {
     const todayBookings = this.bookingRecord.bookingHistory.reduce((acc, booking) => {
+      booking.date = new Date(booking.date).toLocaleDateString()
       if (booking.date === date) {
         acc.push(booking);
       }
