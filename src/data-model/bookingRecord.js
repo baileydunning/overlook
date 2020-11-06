@@ -12,7 +12,6 @@ export default class BookingRecord {
 
   createBookingHistory() {
     this.bookingHistory = this.rawBookingData.reduce((acc, booking) => {
-      booking.date = new Date(booking.date);
       acc.push(new Booking(booking));
       return acc
     }, []);
@@ -21,7 +20,9 @@ export default class BookingRecord {
   sortBookingsByDate() {
     this.currentBookings = [];
     this.previousBookings = [];
+    let today = new Date();
     return this.bookingHistory.forEach(booking => {
+      booking.date = new Date(booking.date);
       if (booking.date >= today) {
         this.currentBookings.push(booking);
       } else {

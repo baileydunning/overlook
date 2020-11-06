@@ -4,7 +4,6 @@ import UserDirectory from './userDirectory';
 
 export default class Hotel {
   constructor(userData, roomData, bookingData) {
-    this.date = new Date(),
     this.userDirectory = new UserDirectory(userData, bookingData),
     this.roomRecord = new RoomRecord(roomData),
     this.bookingRecord = new BookingRecord(bookingData),
