@@ -12,13 +12,13 @@ let hotel;
 window.onload = instantiateApis()
 
 loginButton.addEventListener('click', () => {
-
+  loginUser(usernameField.value, passwordField.value)
 });
 
 function instantiateApis() {
-  userApi = new ApiCall('https://fe-apps.herokuapp.com/api/v1/overlook/1904/users/users', 'userData');
-  roomApi = new ApiCall('https://fe-apps.herokuapp.com/api/v1/overlook/1904/rooms/rooms', 'roomData');
-  bookingApi = new ApiCall('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings', 'bookingData');
+  userApi = new ApiCall('https://fe-apps.herokuapp.com/api/v1/overlook/1904/users/users', 'users');
+  roomApi = new ApiCall('https://fe-apps.herokuapp.com/api/v1/overlook/1904/rooms/rooms', 'rooms');
+  bookingApi = new ApiCall('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings', 'bookings');
   fetchAllData();
 }
 
@@ -28,20 +28,37 @@ function fetchAllData() {
   let bookingPromise = bookingApi.getRequest();
 
   Promise.all([userPromise, roomPromise, bookingPromise])
-  .then(data => hotel = new Hotel(data[0], data[1], data[2]))
-  .then(response => updateUI())
+  .then(data => {
+    hotel = new Hotel(data[0], data[1], data[2]);
+    console.log(hotel)
+  })
+  .then(response => openHotel())
   .catch(err => {
     console.log(err);
     alert('Sorry, we are unable to retrieve data at this time, please try again later.')
   })
 }
 
-function updateUI() {
+function openHotel() {
+  hotel.userDirectory.createGuestList();
+  hotel.bookingRecord.createBookingHistory();
+  hotel.roomRecord.createRoomRecord();
+  console.log(hotel)
+}
 
+function updateUI() {
+  hotel.launch()
+  console.log('hotel: ', hotel)
 }
 
 function loginUser(username, password) {
-
+  if (username && password) {
+    hotel.userDirectory.chooseUser(username, password)
+    console.log('current user: ', hotel.userDirectory.currentUser)
+    determineUser()
+  } else {
+    alert('Invalid username and/or password')
+  }
 }
 
 function determineUser() {

@@ -13,6 +13,7 @@ export default class Hotel {
   }
 
   launch() {
+    this.userDirectory.createGuestList();
     this.bookingRecord.createBookingHistory();
     this.roomRecord.createRoomRecord();
   }

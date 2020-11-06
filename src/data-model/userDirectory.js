@@ -10,6 +10,7 @@ export default class UserDirectory {
   }
 
   createGuestList() {
+    console.log(this.rawUserData)
     this.guestList = this.rawUserData.reduce((acc, user) => {
       if (user !== undefined) {
         let userBookingData = this.filterBookingData(user.id)
