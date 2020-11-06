@@ -1,8 +1,17 @@
+import BookingRecord from './bookingRecord'
+
 export default class User {
-  constructor(userData, username, password) {
-    this.rawUserData = userData,
-    this.username = username,
-    this.password = password,
-		this.bookingRecord = []
+  constructor(userData, bookingData) {
+    this.id = userData.id,
+    this.name = userData.name,
+    this.bookingRecord = new BookingRecord(bookingData)
 	}
+
+  addBooking() {
+
+  }
+
+  deleteBooking() {
+
+  }
 }
