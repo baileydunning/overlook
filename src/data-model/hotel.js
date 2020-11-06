@@ -12,8 +12,7 @@ export default class Hotel {
     this.percentRoomsBooked = 0
   }
 
-  launch(username, password) {
-    this.userDirectory.chooseUser(username, password);
+  launch() {
     this.bookingRecord.createBookingHistory();
     this.roomRecord.createRoomRecord();
   }
