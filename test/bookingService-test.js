@@ -21,12 +21,9 @@ describe('BookingService', () => {
     });
 
     it('should take in the booking data', () => {
-      // expect(bookingService.rawBookingData).to.deep.equal(sampleTestData.bookingData)
+      expect(bookingService.bookingData).to.deep.equal(sampleTestData.bookingData)
     });
 
-    it('should take in the room data', () => {
-      // expect(bookingService.rawRoomData).to.deep.equal(sampleTestData.roomData)
-    });
   });
 
   describe('Methods', () => {
@@ -43,10 +40,6 @@ describe('BookingService', () => {
 
       expect(bookingService.currentBookings.length).to.deep.equal(1);
       expect(bookingService.previousBookings.length).to.deep.equal(3);
-    });
-
-    it('should put Rooms in the room record', () => {
-      expect(bookingService.roomRecord[0]).to.be.an.instanceof(Room);
     });
   });
 });

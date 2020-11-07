@@ -1,4 +1,3 @@
-// import ApiCall from '../src/ApiCall'
 import Booking from './booking';
 
 export default class BookingService {
@@ -15,13 +14,6 @@ export default class BookingService {
       return allBookings
     }, []);
   }
-
-  // createRoomRecord() {
-  //   this.roomRecord = this.rawRoomData.reduce((acc, room) => {
-  //     acc.push(new Room(room));
-  //     return acc
-  //   }, []);
-  // }
 
   sortBookingsByDate(today) {
     today = new Date(today);

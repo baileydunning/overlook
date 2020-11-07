@@ -4,7 +4,7 @@ import './css/styles.scss';
 // import './images/stanley-bg.jpg'
 import {loginButton, loginView, roomsContainer, sidebar, userDashboard, usernameField, passwordField} from './elements.js';
 
-let today = new Date("2020/1/15").toLocaleDateString();
+let today = new Date().toLocaleDateString();
 let userApi;
 let roomApi;
 let bookingApi;

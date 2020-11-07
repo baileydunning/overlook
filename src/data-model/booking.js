@@ -4,6 +4,7 @@ export default class Booking {
     this.userID = booking.userID,
     this.date = booking.date,
     this.roomNumber = booking.roomNumber,
+    this.cost = booking.cost || null,
     this.roomServiceCharges = []
   }
 }

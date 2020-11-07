@@ -20,8 +20,8 @@ describe('Hotel', () => {
       expect(hotel).to.be.an.instanceof(Hotel);
     });
 
-    it('should have a booking service', () => {
-      expect(hotel.bookingService).to.be.an.instanceof(BookingService);
+    it('should take in the room data', () => {
+      expect(hotel.rawRoomData).to.deep.equal(sampleTestData.roomData)
     });
 
     it('should have a user directory', () => {
@@ -32,6 +32,10 @@ describe('Hotel', () => {
   describe('Methods', () => {
     beforeEach(() => {
       hotel.launch("manager", "overlook2020")
+    });
+
+    it('should put Rooms in the rooms array', () => {
+      expect(hotel.rooms[0]).to.be.an.instanceof(Room);
     });
 
     it('should calculate the total room revenue by date', () => {

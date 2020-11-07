@@ -1,27 +1,24 @@
 import Room from './room';
-import BookingService from './bookingService';
 import UserDirectory from './userDirectory';
 
 export default class Hotel {
   constructor(userData, roomData, bookingData, date) {
+    this.date = date,
     this.user = null,
     this.rawUserData = userData,
-    this.rawBookingData = bookingData,
     this.rawRoomData = roomData,
+    this.rawBookingData = bookingData,
     this.rooms = [],
     this.bookedRoomsToday = [],
-    this.availableRoomsToday = [],
-    this.percentRoomsBooked = 0,
-    this.date = date
+    this.availableRoomsToday = []
   }
 
   launch() {
     this.createRoomRecord();
-    const updatedBookingData = this.updateBookings();
-    this.userDirectory = new UserDirectory(this.rawUserData, updatedBookingData)
-    this.bookingService = new BookingService(updatedBookingData)
+    this.updateBookings();
+    this.userDirectory = new UserDirectory(this.rawUserData, this.rawBookingData)
     this.userDirectory.createGuestList();
-    this.bookingService.createBookingHistory();
+    this.returnTodayBookings(this.date)
   }
 
   createRoomRecord() {
@@ -32,10 +29,11 @@ export default class Hotel {
   }
 
   updateBookings() {
-    return this.rawBookingData.map(booking => {
+    this.rawBookingData = this.rawBookingData.map(booking => {
       this.rooms.forEach(room => {
         if (room.number === booking.roomNumber) {
           booking.cost = room.costPerNight
+          booking.date = new Date(booking.date).toLocaleDateString()
         }
       })
       return booking;
@@ -43,7 +41,7 @@ export default class Hotel {
   }
 
   returnTodayBookings() {
-    const todayBookings = this.bookingService.bookingHistory.reduce((bookingsForDate, booking) => {
+    const todayBookings = this.rawBookingData.reduce((bookingsForDate, booking) => {
       booking.date = new Date(booking.date).toLocaleDateString()
       if (booking.date === this.date) {
         bookingsForDate.push(booking);
@@ -71,9 +69,9 @@ export default class Hotel {
     this.percentRoomsBooked = `${((this.rooms.length - this.availableRoomsToday.length) / this.rooms.length) * 100}%`;
   }
 
-  calculateTotalRoomRevenue(date) {
-    const bookedRoomNums = this.bookingService.bookingHistory.reduce((bookedRoomNumbers, booking) => {
-        if (booking.date === date) {
+  calculateTotalRoomRevenue() {
+    const bookedRoomNums = this.rawBookingData.reduce((bookedRoomNumbers, booking) => {
+        if (booking.date === this.date) {
           bookedRoomNumbers.push(booking.roomNumber);
         }
         return bookedRoomNumbers

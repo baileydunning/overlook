@@ -5,13 +5,14 @@ export default class UserDirectory {
   constructor(userData, bookingData) {
     this.currentUser = null,
     this.rawUserData = userData,
-    this.rawBookingData = bookingData,
+    this.bookingData = bookingData,
     this.guestList = []
   }
 
   createGuestList() {
     this.guestList = this.rawUserData.reduce((allGuests, user) => {
       if (user !== undefined) {
+
         allGuests.push(user);
       }
       return allGuests
@@ -33,14 +34,8 @@ export default class UserDirectory {
   }
 
   filterBookingData(id) {
-    const userBookings = this.rawBookingData.filter(booking => {
+    return this.bookingData.filter(booking => {
       return booking.userID === id
-    })
-
-    return userBookings.map(booking => {
-      this.rawRoomData.forEach(room => {
-        return booking.room = room.costPerNight
-      })
     })
   }
 
@@ -55,7 +50,7 @@ export default class UserDirectory {
   chooseUser(username, password) {
     if (this.validatePassword(password) === true) {
       if (username.toLowerCase() === 'manager') {
-        this.currentUser = new Manager({id: 0, name: 'manager'}, this.rawBookingData, this.rawRoomData);
+        this.currentUser = new Manager({id: 0, name: 'manager'}, this.bookingData);
         this.currentUser.bookingService.createBookingHistory();
       } else if (username.includes('customer')) {
         return this.loginGuest(username);
@@ -71,8 +66,9 @@ export default class UserDirectory {
       let foundUser = this.findGuest(userID);
       console.log(foundUser)
       let userBookingData = this.filterBookingData(userID);
-      this.currentUser = new User(foundUser, userBookingData, this.rawRoomData);
+      this.currentUser = new User(foundUser, userBookingData);
       this.currentUser.bookingService.createBookingHistory();
+      console.log(this.currentUser)
     } else {
       return false;
     }
