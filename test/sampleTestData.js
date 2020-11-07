@@ -48,5 +48,27 @@ export const sampleTestData = {
     "userID": 1,
     "date": "2021/10/30",
     "roomNumber": 10}
+  ],
+  mappedBookingData: [
+    {"id": "5fwrgu4i7k55hl6t5",
+    "userID": 2,
+    "date": new Date("2020/11/03").toLocaleDateString(),
+    "roomNumber": 11,
+    "cost": 275},
+    {"id": "5d5dfufjslkam31d7",
+    "userID": 1,
+    "date": new Date("2020/10/31").toLocaleDateString(),
+    "roomNumber": 12,
+    "cost": 200},
+    {"id": "9s72kfncs86grssap",
+    "userID": 3,
+    "date": new Date("2020/11/03").toLocaleDateString(),
+    "roomNumber": 12,
+    "cost": 200},
+    {"id": "dh26skcn589za8d52k",
+    "userID": 1,
+    "date": new Date("2021/10/30").toLocaleDateString(),
+    "roomNumber": 10,
+    "cost": 350}
   ]
 }

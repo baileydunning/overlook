@@ -5,17 +5,17 @@ export default class UserDirectory {
   constructor(userData, bookingData) {
     this.currentUser = null,
     this.rawUserData = userData,
-    this.rawBookingData = bookingData,
+    this.bookingData = bookingData,
     this.guestList = []
   }
 
   createGuestList() {
-    this.guestList = this.rawUserData.reduce((acc, user) => {
+    this.guestList = this.rawUserData.reduce((allGuests, user) => {
       if (user !== undefined) {
-        let userBookingData = this.filterBookingData(user.id)
-        acc.push(new User(user, userBookingData));
+
+        allGuests.push(user);
       }
-      return acc
+      return allGuests
     }, []);
   }
 
@@ -34,7 +34,7 @@ export default class UserDirectory {
   }
 
   filterBookingData(id) {
-    return this.rawBookingData.filter(booking => {
+    return this.bookingData.filter(booking => {
       return booking.userID === id
     })
   }
@@ -48,14 +48,16 @@ export default class UserDirectory {
   }
 
   chooseUser(username, password) {
+    username = username.toLowerCase();
     if (this.validatePassword(password) === true) {
-      if (username.toLowerCase() === 'manager') {
-        this.currentUser = new Manager({id: 0, name: 'manager'}, this.rawBookingData);
+      if (username === 'manager') {
+        this.currentUser = new Manager({id: 0, name: 'Manager'}, this.bookingData);
+        this.currentUser.bookingService.createBookingHistory();
       } else if (username.includes('customer')) {
         return this.loginGuest(username);
       }
     } else {
-      return 'Incorrect password, please try again.'
+      return false;
     }
   }
 
@@ -65,8 +67,9 @@ export default class UserDirectory {
       let foundUser = this.findGuest(userID);
       let userBookingData = this.filterBookingData(userID);
       this.currentUser = new User(foundUser, userBookingData);
+      this.currentUser.bookingService.createBookingHistory();
     } else {
-      return 'Sorry, this user does not exist.'
+      return false;
     }
   }
 }

@@ -8,7 +8,7 @@ import UserDirectory from '../src/data-model/userDirectory';
 describe('UserDirectory', () => {
   let userDirectory;
   beforeEach(() => {
-    userDirectory = new UserDirectory(sampleTestData.userData, sampleTestData.bookingData);
+    userDirectory = new UserDirectory(sampleTestData.userData, sampleTestData.mappedBookingData);
   });
 
   describe('Constructor', () => {
@@ -25,7 +25,7 @@ describe('UserDirectory', () => {
     });
 
     it('should take in the booking data', () => {
-      expect(userDirectory.rawBookingData).to.deep.equal(sampleTestData.bookingData)
+      expect(userDirectory.bookingData).to.deep.equal(sampleTestData.mappedBookingData)
     });
 
     it('should not be instantiated with a current user', () => {
@@ -65,19 +65,18 @@ describe('UserDirectory', () => {
     it('should return an error when given an incorrect password', () => {
       const result = userDirectory.chooseUser('manager', 'password123');
 
-      expect(result).to.deep.equal('Incorrect password, please try again.')
+      expect(result).to.deep.equal(false);
     });
 
     it('should return an error when the userID does not exist', () => {
-      const result = userDirectory.chooseUser('customer27', 'overlook2020');
+      const result = userDirectory.chooseUser('customer200', 'overlook2020');
 
-      expect(result).to.deep.equal('Sorry, this user does not exist.')
+      expect(result).to.deep.equal(false);
     });
 
     it('should filter booking data for guests', () => {
       userDirectory.chooseUser('customer3', 'overlook2020');
-      userDirectory.currentUser.bookingRecord.createBookingHistory();
-      const result = userDirectory.currentUser.bookingRecord.bookingHistory[0].id
+      const result = userDirectory.currentUser.bookingService.bookingHistory[0].id
 
       expect(result).to.deep.equal("9s72kfncs86grssap");
     });

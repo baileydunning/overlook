@@ -1,13 +1,13 @@
-class ApiCall {
-  constructor(url, dataKey) {
-    this.url = url;
-    this.dataKey = dataKey;
+export default class ApiCall {
+  constructor(url, name) {
+    this.url = url,
+    this.name = name
   }
 
   getRequest() {
     return fetch(this.url)
     .then(response => response.json())
-    .then(data => data[this.dataKey])
+    .then(data => data = data[this.name])
     .catch(err => console.log(err))
   }
 

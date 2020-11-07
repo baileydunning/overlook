@@ -1,11 +1,65 @@
-import ApiCall from './apiCall.js'
+import ApiCall from './apiCall';
+import Hotel from './data-model/hotel'
 import './css/styles.scss';
-import './images/stanley-bg.jpg'
-import {loginButton, loginView, roomsContainer, sidebar, userDashboard} from './elements.js';
+// import './images/stanley-bg.jpg'
+import {loginButton, loginView, roomsContainer, sidebar, userDashboard, usernameField, passwordField} from './elements.js';
 
-loginButton.addEventListener('click', determineUser)
+let today = new Date().toLocaleDateString();
+let userApi;
+let roomApi;
+let bookingApi;
+let hotel;
 
-function determineUser() {
+window.onload = instantiateApis()
+
+loginButton.addEventListener('click', () => {
+  loginUser(usernameField.value, passwordField.value)
+});
+
+datepicker.addEventListener('change', (event) => {
+  today = new Date(event.target.value).toLocaleDateString();
+  hotel.returnTodayBookings(today);
+});
+
+function instantiateApis() {
+  userApi = new ApiCall('https://fe-apps.herokuapp.com/api/v1/overlook/1904/users/users', 'users');
+  roomApi = new ApiCall('https://fe-apps.herokuapp.com/api/v1/overlook/1904/rooms/rooms', 'rooms');
+  bookingApi = new ApiCall('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings', 'bookings');
+  fetchAllData();
+}
+
+function fetchAllData() {
+  let userPromise = userApi.getRequest();
+  let roomPromise = roomApi.getRequest();
+  let bookingPromise = bookingApi.getRequest();
+
+  Promise.all([userPromise, roomPromise, bookingPromise])
+  .then(data => {
+    hotel = new Hotel(data[0], data[1], data[2], today);
+  })
+  .then(response => openHotel())
+  .catch(error => {
+    console.log(error);
+    // alert('Sorry, we are unable to retrieve data at this time, please try again later.')
+  })
+}
+
+function openHotel() {
+  hotel.launch()
+  hotel.returnTodayBookings();
+}
+
+function loginUser(username, password) {
+  if (hotel.userDirectory.chooseUser(username, password) !== false && username && password) {
+    updateDashboard()
+  } else {
+    alert('Invalid username and/or password')
+  }
+}
+
+function updateDashboard() {
+  document.querySelector('#daily-revenue').innerText = hotel.calculateTotalRoomRevenue();
+  document.querySelector('#percent-rooms-booked').innerText = hotel.percentRoomsBooked;
   loginView.classList.add('hidden');
   userDashboard.classList.remove('hidden');
   sidebar.classList.remove('hidden');

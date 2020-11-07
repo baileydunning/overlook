@@ -11,8 +11,8 @@
       <section class="login-screen flex-column">
         <p>Get started by logging in below:</p>
         <div class="login-form">
-          <input type="text" placeholder="Username">
-          <input type="text" placeholder="Password">
+          <input type="text" placeholder="Username" id="username-field">
+          <input type="text" placeholder="Password" id="password-field">
           <button type="button" id="login-button" aria-label="login">Login</button>
         </div>
       </section>
@@ -24,7 +24,7 @@
             <h4>Daily Revenue</h4>
           </div>
           <div class="flex-column">
-            <h3><span id="daily-percent-rooms-occupied"></span>%</h3>
+            <h3 id="percent-rooms-booked"></h3>
             <h4>Rooms Occupied</h4>
           </div>
         </div>
@@ -35,12 +35,14 @@
       </section>
       <section class="rooms-container flex-column hidden">
         <section class="room-search-container">
-          <input type="date" name="" value="">
+          <input type="date" id="datepicker" name="" value="">
           <div class="roomType-checkboxes flex-row">
             <input type="checkbox" name="roomType" value="">
             <label for="roomType">Single Room</label>
             <input type="checkbox" name="roomType" value="">
             <label for="roomType">Junior Suite</label>
+            <input type="checkbox" name="roomType" value="">
+            <label for="roomType">Suite</label>
             <input type="checkbox" name="roomType" value="">
             <label for="roomType">Residential Suite</label>
           </div>

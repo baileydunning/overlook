@@ -1,12 +1,22 @@
 import chai from 'chai';
 const expect = chai.expect;
-import {sampleTestData} from './sampleTestData.js'
+import {sampleTestData} from './sampleTestData'
+import BookingService from '../src/data-model/bookingService'
 import User from '../src/data-model/user';
 
 describe('User', () => {
   let user;
+
+  function filterBookingData(id) {
+      return sampleTestData.mappedBookingData.filter(booking => {
+        return booking.userID === id
+      })
+    }
+
   beforeEach(() => {
-    user = new User(sampleTestData.userData[2])
+    let filteredBookingData = filterBookingData(1);
+    user = new User(sampleTestData.userData[0], filteredBookingData);
+    user.bookingService.createBookingHistory();
   });
 
   describe('Constructor', () => {
@@ -19,11 +29,23 @@ describe('User', () => {
     });
 
     it('should have an id', () => {
-      expect(user.id).to.deep.equal(3);
+      expect(user.id).to.deep.equal(1);
     })
 
     it('should have a name', () => {
-      expect(user.name).to.deep.equal("Randall Boggs");
+      expect(user.name).to.deep.equal("Mike Wazoski");
+    });
+
+    it('should have a booking service', () => {
+      expect(user.bookingService).to.be.an.instanceof(BookingService);
+    });
+  });
+
+  describe('Methods', () => {
+    it('should return the total spent on rooms', () => {
+      const result = user.returnTotalSpentOnRooms();
+
+      expect(result).to.deep.equal(550);
     });
   });
 });
