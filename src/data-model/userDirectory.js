@@ -48,9 +48,10 @@ export default class UserDirectory {
   }
 
   chooseUser(username, password) {
+    username = username.toLowerCase();
     if (this.validatePassword(password) === true) {
-      if (username.toLowerCase() === 'manager') {
-        this.currentUser = new Manager({id: 0, name: 'manager'}, this.bookingData);
+      if (username === 'manager') {
+        this.currentUser = new Manager({id: 0, name: 'Manager'}, this.bookingData);
         this.currentUser.bookingService.createBookingHistory();
       } else if (username.includes('customer')) {
         return this.loginGuest(username);
@@ -64,11 +65,9 @@ export default class UserDirectory {
     let userID = parseInt(username.replace('customer', '').replace(/ /g, ""));
     if (this.validateUser(userID) === true) {
       let foundUser = this.findGuest(userID);
-      console.log(foundUser)
       let userBookingData = this.filterBookingData(userID);
       this.currentUser = new User(foundUser, userBookingData);
       this.currentUser.bookingService.createBookingHistory();
-      console.log(this.currentUser)
     } else {
       return false;
     }

@@ -5,10 +5,10 @@ import Manager from '../src/data-model/manager';
 import User from '../src/data-model/user';
 import UserDirectory from '../src/data-model/userDirectory';
 
-describe.only('UserDirectory', () => {
+describe('UserDirectory', () => {
   let userDirectory;
   beforeEach(() => {
-    userDirectory = new UserDirectory(sampleTestData.userData, sampleTestData.bookingData, sampleTestData.roomData);
+    userDirectory = new UserDirectory(sampleTestData.userData, sampleTestData.mappedBookingData);
   });
 
   describe('Constructor', () => {
@@ -25,7 +25,7 @@ describe.only('UserDirectory', () => {
     });
 
     it('should take in the booking data', () => {
-      expect(userDirectory.rawBookingData).to.deep.equal(sampleTestData.bookingData)
+      expect(userDirectory.bookingData).to.deep.equal(sampleTestData.mappedBookingData)
     });
 
     it('should not be instantiated with a current user', () => {
@@ -76,8 +76,7 @@ describe.only('UserDirectory', () => {
 
     it('should filter booking data for guests', () => {
       userDirectory.chooseUser('customer3', 'overlook2020');
-      userDirectory.currentUser.bookingRecord.createBookingHistory();
-      const result = userDirectory.currentUser.bookingRecord.bookingHistory[0].id
+      const result = userDirectory.currentUser.bookingService.bookingHistory[0].id
 
       expect(result).to.deep.equal("9s72kfncs86grssap");
     });

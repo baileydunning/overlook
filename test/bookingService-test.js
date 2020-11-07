@@ -8,7 +8,7 @@ import BookingService from '../src/data-model/bookingService';
 describe('BookingService', () => {
   let bookingService;
   beforeEach(() => {
-    bookingService = new BookingService(sampleTestData.bookingData, sampleTestData.roomData)
+    bookingService = new BookingService(sampleTestData.mappedBookingData)
   });
 
   describe('Constructor', () => {
@@ -21,7 +21,7 @@ describe('BookingService', () => {
     });
 
     it('should take in the booking data', () => {
-      expect(bookingService.bookingData).to.deep.equal(sampleTestData.bookingData)
+      expect(bookingService.bookingData).to.deep.equal(sampleTestData.mappedBookingData)
     });
 
   });
@@ -29,7 +29,6 @@ describe('BookingService', () => {
   describe('Methods', () => {
     beforeEach(() => {
       bookingService.createBookingHistory();
-      bookingService.createRoomRecord();
     });
     it('should put Bookings in the booking history', () => {
       expect(bookingService.bookingHistory[0]).to.be.an.instanceof(Booking);

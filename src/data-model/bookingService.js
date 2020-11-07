@@ -2,14 +2,14 @@ import Booking from './booking';
 
 export default class BookingService {
   constructor(bookingData) {
-    this.rawBookingData = bookingData,
+    this.bookingData = bookingData,
     this.bookingHistory = [],
     this.currentBookings = [],
     this.previousBookings = []
   }
 
   createBookingHistory() {
-    this.bookingHistory = this.rawBookingData.reduce((allBookings, booking) => {
+    this.bookingHistory = this.bookingData.reduce((allBookings, booking) => {
       allBookings.push(new Booking(booking));
       return allBookings
     }, []);
