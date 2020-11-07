@@ -46,21 +46,19 @@ function fetchAllData() {
 
 function openHotel() {
   hotel.launch()
-  hotel.returnTodayBookings(today);
-  console.log('hotel: ', hotel)
+  hotel.returnTodayBookings();
 }
 
 function loginUser(username, password) {
   if (hotel.userDirectory.chooseUser(username, password) !== false && username && password) {
     updateDashboard()
-    console.log('current user: ', hotel.userDirectory.currentUser)
   } else {
     alert('Invalid username and/or password')
   }
 }
 
 function updateDashboard() {
-  document.querySelector('#daily-revenue').innerText = hotel.calculateTotalRoomRevenue(today);
+  document.querySelector('#daily-revenue').innerText = hotel.calculateTotalRoomRevenue();
   document.querySelector('#percent-rooms-booked').innerText = hotel.percentRoomsBooked;
   loginView.classList.add('hidden');
   userDashboard.classList.remove('hidden');

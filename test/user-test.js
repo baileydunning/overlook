@@ -4,7 +4,7 @@ import {sampleTestData} from './sampleTestData'
 import BookingService from '../src/data-model/bookingService'
 import User from '../src/data-model/user';
 
-describe.only('User', () => {
+describe('User', () => {
   let user;
 
   function filterBookingData(id) {
