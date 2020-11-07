@@ -20,6 +20,7 @@ datepicker.addEventListener('change', (event) => {
   today = new Date(event.target.value).toLocaleDateString();
   hotel.date = today;
   hotel.returnTodayBookings();
+  displayAvailableRooms();
 });
 
 function instantiateApis() {
@@ -48,6 +49,7 @@ function fetchAllData() {
 function openHotel() {
   hotel.launch()
   hotel.returnTodayBookings();
+  document.querySelector('#date-string').innerText = new Date(today).toDateString()
   displayAvailableRooms();
 }
 
@@ -69,12 +71,13 @@ function updateDashboard() {
 }
 
 function displayAvailableRooms() {
+  availableRoomsDisplay.innerHTML = '';
   hotel.availableRoomsToday.forEach(room => {
     let roomCard = `<div class="room-card flex-column">
+    <h3>${room.roomType.toUpperCase()}</h3>
     <div id="room-information">
       <img src="./images/bed.png" alt="bed-img" id="bed-img">
       <div class="flex-column">
-        <h3>${room.roomType.toUpperCase()}</h3>
         <p>${room.numBeds} ${room.bedSize.toUpperCase()}</p>
         <p>$${room.costPerNight} per night</p>
       </div>
