@@ -7,6 +7,13 @@ export default class User {
     this.bookingService = new BookingService(bookingData)
 	}
 
+  returnTotalSpentOnRooms() {
+    return this.bookingService.bookingHistory.reduce((totalSpent, booking) => {
+      totalSpent += booking.cost
+      return totalSpent;
+    }, 0)
+  }
+
   addBooking() {
 
   }
