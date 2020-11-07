@@ -4,73 +4,77 @@
     <title>Overlook</title>
   </head>
   <main>
-    <header>
-        <h1>Welcome To The Overlook Hotel</h1>
-    </header>
     <body class="flex-row">
       <section class="login-screen flex-column">
-        <p>Get started by logging in below:</p>
+        <h1>Welcome to the Overlook Hotel!</h1>
         <div class="login-form">
+          <h2>Login:</h2>
           <input type="text" placeholder="Username" id="username-field">
           <input type="text" placeholder="Password" id="password-field">
-          <button type="button" id="login-button" aria-label="login">Login</button>
+          <button type="button" aria-label="login" id="login-button">Login</button>
         </div>
       </section>
-      <section class="flex-column hidden" id="user-dashboard">
-        <h2><span id="user-name"></span>Dashboard</h2>
-        <div class="manager-view flex-row" id="manager-stats">
-          <div class="flex-column">
-            <h3>$<span id="daily-revenue"></span></h3>
-            <h4>Daily Revenue</h4>
-          </div>
-          <div class="flex-column">
-            <h3 id="percent-rooms-booked"></h3>
-            <h4>Rooms Occupied</h4>
-          </div>
+      <section class="manager-dashboard flex-row">
+        <button type="button" aria-label="dashboard" id="manager-dashboard-button"></button>
+        <div class="flex-column">
+          <h3>$<span id="daily-revenue"></span></h3>
+          <h4>Daily Revenue</h4>
         </div>
-        <div class="guest-view flex-column" id="guest-stats">
+        <div class="flex-column">
+          <h3 id="percent-rooms-booked"></h3>
+          <h4>Rooms Occupied</h4>
+        </div>
+        <h1>Welcome Manager!</h1>
+        <button type="button" aria-label="guest-directory" id="guest-directory-button"></button>
+      </section>
+      <section class="guest-dashboard">
+        <button type="button" aria-label="dashboard" id="guest-dashboard-button"></button>
+        <div class="flex-column">
           <h3>$<span id="total-user-spent"></span></h3>
           <h4>Spent On Rooms</h4>
         </div>
+        <h1>Welcome <span id="user-first-name"></span>!</h1>
+        <button type="button" aria-label="guest-directory" id="guest-directory-button"></button>
       </section>
-      <section class="rooms-container flex-column hidden">
-        <section class="room-search-container">
-          <input type="date" id="datepicker" name="" value="">
-          <div class="roomType-checkboxes flex-row">
-            <input type="checkbox" name="roomType" value="">
-            <label for="roomType">Single Room</label>
-            <input type="checkbox" name="roomType" value="">
-            <label for="roomType">Junior Suite</label>
-            <input type="checkbox" name="roomType" value="">
-            <label for="roomType">Suite</label>
-            <input type="checkbox" name="roomType" value="">
-            <label for="roomType">Residential Suite</label>
-          </div>
-        </section>
-        <section class="available-rooms-display flex-row">
-          <p>this is where rooms go</p>
-        </section>
+      <section class="rooms-display flex-column">
+        <div class="flex-column" id="date-display">
+          <h3 id="date-string"></h3>
+          <input type="date" id="datepicker" name="date">
+        </div>
+        <div class="flex-row" id="roomType-checkboxes">
+          <input type="checkbox" name="roomType" value="">
+          <label for="roomType">Single Room</label>
+          <input type="checkbox" name="roomType" value="">
+          <label for="roomType">Junior Suite</label>
+          <input type="checkbox" name="roomType" value="">
+          <label for="roomType">Suite</label>
+          <input type="checkbox" name="roomType" value="">
+          <label for="roomType">Residential Suite</label>
+        </div>
       </section>
-      <section class="sidebar flex-column hidden">
-        <section class="manager-view flex-column" id="guest-directory">
-          <h2>Guest Directory</h2>
-          <input type="text" placeholder="Search By Name">
-          <div class="guests-container">
-            <p>this is where guests go</p>
-          </div>
-        </section>
-        <section class="guest-view flex-column" id="booking-history">
+      <section class="available-rooms-display flex-row">
+        <p>this is where rooms go</p>
+      </section>
+      <section class="guest-directory-display flex-column">
+        <h2>Guest Directory</h2>
+        <input type="text" placeholder="Search By Name">
+        <div class="guests-container">
+          <p>this is where guests go</p>
+        </div>
+      </section>
+      <section class="user-booking-history flex-column">
+        <div class="flex-row">
           <h2>Booking History</h2>
-          <button type="button" name="button">Add New</button>
-          <h3>Current Bookings:</h3>
-          <div class="current-bookings-container flex-column">
+          <button type="button" aria-label="add-new-booking" id="add-new-booking-button">+</button>
+        </div>
+        <h3>Current Bookings:</h3>
+        <div class="current-bookings-container flex-column">
 
-          </div>
-          <h3>Previous Bookings:</h3>
-          <div class="previous-bookings-container flex-column">
+        </div>
+        <h3>Previous Bookings:</h3>
+        <div class="previous-bookings-container flex-column">
 
-          </div>
-        </section>
+        </div>
       </section>
     </body>
   </main>
