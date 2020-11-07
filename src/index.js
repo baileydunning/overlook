@@ -1,8 +1,8 @@
 import ApiCall from './apiCall';
 import Hotel from './data-model/hotel'
 import './css/styles.scss';
-// import './images/stanley-bg.jpg'
-import {loginButton, loginView, roomsContainer, sidebar, userDashboard, usernameField, passwordField} from './elements.js';
+import './images/bed.png'
+import {loginButton, availableRoomsDisplay, loginView, roomsContainer, sidebar, userDashboard, usernameField, passwordField, datepicker} from './elements.js';
 
 let today = new Date().toLocaleDateString();
 let userApi;
@@ -18,7 +18,8 @@ loginButton.addEventListener('click', () => {
 
 datepicker.addEventListener('change', (event) => {
   today = new Date(event.target.value).toLocaleDateString();
-  hotel.returnTodayBookings(today);
+  hotel.date = today;
+  hotel.returnTodayBookings();
 });
 
 function instantiateApis() {
@@ -47,6 +48,7 @@ function fetchAllData() {
 function openHotel() {
   hotel.launch()
   hotel.returnTodayBookings();
+  displayAvailableRooms();
 }
 
 function loginUser(username, password) {
@@ -65,3 +67,35 @@ function updateDashboard() {
   sidebar.classList.remove('hidden');
   roomsContainer.classList.remove('hidden');
 }
+
+function displayAvailableRooms() {
+  hotel.availableRoomsToday.forEach(room => {
+    let roomCard = `<div class="room-card flex-column">
+    <div id="room-information">
+      <img src="./images/bed.png" alt="bed-img" id="bed-img">
+      <div class="flex-column">
+        <h3>${room.roomType.toUpperCase()}</h3>
+        <p>${room.numBeds} ${room.bedSize.toUpperCase()}</p>
+        <p>$${room.costPerNight} per night</p>
+      </div>
+    </div>
+    <button type="button" aria-label="book-room">Book Room</button>
+    </div>`
+    availableRoomsDisplay.insertAdjacentHTML('afterbegin', roomCard);
+  })
+}
+// manager dashboard modal:
+// <div class="flex-column">
+//   <h3>$<span id="daily-revenue"></span></h3>
+//   <h4>Daily Revenue</h4>
+// </div>
+// <div class="flex-column">
+//   <h3 id="percent-rooms-booked"></h3>
+//   <h4>Rooms Occupied</h4>
+// </div>
+
+//guest dashboard modal:
+// <div class="flex-column">
+//   <h3>$<span id="total-user-spent"></span></h3>
+//   <h4>Spent On Rooms</h4>
+// </div>

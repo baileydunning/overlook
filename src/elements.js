@@ -6,5 +6,10 @@ export const sidebar = document.querySelector('.sidebar');
 export const roomsContainer = document.querySelector('.rooms-container');
 export const userDashboard = document.querySelector('#user-dashboard');
 export const datepicker = document.querySelector('#datepicker');
-// export const managerView = document.querySelectorAll('.manager-view');
-// export const guestView = document.querySelectorAll('.guest-view');
+export const availableRoomsDisplay = document.querySelector('.available-rooms-display');
+
+export const managerDashboard = document.querySelector('.manager-dashboard');
+export const guestDashboard = document.querySelector('.guest-dashboard');
+export const managerDashboardButton = document.querySelector('#manager-dashboard-button');
+export const guestDashboardButton = document.querySelector('#guest-dashboard-button');
+export const guestDirectoryButton = document.querySelector('#guest-directory-button');
