@@ -1,30 +1,27 @@
 // import ApiCall from '../src/ApiCall'
 import Booking from './booking';
-import Room from './room';
 
 export default class BookingService {
-  constructor(bookingData, roomData) {
+  constructor(bookingData) {
     this.rawBookingData = bookingData,
-    this.rawRoomData = roomData,
-    this.roomRecord = [],
     this.bookingHistory = [],
     this.currentBookings = [],
     this.previousBookings = []
   }
 
   createBookingHistory() {
-    this.bookingHistory = this.rawBookingData.reduce((acc, booking) => {
-      acc.push(new Booking(booking));
-      return acc
+    this.bookingHistory = this.rawBookingData.reduce((allBookings, booking) => {
+      allBookings.push(new Booking(booking));
+      return allBookings
     }, []);
   }
 
-  createRoomRecord() {
-    this.roomRecord = this.rawRoomData.reduce((acc, room) => {
-      acc.push(new Room(room));
-      return acc
-    }, []);
-  }
+  // createRoomRecord() {
+  //   this.roomRecord = this.rawRoomData.reduce((acc, room) => {
+  //     acc.push(new Room(room));
+  //     return acc
+  //   }, []);
+  // }
 
   sortBookingsByDate(today) {
     today = new Date(today);

@@ -2,21 +2,19 @@ import User from './user';
 import Manager from './manager';
 
 export default class UserDirectory {
-  constructor(userData, bookingData, roomData) {
+  constructor(userData, bookingData) {
     this.currentUser = null,
     this.rawUserData = userData,
     this.rawBookingData = bookingData,
-    this.rawRoomData = roomData,
     this.guestList = []
   }
 
   createGuestList() {
-    this.guestList = this.rawUserData.reduce((acc, user) => {
+    this.guestList = this.rawUserData.reduce((allGuests, user) => {
       if (user !== undefined) {
-        let userBookingData = this.filterBookingData(user.id)
-        acc.push(new User(user, userBookingData, this.rawRoomData));
+        allGuests.push(user);
       }
-      return acc
+      return allGuests
     }, []);
   }
 
@@ -35,8 +33,14 @@ export default class UserDirectory {
   }
 
   filterBookingData(id) {
-    return this.rawBookingData.filter(booking => {
+    const userBookings = this.rawBookingData.filter(booking => {
       return booking.userID === id
+    })
+
+    return userBookings.map(booking => {
+      this.rawRoomData.forEach(room => {
+        return booking.room = room.costPerNight
+      })
     })
   }
 
@@ -51,7 +55,7 @@ export default class UserDirectory {
   chooseUser(username, password) {
     if (this.validatePassword(password) === true) {
       if (username.toLowerCase() === 'manager') {
-        this.currentUser = new Manager({id: 0, name: 'manager'}, this.rawBookingData);
+        this.currentUser = new Manager({id: 0, name: 'manager'}, this.rawBookingData, this.rawRoomData);
         this.currentUser.bookingService.createBookingHistory();
       } else if (username.includes('customer')) {
         return this.loginGuest(username);
@@ -65,8 +69,9 @@ export default class UserDirectory {
     let userID = parseInt(username.replace('customer', '').replace(/ /g, ""));
     if (this.validateUser(userID) === true) {
       let foundUser = this.findGuest(userID);
+      console.log(foundUser)
       let userBookingData = this.filterBookingData(userID);
-      this.currentUser = new User(foundUser, userBookingData);
+      this.currentUser = new User(foundUser, userBookingData, this.rawRoomData);
       this.currentUser.bookingService.createBookingHistory();
     } else {
       return false;

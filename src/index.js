@@ -35,7 +35,7 @@ function fetchAllData() {
 
   Promise.all([userPromise, roomPromise, bookingPromise])
   .then(data => {
-    hotel = new Hotel(data[0], data[1], data[2]);
+    hotel = new Hotel(data[0], data[1], data[2], today);
   })
   .then(response => openHotel())
   .catch(error => {
@@ -47,6 +47,7 @@ function fetchAllData() {
 function openHotel() {
   hotel.launch()
   hotel.returnTodayBookings(today);
+  console.log('hotel: ', hotel)
 }
 
 function loginUser(username, password) {
@@ -66,5 +67,3 @@ function updateDashboard() {
   sidebar.classList.remove('hidden');
   roomsContainer.classList.remove('hidden');
 }
-
-function 
