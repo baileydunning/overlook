@@ -1,10 +1,12 @@
 // import ApiCall from '../src/ApiCall'
 import Booking from './booking';
+import Room from './room';
 
-export default class BookingRecord {
-  constructor(bookingData) {
-    // this.bookingService = new ApiCall('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings', 'bookingData')
+export default class BookingService {
+  constructor(bookingData, roomData) {
     this.rawBookingData = bookingData,
+    this.rawRoomData = roomData,
+    this.roomRecord = [],
     this.bookingHistory = [],
     this.currentBookings = [],
     this.previousBookings = []
@@ -17,10 +19,17 @@ export default class BookingRecord {
     }, []);
   }
 
-  sortBookingsByDate() {
+  createRoomRecord() {
+    this.roomRecord = this.rawRoomData.reduce((acc, room) => {
+      acc.push(new Room(room));
+      return acc
+    }, []);
+  }
+
+  sortBookingsByDate(today) {
+    today = new Date(today);
     this.currentBookings = [];
     this.previousBookings = [];
-    let today = new Date();
     return this.bookingHistory.forEach(booking => {
       booking.date = new Date(booking.date);
       if (booking.date >= today) {

@@ -5,6 +5,6 @@ export const passwordField = document.querySelector('#password-field');
 export const sidebar = document.querySelector('.sidebar');
 export const roomsContainer = document.querySelector('.rooms-container');
 export const userDashboard = document.querySelector('#user-dashboard');
-
+export const datepicker = document.querySelector('#datepicker');
 // export const managerView = document.querySelectorAll('.manager-view');
 // export const guestView = document.querySelectorAll('.guest-view');

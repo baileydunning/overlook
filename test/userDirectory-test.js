@@ -65,13 +65,13 @@ describe('UserDirectory', () => {
     it('should return an error when given an incorrect password', () => {
       const result = userDirectory.chooseUser('manager', 'password123');
 
-      expect(result).to.deep.equal('Incorrect password, please try again.')
+      expect(result).to.deep.equal(false);
     });
 
     it('should return an error when the userID does not exist', () => {
-      const result = userDirectory.chooseUser('customer27', 'overlook2020');
+      const result = userDirectory.chooseUser('customer200', 'overlook2020');
 
-      expect(result).to.deep.equal('Sorry, this user does not exist.')
+      expect(result).to.deep.equal(false);
     });
 
     it('should filter booking data for guests', () => {

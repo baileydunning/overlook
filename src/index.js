@@ -4,7 +4,7 @@ import './css/styles.scss';
 // import './images/stanley-bg.jpg'
 import {loginButton, loginView, roomsContainer, sidebar, userDashboard, usernameField, passwordField} from './elements.js';
 
-let today = new Date().toLocaleDateString();
+let today = new Date("2020/1/15").toLocaleDateString();
 let userApi;
 let roomApi;
 let bookingApi;
@@ -14,6 +14,11 @@ window.onload = instantiateApis()
 
 loginButton.addEventListener('click', () => {
   loginUser(usernameField.value, passwordField.value)
+});
+
+datepicker.addEventListener('change', (event) => {
+  today = new Date(event.target.value).toLocaleDateString();
+  hotel.returnTodayBookings(today);
 });
 
 function instantiateApis() {
@@ -44,23 +49,22 @@ function openHotel() {
   hotel.returnTodayBookings(today);
 }
 
-function updateUI() {
-
-}
-
 function loginUser(username, password) {
-  if (username && password) {
-    hotel.userDirectory.chooseUser(username, password)
+  if (hotel.userDirectory.chooseUser(username, password) !== false && username && password) {
+    updateDashboard()
     console.log('current user: ', hotel.userDirectory.currentUser)
-    determineUser()
   } else {
     alert('Invalid username and/or password')
   }
 }
 
-function determineUser() {
+function updateDashboard() {
+  document.querySelector('#daily-revenue').innerText = hotel.calculateTotalRoomRevenue(today);
+  document.querySelector('#percent-rooms-booked').innerText = hotel.percentRoomsBooked;
   loginView.classList.add('hidden');
   userDashboard.classList.remove('hidden');
   sidebar.classList.remove('hidden');
   roomsContainer.classList.remove('hidden');
 }
+
+function 

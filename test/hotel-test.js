@@ -1,7 +1,7 @@
 import chai from 'chai';
 const expect = chai.expect;
 import {sampleTestData} from './sampleTestData.js'
-import RoomRecord from '../src/data-model/roomRecord';
+import BookingService from '../src/data-model/bookingService';
 import UserDirectory from '../src/data-model/userDirectory';
 import Hotel from '../src/data-model/hotel';
 
@@ -20,8 +20,8 @@ describe('Hotel', () => {
       expect(hotel).to.be.an.instanceof(Hotel);
     });
 
-    it('should have a room record', () => {
-      expect(hotel.roomRecord).to.be.an.instanceof(RoomRecord);
+    it('should have a booking service', () => {
+      expect(hotel.bookingService).to.be.an.instanceof(BookingService);
     });
 
     it('should have a user directory', () => {

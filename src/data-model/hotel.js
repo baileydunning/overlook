@@ -1,12 +1,10 @@
-import RoomRecord from './roomRecord';
-import BookingRecord from './bookingRecord';
+import BookingService from './bookingService';
 import UserDirectory from './userDirectory';
 
 export default class Hotel {
   constructor(userData, roomData, bookingData) {
     this.userDirectory = new UserDirectory(userData, bookingData),
-    this.roomRecord = new RoomRecord(roomData),
-    this.bookingRecord = new BookingRecord(bookingData),
+    this.bookingService = new BookingService(bookingData, roomData),
     this.bookedRoomsToday = [],
     this.availableRoomsToday = [],
     this.percentRoomsBooked = 0
@@ -14,12 +12,13 @@ export default class Hotel {
 
   launch() {
     this.userDirectory.createGuestList();
-    this.bookingRecord.createBookingHistory();
-    this.roomRecord.createRoomRecord();
+    this.bookingService.createBookingHistory();
+    this.bookingService.createRoomRecord();
   }
 
   returnTodayBookings(date) {
-    const todayBookings = this.bookingRecord.bookingHistory.reduce((acc, booking) => {
+    date = new Date(date).toLocaleDateString()
+    const todayBookings = this.bookingService.bookingHistory.reduce((acc, booking) => {
       booking.date = new Date(booking.date).toLocaleDateString()
       if (booking.date === date) {
         acc.push(booking);
@@ -28,7 +27,7 @@ export default class Hotel {
     }, []);
     this.returnAvailableRooms(todayBookings);
     this.bookedRoomsToday = todayBookings.map(booking => {
-      const roomBooked = this.roomRecord.roomRecord.find(room => {
+      const roomBooked = this.bookingService.roomRecord.find(room => {
         return room.number === booking.roomNumber
       });
       return booking = {bookingInfo: {booking}, roomInfo: {roomBooked}}
@@ -40,15 +39,15 @@ export default class Hotel {
       return bookedRoom = bookedRoom.roomNumber;
     })
 
-    this.availableRoomsToday = this.roomRecord.roomRecord.filter(room => {
+    this.availableRoomsToday = this.bookingService.roomRecord.filter(room => {
       return !bookedRoomNumbers.includes(room.number)
     })
 
-    this.percentRoomsBooked = `${((this.roomRecord.roomRecord.length - this.availableRoomsToday.length) / this.roomRecord.roomRecord.length) * 100}%`;
+    this.percentRoomsBooked = `${((this.bookingService.roomRecord.length - this.availableRoomsToday.length) / this.bookingService.roomRecord.length) * 100}%`;
   }
 
   calculateTotalRoomRevenue(date) {
-    const bookedRoomNums = this.bookingRecord.bookingHistory.reduce((bookedRoomNumbers, booking) => {
+    const bookedRoomNums = this.bookingService.bookingHistory.reduce((bookedRoomNumbers, booking) => {
         if (booking.date === date) {
           bookedRoomNumbers.push(booking.roomNumber);
         }
@@ -56,7 +55,7 @@ export default class Hotel {
       }, [])
 
     return bookedRoomNums.reduce((totalRevenue, bookedRoom) => {
-      this.roomRecord.roomRecord.forEach(room => {
+      this.bookingService.roomRecord.forEach(room => {
         if (bookedRoom === room.number) {
           totalRevenue = totalRevenue += room.costPerNight;
         }

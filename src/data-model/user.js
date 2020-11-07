@@ -1,10 +1,10 @@
-import BookingRecord from './bookingRecord'
+import BookingService from './bookingService'
 
 export default class User {
-  constructor(userData, bookingData) {
+  constructor(userData, bookingData, roomData) {
     this.id = userData.id,
     this.name = userData.name,
-    this.bookingRecord = new BookingRecord(bookingData)
+    this.bookingService = new BookingService(bookingData, roomData)
 	}
 
   addBooking() {
