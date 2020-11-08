@@ -27,6 +27,7 @@ label {
 .flex-row {
   display: flex;
   flex-direction: row !important;
+  justify-content: space-around;
 }
 
 .flex-column {
@@ -100,7 +101,7 @@ label {
   display: flex;
   background: $off-white;
   width: 320px;
-  height: 165px;
+  height: auto;
   margin: 15px;
   box-shadow: 5px 5px 5px $navy-blue;
   text-align: center;
@@ -108,6 +109,10 @@ label {
   #bed-img {
     width: 110px;
     height: 80px;
+  }
+  #bidet-img {
+    height: 30px;
+    width: auto;
   }
   button {
     width: 100px;

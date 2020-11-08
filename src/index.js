@@ -1,7 +1,8 @@
 import ApiCall from './apiCall';
 import Hotel from './data-model/hotel'
 import './css/styles.scss';
-import './images/bed.png'
+import './images/bed.png';
+import './images/bidet.png';
 import {
   availableRoomsDisplay,
   datepicker,
@@ -21,7 +22,7 @@ import {
   usernameField
 } from './elements.js';
 
-let today = new Date().toLocaleDateString();
+let today = new Date("01/21/2020").toLocaleDateString();
 let hotel;
 let userApi;
 let roomApi;
@@ -43,6 +44,7 @@ loginButton.addEventListener('click', () => {
 datepicker.addEventListener('change', (event) => {
   today = new Date(event.target.value).toLocaleDateString();
   hotel.date = today;
+  document.querySelector('#date-string').innerText = new Date(today).toDateString()
   hotel.returnTodayBookings();
   displayAvailableRooms();
 });
@@ -109,15 +111,22 @@ function displayAvailableRooms() {
     <h3>${room.roomType.toUpperCase()}</h3>
     <div id="room-information">
       <img src="./images/bed.png" alt="bed-img" id="bed-img">
-      <div class="flex-column">
-        <p>${room.numBeds} ${room.bedSize.toUpperCase()}</p>
-        <p>$${room.costPerNight} per night</p>
+      <div class="flex-row">
+        <div class="flex-column">
+          <p>${room.numBeds} ${room.bedSize.toUpperCase()}</p>
+          <p>$${room.costPerNight} per night</p>
+        </div>
+        ${checkRoomForBidet(room)}
       </div>
     </div>
-    <button type="button" aria-label="book-room">Book Room</button>
+    <div><button type="button" aria-label="book-room">Book Room</button></div>
     </div>`
     availableRoomsDisplay.insertAdjacentHTML('afterbegin', roomCard);
   })
+}
+
+function checkRoomForBidet(room) {
+  return (room.bidet === true) ? `<img src="./images/bidet.png" alt="bidet-img" id="bidet-img">` : ''
 }
 // manager dashboard modal:
 

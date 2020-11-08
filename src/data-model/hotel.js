@@ -18,7 +18,7 @@ export default class Hotel {
     this.updateBookings();
     this.userDirectory = new UserDirectory(this.rawUserData, this.rawBookingData)
     this.userDirectory.createGuestList();
-    this.returnTodayBookings(this.date)
+    this.returnTodayBookings()
   }
 
   createRoomRecord() {
@@ -80,10 +80,21 @@ export default class Hotel {
     return bookedRoomNums.reduce((totalRevenue, bookedRoom) => {
       this.rooms.forEach(room => {
         if (bookedRoom === room.number) {
-          totalRevenue = totalRevenue += room.costPerNight;
+          totalRevenue = (totalRevenue += room.costPerNight);
         }
       })
-      return totalRevenue;
+      return parseFloat(totalRevenue).toFixed(2);
     }, 0)
+  }
+
+  filterByRoomType(inputs) {
+    return this.availableRoomsToday.reduce((roomsByType, room) => {
+      inputs.forEach(input => {
+        if (input === room.roomType) {
+          roomsByType.push(room)
+        }
+      })
+      return roomsByType;
+    }, [])
   }
 }
