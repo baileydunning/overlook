@@ -16,3 +16,7 @@ export const roomsDisplay = document.querySelector('.rooms-display');
 export const sidebar = document.querySelector('.sidebar');
 export const usernameField = document.querySelector('#username-field');
 export const dateString = document.querySelector('#date-string');
+export const totalUserSpent = document.querySelector('#total-user-spent');
+export const userBookingHistory = document.querySelector('.user-booking-history');
+export const userCurrentBookings = document.querySelector('.current-bookings-container');
+export const userPreviousBookings = document.querySelector('.previous-bookings-container');

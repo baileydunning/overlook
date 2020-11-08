@@ -31,13 +31,23 @@ export default class BookingService {
     today = new Date(today);
     this.currentBookings = [];
     this.previousBookings = [];
-    return this.bookingHistory.forEach(booking => {
+    this.bookingHistory.forEach(booking => {
       booking.date = new Date(booking.date);
       if (booking.date >= today) {
         this.currentBookings.push(booking);
       } else {
         this.previousBookings.push(booking)
       }
+    })
+    this.organizeBookings();
+  }
+
+  organizeBookings() {
+    this.currentBookings.sort((bookingA, bookingB) => {
+      return bookingA.date > bookingB.date ? 1 : -1;
+    })
+    this.previousBookings.sort((bookingA, bookingB) => {
+      return bookingA.date > bookingB.date ? -1 : 1;
     })
   }
 }

@@ -3,14 +3,17 @@ import Hotel from './data-model/hotel'
 import './css/styles.scss';
 import './images/bed.png';
 import './images/bidet.png';
+import './images/logout.png';
 import {
   availableRoomsDisplay,
   datepicker,
   dateString,
+  bookingHistoryButton,
   guestDashboard,
   guestDashboardButton,
   guestDirectoryButton,
   guestModal,
+  totalUserSpent,
   loginButton,
   loginView,
   managerDashboard,
@@ -20,7 +23,10 @@ import {
   roomsDisplay,
   sidebar,
   userDashboard,
-  usernameField
+  usernameField,
+  userBookingHistory,
+  userCurrentBookings,
+  userPreviousBookings
 } from './elements.js';
 
 let today = new Date("01/21/2020").toDateString();
@@ -49,6 +55,12 @@ datepicker.addEventListener('change', (event) => {
 managerDashboardButton.addEventListener('click', () => {
   managerModal.style.display = 'block';
 })
+
+guestDashboardButton.addEventListener('click', () => {
+  guestModal.style.display = 'block';
+})
+
+bookingHistoryButton.addEventListener('click', showBookingHistory);
 
 function instantiateApis() {
   userApi = new ApiCall('https://fe-apps.herokuapp.com/api/v1/overlook/1904/users/users', 'users');
@@ -82,7 +94,8 @@ function openHotel() {
 function loginUser(username, password) {
   let userType = hotel.userDirectory.chooseUser(username, password);
   if (username && password && userType !== false) {
-    updateDashboard(userType)
+    updateDashboard(userType);
+    hotel.userDirectory.currentUser.bookingService.sortBookingsByDate(today);
   } else {
     alert('Invalid username and/or password')
   }
@@ -101,7 +114,9 @@ function updateDashboard(userType) {
   if (userType === 'manager') {
     managerDashboard.classList.remove('hidden');
   } else if (userType === 'guest') {
-    document.querySelector('#user-first-name').innerText = hotel.userDirectory.currentUser.name
+    let firstName = hotel.userDirectory.currentUser.name.split(' ');
+    document.querySelector('#user-first-name').innerText = firstName[0];
+    totalUserSpent.innerText = hotel.userDirectory.currentUser.returnTotalSpentOnRooms();
     guestDashboard.classList.remove('hidden');
   }
 }
@@ -134,9 +149,29 @@ function checkRoomForBidet(room) {
 function updateDate(event) {
   today = new Date(event.target.value).toDateString();
   hotel.date = today;
-  dateString.innerText = new Date(today).toDateString()
+  dateString.innerText = new Date(event.target.value).toDateString()
   hotel.returnTodayBookings();
+  hotel.userDirectory.currentUser.bookingService.sortBookingsByDate(today)
   updateDisplay();
+}
+
+function showBookingHistory() {
+  roomsDisplay.classList.add('hidden');
+  userBookingHistory.classList.remove('hidden');
+  displayBookings(hotel.userDirectory.currentUser.bookingService.currentBookings, userCurrentBookings);
+  displayBookings(hotel.userDirectory.currentUser.bookingService.previousBookings, userPreviousBookings);
+}
+
+function displayBookings(bookings, container) {
+  container.innerHTML = ''
+  bookings.forEach(booking => {
+    booking.date = new Date(booking.date).toDateString();
+    let bookingCard = `<div class="flex-row">
+    <p>${booking.date}</p>
+    <p>${booking.cost}</p>
+    </div>`
+    container.insertAdjacentHTML('afterbegin', bookingCard);
+  })
 }
 
 //guest dashboard modal:

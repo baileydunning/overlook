@@ -19,6 +19,7 @@ export default class Hotel {
     this.userDirectory = new UserDirectory(this.rawUserData, this.rawBookingData)
     this.userDirectory.createGuestList();
     this.returnTodayBookings()
+    console.log(this.bookedRoomsToday)
   }
 
   createRoomRecord() {
