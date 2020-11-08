@@ -20,3 +20,5 @@ export const totalUserSpent = document.querySelector('#total-user-spent');
 export const userBookingHistory = document.querySelector('.user-booking-history');
 export const userCurrentBookings = document.querySelector('.current-bookings-container');
 export const userPreviousBookings = document.querySelector('.previous-bookings-container');
+export const seeRoomsButton = document.querySelector('.see-rooms-button');
+export const logoutButton = document.querySelector('.logout-button');

@@ -4,6 +4,10 @@ import './css/styles.scss';
 import './images/bed.png';
 import './images/bidet.png';
 import './images/logout.png';
+import './images/dashboard-navy.png';
+import './images/users-navy.png';
+import './images/bookings-navy.png';
+import './images/room-navy.png';
 import {
   availableRoomsDisplay,
   datepicker,
@@ -22,6 +26,7 @@ import {
   passwordField,
   roomsDisplay,
   sidebar,
+  seeRoomsButton,
   userDashboard,
   usernameField,
   userBookingHistory,
@@ -168,7 +173,7 @@ function displayBookings(bookings, container) {
     booking.date = new Date(booking.date).toDateString();
     let bookingCard = `<div class="flex-row">
     <p>${booking.date}</p>
-    <p>${booking.cost}</p>
+    <p>$${booking.cost}</p>
     </div>`
     container.insertAdjacentHTML('afterbegin', bookingCard);
   })

@@ -44,7 +44,7 @@ export default class BookingService {
 
   organizeBookings() {
     this.currentBookings.sort((bookingA, bookingB) => {
-      return bookingA.date > bookingB.date ? 1 : -1;
+      return bookingA.date > bookingB.date ? -1 : 1;
     })
     this.previousBookings.sort((bookingA, bookingB) => {
       return bookingA.date > bookingB.date ? -1 : 1;

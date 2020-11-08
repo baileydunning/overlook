@@ -14,35 +14,45 @@
           <button type="button" aria-label="login" id="login-button">Login</button>
         </div>
       </section>
-      <section class="manager-dashboard flex-row hidden">
-        <button type="button" id="manager-dashboard-button">Dashboard</button>
-        <div class="modal" id="manager-modal">
-          <div class="modal-content flex-row">
-            <div class="flex-row">
-              <h3>$<span id="daily-revenue"></span></h3>
-              <h4>Daily Revenue</h4>
-            </div>
-            <div class="flex-column">
-              <h3 id="percent-rooms-booked"></h3>
-              <h4>Rooms Occupied</h4>
+      <section class="manager-dashboard flex-column hidden">
+        <div class="flex-row">
+          <h1>Welcome Manager!</h1>
+          <input type="image" class="logout-button" aria-label="go-back-to-login-screen" src="./images/logout.png" alt="logout" onclick="location.reload()"></input>
+        </div>
+        <div class="flex-row">
+          <input type="image" id="manager-dashboard-button" src="./images/dashboard-navy.png" alt="User Dashboard"></input>
+          <div class="modal" id="manager-modal">
+            <div class="modal-content flex-row">
+              <div class="flex-row">
+                <h3>$<span id="daily-revenue"></span></h3>
+                <h4>Daily Revenue</h4>
+              </div>
+              <div class="flex-column">
+                <h3 id="percent-rooms-booked"></h3>
+                <h4>Rooms Occupied</h4>
+              </div>
             </div>
           </div>
+          <input type="image" aria-label="guest-directory" id="guest-directory-button" src="./images/users-navy.png" alt="Guest Directory"></input>
+          <input type="image" class="see-rooms-button" aria-label="see-available-rooms-display" src="./images/room-navy.png" alt="See Rooms"></input>
         </div>
-        <h1>Welcome Manager!</h1>
-        <button type="button" aria-label="guest-directory" id="guest-directory-button">Guest Directory</button>
-        <button type="button" class="hidden" aria-label="see-available-rooms-display" id="see-rooms-button">See Rooms</button>
       </section>
-      <section class="guest-dashboard flex-row hidden">
-        <button type="button" aria-label="dashboard" id="guest-dashboard-button">Dashboard</button>
-        <div class="modal" id="guest-modal">
-          <div class="modal-content flex-row">
-            <h3>$<span id="total-user-spent"></span></h3>
-            <h4>Spent On Rooms</h4>
-          </div>
+      <section class="guest-dashboard flex-column hidden">
+        <div class="flex-row">
+          <h1>Welcome <span id="user-first-name"></span>!</h1>
+          <input type="image" class="logout-button" aria-label="go-back-to-login-screen" src="./images/logout.png" alt="logout" onclick="location.reload()"></input>
         </div>
-        <h1>Welcome <span id="user-first-name"></span>!</h1>
-        <button type="button" aria-label="booking-history" id="booking-history-button">Booking History</button>
-        <button type="button" class="hidden" aria-label="see-available-rooms-display" id="see-rooms-button">See Rooms</button>
+        <div class="flex-row">
+          <input type="image" aria-label="dashboard" id="guest-dashboard-button" src="./images/dashboard-navy.png" alt="User Dashboard"></input>
+          <div class="modal" id="guest-modal">
+            <div class="modal-content flex-row">
+              <h3>$<span id="total-user-spent"></span></h3>
+              <h4>Spent On Rooms</h4>
+            </div>
+          </div>
+          <input type="image" aria-label="booking-history" id="booking-history-button" src="./images/bookings-navy.png" alt="Booking History"></input>
+          <input type="image" class="see-rooms-button" aria-label="see-available-rooms-display" src="./images/room-navy.png" alt="See Rooms"></input>
+        </div>
       </section>
       <section class="rooms-display flex-column hidden">
         <div class="date-display flex-row">
