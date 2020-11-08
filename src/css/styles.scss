@@ -2,6 +2,7 @@
 // @import './images/dashboard-navy.png';
 $font: 'Nanum Gothic', sans-serif;
 $brown: hsla(25, 28, 65, 1);
+$charcoal-gray: hsla(328, 0%, 24%, 1);
 $light-brown: hsla(30, 22, 70, 1);
 $navy-blue: hsla(197, 100, 12, 1);
 $light-blue: hsla(186, 39, 61, 1);
@@ -46,20 +47,42 @@ label {
   justify-content: space-between;
   align-items: center;
   height: 100px;
+  margin: 0px 20px 0px 20px;
   h1 {
     color: $navy-blue;
     font-size: 16px;
   }
   input {
-    padding-right: 20px;
+    padding: 10px;
+    height: 20px;
+    width: 20px;
+    background-color: $light-blue;
+    border-radius: 50%;
+  }
+  input:hover {
+    transition: all .2s ease-in-out;
+    transform: scale(1.2);
   }
 }
 
 .navigation {
-  background-color: $light-brown;
-  height: 250px;
+  background-color: $brown;
+  height: 150px;
   justify-content: space-around;
   align-items: center;
+  input {
+    background-color: $navy-blue;
+    padding: 25px;
+    border-radius: 15%;
+    height: 30px;
+    width: 30px;
+    opacity: 0.9;
+  }
+  input:hover {
+    opacity: 1;
+    transition: all .3s ease-in-out;
+    transform: scale(1.1);
+  }
 }
 
 .modal {
@@ -147,11 +170,6 @@ label {
     align-self: center;
     margin: 15px;
   }
-}
-
-.logout-button {
-  height: 20px;
-  width: 20px;
 }
 
 #dashboard-button, #guest-directory-button, #booking-history-button, #see-rooms-button {

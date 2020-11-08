@@ -4,10 +4,10 @@ import './css/styles.scss';
 import './images/bed.png';
 import './images/bidet.png';
 import './images/logout.png';
-import './images/dashboard-navy.png';
-import './images/users-navy.png';
-import './images/bookings-navy.png';
-import './images/room-navy.png';
+import './images/dashboard-white.png';
+import './images/users-white.png';
+import './images/bookings-white.png';
+import './images/room-white.png';
 import {
   availableRoomsDisplay,
   datepicker,
@@ -68,7 +68,6 @@ dashboardButton.addEventListener('click', () => {
 bookingHistoryButton.addEventListener('click', showBookingHistory);
 
 displayAvailableRoomsButton.addEventListener('click', displayAvailableRooms);
-document.querySelector('#see-rooms-guest').addEventListener('click', displayAvailableRooms);
 
 function instantiateApis() {
   userApi = new ApiCall('https://fe-apps.herokuapp.com/api/v1/overlook/1904/users/users', 'users');
@@ -120,7 +119,7 @@ function updateDashboard(userType) {
   navigation.classList.remove('hidden');
   displayAvailableRooms();
   if (userType === 'manager') {
-    let guestDirectoryButton = `<input type="image" aria-label="guest-directory" id="guest-directory-button" src="./images/users-navy.png" alt="Guest Directory"></input>`
+    let guestDirectoryButton = `<input type="image" aria-label="guest-directory" id="guest-directory-button" src="./images/users-white.png" alt="Guest Directory"></input>`
     navigation.insertAdjacentHTML('beforeend', guestDirectoryButton);
     document.querySelector('#daily-revenue').innerText = hotel.calculateTotalRoomRevenue();
     document.querySelector('#percent-rooms-booked').innerText = hotel.percentRoomsBooked;

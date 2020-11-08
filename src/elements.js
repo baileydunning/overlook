@@ -1,16 +1,11 @@
 // export const userDashboard = document.querySelector('#user-dashboard');
 export const availableRoomsDisplay = document.querySelector('.available-rooms-display');
 export const datepicker = document.querySelector('#datepicker');
-export const guestDashboard = document.querySelector('.guest-dashboard');
-export const guestDashboardButton = document.querySelector('#guest-dashboard-button');
 export const guestDirectoryButton = document.querySelector('#guest-directory-button');
 export const bookingHistoryButton = document.querySelector('#booking-history-button');
 export const guestModal = document.getElementById('guest-modal');
 export const loginButton = document.querySelector('#login-button');
 export const loginView = document.querySelector('.login-screen');
-export const managerDashboard = document.querySelector('.manager-dashboard');
-export const managerDashboardButton = document.querySelector('#manager-dashboard-button');
-export const managerModal = document.getElementById('manager-modal');
 export const passwordField = document.querySelector('#password-field');
 export const roomsDisplay = document.querySelector('.rooms-display');
 export const sidebar = document.querySelector('.sidebar');
