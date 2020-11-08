@@ -12,8 +12,10 @@ export default class UserDirectory {
   createGuestList() {
     this.guestList = this.rawUserData.reduce((allGuests, user) => {
       if (user !== undefined) {
-
-        allGuests.push(user);
+        let userBookingData = this.bookingData.filter(booking => {
+          return booking.userID === user.id
+        })
+        allGuests.push(new User(user, userBookingData));
       }
       return allGuests
     }, []);

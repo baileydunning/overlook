@@ -40,23 +40,29 @@
           <input type="image" id="dashboard-button" src="./images/dashboard-white.png" alt="User Dashboard"></input>
           <input type="image" aria-label="booking-history" id="booking-history-button" src="./images/bookings-white.png" alt="Booking History"></input>
           <input type="image" id="see-rooms-button" aria-label="see-available-rooms-display" src="./images/room-white.png" alt="See Rooms"></input>
+          <input type="image" aria-label="guest-directory" id="guest-directory-button" src="./images/users-white.png" alt="Guest Directory" class="hidden"></input>
         </div>
       </nav>
       <section class="rooms-display flex-column hidden">
-        <div class="date-display flex-row">
-          <h3 id="date-string"></h3>
-          <input type="date" id="datepicker" name="date">
-        </div>
-        <div class="flex-row" id="roomType-checkboxes">
-          <input type="checkbox" name="roomType" value="">
-          <label for="roomType">Single Room</label>
-          <input type="checkbox" name="roomType" value="">
-          <label for="roomType">Junior Suite</label>
-          <input type="checkbox" name="roomType" value="">
-          <label for="roomType">Suite</label>
-          <input type="checkbox" name="roomType" value="">
-          <label for="roomType">Residential Suite</label>
-        </div>
+        <section class="search-area">
+          <div class="date-display flex-row">
+            <h3 id="date-string"></h3>
+            <input type="date" id="datepicker" name="date">
+          </div>
+          <div class="flex-row" id="roomType-checkboxes">
+            <input type="checkbox" name="roomType" value="">
+            <span class="checkmark"></span>
+            <label for="roomType">Single Room</label>
+            <input type="checkbox" name="roomType" value="">
+            <span class="checkmark"></span>
+            <label for="roomType">Junior Suite</label>
+            <input type="checkbox" name="roomType" value="">
+            <span class="checkmark"></span>
+            <label for="roomType">Suite</label>
+            <input type="checkbox" name="roomType" value="">
+            <label for="roomType">Residential Suite</label>
+          </div>
+        </section>
         <section class="available-rooms-display flex-row">
         </section>
       </section>
@@ -64,7 +70,6 @@
         <h2>Guest Directory</h2>
         <input type="text" placeholder="Search By Name">
         <div class="guests-container">
-          <p>this is where guests go</p>
         </div>
       </section>
       <section class="user-booking-history flex-column hidden">

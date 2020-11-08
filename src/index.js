@@ -10,33 +10,30 @@ import './images/bookings-white.png';
 import './images/room-white.png';
 import {
   availableRoomsDisplay,
+  bookingHistoryButton,
+  dashboardButton,
   datepicker,
   dateString,
-  navigation,
-  header,
-  modal,
-  managerStats,
-  guestStats,
   displayAvailableRoomsButton,
-  dashboardButton,
-  bookingHistoryButton,
-  guestDashboard,
-  guestDashboardButton,
   guestDirectoryButton,
-  guestModal,
-  totalUserSpent,
+  guestStats,
+  guestsContainer,
+  header,
   loginButton,
   loginView,
-  managerDashboard,
-  managerDashboardButton,
-  managerModal,
+  managerStats,
+  modal,
+  navigation,
   passwordField,
   roomsDisplay,
+  searchArea,
+  guestDirectoryDisplay,
   sidebar,
-  userDashboard,
-  usernameField,
+  totalUserSpent,
   userBookingHistory,
   userCurrentBookings,
+  userDashboard,
+  usernameField,
   userPreviousBookings
 } from './elements.js';
 
@@ -66,8 +63,8 @@ dashboardButton.addEventListener('click', () => {
 })
 
 bookingHistoryButton.addEventListener('click', showBookingHistory);
-
 displayAvailableRoomsButton.addEventListener('click', displayAvailableRooms);
+guestDirectoryButton.addEventListener('click', displayGuestDirectory);
 
 function instantiateApis() {
   userApi = new ApiCall('https://fe-apps.herokuapp.com/api/v1/overlook/1904/users/users', 'users');
@@ -94,7 +91,7 @@ function fetchAllData() {
 
 function openHotel() {
   hotel.launch()
-  updateDisplay();
+  dateString.innerText = new Date(today).toDateString()
 }
 
 function loginUser(username, password) {
@@ -107,9 +104,9 @@ function loginUser(username, password) {
   }
 }
 
-function updateDisplay() {
-  dateString.innerText = new Date(today).toDateString()
-}
+// function updateDisplay() {
+//   dateString.innerText = new Date(today).toDateString()
+// }
 
 function updateDashboard(userType) {
   let firstName = hotel.userDirectory.currentUser.name.split(' ');
@@ -119,10 +116,9 @@ function updateDashboard(userType) {
   navigation.classList.remove('hidden');
   displayAvailableRooms();
   if (userType === 'manager') {
-    let guestDirectoryButton = `<input type="image" aria-label="guest-directory" id="guest-directory-button" src="./images/users-white.png" alt="Guest Directory"></input>`
-    navigation.insertAdjacentHTML('beforeend', guestDirectoryButton);
     document.querySelector('#daily-revenue').innerText = hotel.calculateTotalRoomRevenue();
     document.querySelector('#percent-rooms-booked').innerText = hotel.percentRoomsBooked;
+    guestDirectoryButton.classList.remove('hidden');
     managerStats.classList.remove('hidden');
   } else if (userType === 'guest') {
     totalUserSpent.innerText = hotel.userDirectory.currentUser.returnTotalSpentOnRooms();
@@ -131,7 +127,6 @@ function updateDashboard(userType) {
 }
 
 function displayAvailableRooms() {
-  console.log('hi')
   hotel.returnTodayBookings();
   availableRoomsDisplay.innerHTML = '';
   hotel.availableRoomsToday.forEach(room => {
@@ -152,6 +147,7 @@ function displayAvailableRooms() {
     availableRoomsDisplay.insertAdjacentHTML('afterbegin', roomCard);
   })
   userBookingHistory.classList.add('hidden');
+  guestDirectoryDisplay.classList.add('hidden');
   roomsDisplay.classList.remove('hidden');
 }
 
@@ -162,14 +158,30 @@ function checkRoomForBidet(room) {
 function updateDate(event) {
   today = new Date(event.target.value).toDateString();
   hotel.date = today;
-  dateString.innerText = new Date(event.target.value).toDateString();
+  dateString.innerText = new Date(today).toDateString();
   hotel.userDirectory.currentUser.bookingService.sortBookingsByDate(today);
-  updateDisplay();
   displayAvailableRooms();
+}
+
+function displayGuestDirectory() {
+  roomsDisplay.classList.add('hidden');
+  userBookingHistory.classList.add('hidden');
+  guestDirectoryDisplay.classList.remove('hidden');
+  guestsContainer.innerHTML = '';
+  hotel.userDirectory.guestList.forEach(guest => {
+    guest.bookingService.sortBookingsByDate(today);
+    let guestCard = `<div class="flex-row">
+      <h3 padding-right="25px">${guest.id}</h3>
+      <h4>${guest.name}</h4>
+      <p>Total Spent: $${guest.returnTotalSpentOnRooms()}</p>
+    </div>`
+    guestsContainer.insertAdjacentHTML('afterbegin', guestCard);
+  })
 }
 
 function showBookingHistory() {
   roomsDisplay.classList.add('hidden');
+  guestDirectoryDisplay.classList.add('hidden');
   userBookingHistory.classList.remove('hidden');
   displayBookings(hotel.userDirectory.currentUser.bookingService.currentBookings, userCurrentBookings, 'Current Bookings:');
   displayBookings(hotel.userDirectory.currentUser.bookingService.previousBookings, userPreviousBookings, 'Previous Bookings:');

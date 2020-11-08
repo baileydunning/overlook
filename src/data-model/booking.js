@@ -5,6 +5,7 @@ export default class Booking {
     this.date = booking.date,
     this.roomNumber = booking.roomNumber,
     this.cost = booking.cost || null,
+    this.roomNumber = booking.roomNumber || null,
     this.roomServiceCharges = []
   }
 }

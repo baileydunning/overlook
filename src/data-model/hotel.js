@@ -19,7 +19,6 @@ export default class Hotel {
     this.userDirectory = new UserDirectory(this.rawUserData, this.rawBookingData)
     this.userDirectory.createGuestList();
     this.returnTodayBookings()
-    console.log(this.bookedRoomsToday)
   }
 
   createRoomRecord() {
@@ -33,8 +32,9 @@ export default class Hotel {
     this.rawBookingData = this.rawBookingData.map(booking => {
       this.rooms.forEach(room => {
         if (room.number === booking.roomNumber) {
-          booking.cost = room.costPerNight
-          booking.date = new Date(booking.date).toDateString()
+          booking.roomNumber = room.number;
+          booking.cost = room.costPerNight;
+          booking.date = new Date(booking.date).toDateString();
         }
       })
       return booking;

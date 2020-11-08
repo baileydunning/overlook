@@ -30,16 +30,21 @@ label {
   display: none !important;
 }
 
-.flex-row {
+.flex {
   display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.flex-row {
+  @extend .flex;
   flex-direction: row !important;
-  justify-content: center;
 }
 
 .flex-column {
-  display: flex;
+  @extend .flex;
   flex-direction: column !important;
-  justify-content: center;
 }
 
 .header {
@@ -66,6 +71,8 @@ label {
 }
 
 .navigation {
+  position: relative;
+  z-index: 1;
   background-color: $brown;
   height: 150px;
   justify-content: space-around;
@@ -79,8 +86,14 @@ label {
     opacity: 0.9;
   }
   input:hover {
+    cursor: pointer;
     opacity: 1;
     transition: all .3s ease-in-out;
+    transform: scale(1.1);
+  }
+  input:focus {
+    outline: none;
+    opacity: 1;
     transform: scale(1.1);
   }
 }
@@ -106,14 +119,32 @@ label {
   width: 60%;
 }
 
-.manager-dashboard, .guest-dashboard {
+.search-area {
   height: 100px;
-  justify-content: center;
-  h1 {
-    margin: 0px 15px 0px 15px;
+  padding: 20px;
+  .date-display {
+    color: $off-white;
+    input {
+      width: 150px;
+      height: 30px;
+      margin: 15px 15px 0px 15px;
+    }
   }
-  button {
-    height: 75px;
+}
+#roomType-checkboxes {
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: $off-white;
+  }
+  input:hover {
+    transform: scale(1.2)
+  }
+  input:checked {
+    background-color: $brown;
   }
 }
 
@@ -121,16 +152,6 @@ label {
   background-color: $navy-blue;
 }
 
-.date-display {
-  color: $off-white;
-  justify-content: space-around;
-  padding-bottom: 20px;
-  #datepicker {
-    width: 150px;
-    height: 30px;
-    margin-bottom: 15px 15px 0px 15px;
-  }
-}
 
 #roomType-checkboxes {
   justify-content: center;
