@@ -53,6 +53,7 @@ export default class UserDirectory {
       if (username === 'manager') {
         this.currentUser = new Manager({id: 0, name: 'Manager'}, this.bookingData);
         this.currentUser.bookingService.createBookingHistory();
+        return 'manager';
       } else if (username.includes('customer')) {
         return this.loginGuest(username);
       }
@@ -68,6 +69,7 @@ export default class UserDirectory {
       let userBookingData = this.filterBookingData(userID);
       this.currentUser = new User(foundUser, userBookingData);
       this.currentUser.bookingService.createBookingHistory();
+      return 'guest';
     } else {
       return false;
     }

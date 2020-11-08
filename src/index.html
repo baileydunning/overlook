@@ -5,7 +5,7 @@
   </head>
   <main>
     <body class="flex-row">
-      <section class="login-screen flex-column hidden">
+      <section class="login-screen flex-column">
         <h1>Welcome to the Overlook Hotel!</h1>
         <div class="login-form">
           <h2>Login:</h2>
@@ -14,8 +14,20 @@
           <button type="button" aria-label="login" id="login-button">Login</button>
         </div>
       </section>
-      <section class="manager-dashboard flex-row">
+      <section class="manager-dashboard flex-row hidden">
         <button type="button" id="manager-dashboard-button">Dashboard</button>
+        <div class="modal" id="manager-modal">
+          <div class="modal-content flex-row">
+            <div class="flex-column">
+              <h3>$<span id="daily-revenue"></span></h3>
+              <h4>Daily Revenue</h4>
+            </div>
+            <div class="flex-column">
+              <h3 id="percent-rooms-booked"></h3>
+              <h4>Rooms Occupied</h4>
+            </div>
+          </div>
+        </div>
         <h1>Welcome Manager!</h1>
         <button type="button" aria-label="guest-directory" id="guest-directory-button">Guest Directory</button>
         <button type="button" class="hidden" aria-label="see-available-rooms-display" id="see-rooms-button">See Rooms</button>
@@ -26,7 +38,7 @@
         <button type="button" aria-label="booking-history" id="booking-history-button">Booking History</button>
         <button type="button" class="hidden" aria-label="see-available-rooms-display" id="see-rooms-button">See Rooms</button>
       </section>
-      <section class="rooms-display flex-column">
+      <section class="rooms-display flex-column hidden">
         <div class="date-display flex-row">
           <h3 id="date-string"></h3>
           <input type="date" id="datepicker" name="date">

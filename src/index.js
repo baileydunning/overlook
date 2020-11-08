@@ -2,15 +2,39 @@ import ApiCall from './apiCall';
 import Hotel from './data-model/hotel'
 import './css/styles.scss';
 import './images/bed.png'
-import {loginButton, availableRoomsDisplay, loginView, roomsContainer, sidebar, userDashboard, usernameField, passwordField, datepicker} from './elements.js';
+import {
+  availableRoomsDisplay,
+  datepicker,
+  guestDashboard,
+  guestDashboardButton,
+  guestDirectoryButton,
+  guestModal,
+  loginButton,
+  loginView,
+  managerDashboard,
+  managerDashboardButton,
+  managerModal,
+  passwordField,
+  roomsDisplay,
+  sidebar,
+  userDashboard,
+  usernameField
+} from './elements.js';
 
 let today = new Date().toLocaleDateString();
+let hotel;
 let userApi;
 let roomApi;
 let bookingApi;
-let hotel;
 
-window.onload = instantiateApis()
+window.onload = instantiateApis();
+window.onclick = () => {
+  if (event.target === managerModal) {
+    managerModal.style.display = 'none';
+  } else if (event.target === guestModal) {
+    guestModal.style.display = 'none';
+  }
+}
 
 loginButton.addEventListener('click', () => {
   loginUser(usernameField.value, passwordField.value)
@@ -22,6 +46,10 @@ datepicker.addEventListener('change', (event) => {
   hotel.returnTodayBookings();
   displayAvailableRooms();
 });
+
+managerDashboardButton.addEventListener('click', () => {
+  managerModal.style.display = 'block';
+})
 
 function instantiateApis() {
   userApi = new ApiCall('https://fe-apps.herokuapp.com/api/v1/overlook/1904/users/users', 'users');
@@ -54,26 +82,30 @@ function openHotel() {
 }
 
 function loginUser(username, password) {
-  if (hotel.userDirectory.chooseUser(username, password) !== false && username && password) {
-    updateDashboard()
+  let userType = hotel.userDirectory.chooseUser(username, password);
+  if (username && password && userType !== false) {
+    updateDashboard(userType)
   } else {
     alert('Invalid username and/or password')
   }
 }
 
-function updateDashboard() {
-  document.querySelector('#daily-revenue').innerText = hotel.calculateTotalRoomRevenue();
-  document.querySelector('#percent-rooms-booked').innerText = hotel.percentRoomsBooked;
+function updateDashboard(userType) {
   loginView.classList.add('hidden');
-  userDashboard.classList.remove('hidden');
-  sidebar.classList.remove('hidden');
-  roomsContainer.classList.remove('hidden');
+  roomsDisplay.classList.remove('hidden');
+  if (userType === 'manager') {
+    document.querySelector('#daily-revenue').innerText = hotel.calculateTotalRoomRevenue();
+    document.querySelector('#percent-rooms-booked').innerText = hotel.percentRoomsBooked;
+    managerDashboard.classList.remove('hidden');
+  } else if (userType === 'guest') {
+    guestDashboard.classList.remove('hidden');
+  }
 }
 
 function displayAvailableRooms() {
   availableRoomsDisplay.innerHTML = '';
   hotel.availableRoomsToday.forEach(room => {
-    let roomCard = `<div class="room-card flex-column">
+    let roomCard = `<div class="room-card flex-column" id="room-${room.number}">
     <h3>${room.roomType.toUpperCase()}</h3>
     <div id="room-information">
       <img src="./images/bed.png" alt="bed-img" id="bed-img">
@@ -88,14 +120,6 @@ function displayAvailableRooms() {
   })
 }
 // manager dashboard modal:
-// <div class="flex-column">
-//   <h3>$<span id="daily-revenue"></span></h3>
-//   <h4>Daily Revenue</h4>
-// </div>
-// <div class="flex-column">
-//   <h3 id="percent-rooms-booked"></h3>
-//   <h4>Rooms Occupied</h4>
-// </div>
 
 //guest dashboard modal:
 // <div class="flex-column">
