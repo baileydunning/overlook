@@ -14,15 +14,14 @@
           <button type="button" aria-label="login" id="login-button">Login</button>
         </div>
       </section>
-      <section class="manager-dashboard flex-column hidden">
-        <div class="flex-row">
-          <h1>Welcome Manager!</h1>
-          <input type="image" class="logout-button" aria-label="go-back-to-login-screen" src="./images/logout.png" alt="logout" onclick="location.reload()"></input>
-        </div>
-        <div class="flex-row">
-          <input type="image" id="manager-dashboard-button" src="./images/dashboard-navy.png" alt="User Dashboard"></input>
-          <div class="modal" id="manager-modal">
-            <div class="modal-content flex-row">
+      <header class="header hidden flex-row">
+        <h1>Welcome To The Overlook, <span id="user-first-name"></span>!</h1>
+        <input type="image" class="logout-button" aria-label="go-back-to-login-screen" src="./images/logout.png" alt="logout" onclick="location.reload()"></input>
+      </header>
+      <nav class="navigation hidden flex-row">
+        <div class="modal" id="modal">
+          <div class="modal-content flex-row">
+            <div class="manager-stats hidden">
               <div class="flex-row">
                 <h3>$<span id="daily-revenue"></span></h3>
                 <h4>Daily Revenue</h4>
@@ -32,28 +31,17 @@
                 <h4>Rooms Occupied</h4>
               </div>
             </div>
-          </div>
-          <input type="image" aria-label="guest-directory" id="guest-directory-button" src="./images/users-navy.png" alt="Guest Directory"></input>
-          <input type="image" class="see-rooms-button" aria-label="see-available-rooms-display" src="./images/room-navy.png" alt="See Rooms"></input>
-        </div>
-      </section>
-      <section class="guest-dashboard flex-column hidden">
-        <div class="flex-row">
-          <h1>Welcome <span id="user-first-name"></span>!</h1>
-          <input type="image" class="logout-button" aria-label="go-back-to-login-screen" src="./images/logout.png" alt="logout" onclick="location.reload()"></input>
-        </div>
-        <div class="flex-row">
-          <input type="image" aria-label="dashboard" id="guest-dashboard-button" src="./images/dashboard-navy.png" alt="User Dashboard"></input>
-          <div class="modal" id="guest-modal">
-            <div class="modal-content flex-row">
+            <div class="guest-stats hidden">
               <h3>$<span id="total-user-spent"></span></h3>
               <h4>Spent On Rooms</h4>
             </div>
           </div>
-          <input type="image" aria-label="booking-history" id="booking-history-button" src="./images/bookings-navy.png" alt="Booking History"></input>
-          <input type="image" class="see-rooms-button" aria-label="see-available-rooms-display" src="./images/room-navy.png" alt="See Rooms"></input>
         </div>
-      </section>
+          <input type="image" id="dashboard-button" src="./images/dashboard-navy.png" alt="User Dashboard"></input>
+          <input type="image" aria-label="booking-history" id="booking-history-button" src="./images/bookings-navy.png" alt="Booking History"></input>
+          <input type="image" id="see-rooms-button" aria-label="see-available-rooms-display" src="./images/room-navy.png" alt="See Rooms"></input>
+        </div>
+      </nav>
       <section class="rooms-display flex-column hidden">
         <div class="date-display flex-row">
           <h3 id="date-string"></h3>
@@ -82,15 +70,15 @@
       <section class="user-booking-history flex-column hidden">
         <div class="flex-row">
           <h2>Booking History</h2>
-          <button type="button" aria-label="add-new-booking" id="add-new-booking-button">+</button>
+          <!-- <button type="button" aria-label="add-new-booking" id="add-new-booking-button">+</button> -->
         </div>
-        <h3>Current Bookings:</h3>
-        <div class="current-bookings-container flex-column">
+        <div class="flex-row">
+          <div class="current-bookings-container flex-column">
 
-        </div>
-        <h3>Previous Bookings:</h3>
-        <div class="previous-bookings-container flex-column">
+          </div>
+          <div class="previous-bookings-container flex-column">
 
+          </div>
         </div>
       </section>
     </body>
