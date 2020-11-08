@@ -33,7 +33,7 @@ export default class Hotel {
       this.rooms.forEach(room => {
         if (room.number === booking.roomNumber) {
           booking.cost = room.costPerNight
-          booking.date = new Date(booking.date).toLocaleDateString()
+          booking.date = new Date(booking.date).toDateString()
         }
       })
       return booking;
@@ -42,7 +42,7 @@ export default class Hotel {
 
   returnTodayBookings() {
     const todayBookings = this.rawBookingData.reduce((bookingsForDate, booking) => {
-      booking.date = new Date(booking.date).toLocaleDateString()
+      booking.date = new Date(booking.date).toDateString()
       if (booking.date === this.date) {
         bookingsForDate.push(booking);
       }

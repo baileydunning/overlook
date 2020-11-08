@@ -6,6 +6,7 @@ import './images/bidet.png';
 import {
   availableRoomsDisplay,
   datepicker,
+  dateString,
   guestDashboard,
   guestDashboardButton,
   guestDirectoryButton,
@@ -22,7 +23,7 @@ import {
   usernameField
 } from './elements.js';
 
-let today = new Date("01/21/2020").toLocaleDateString();
+let today = new Date("01/21/2020").toDateString();
 let hotel;
 let userApi;
 let roomApi;
@@ -42,11 +43,7 @@ loginButton.addEventListener('click', () => {
 });
 
 datepicker.addEventListener('change', (event) => {
-  today = new Date(event.target.value).toLocaleDateString();
-  hotel.date = today;
-  document.querySelector('#date-string').innerText = new Date(today).toDateString()
-  hotel.returnTodayBookings();
-  displayAvailableRooms();
+  updateDate(event);
 });
 
 managerDashboardButton.addEventListener('click', () => {
@@ -79,8 +76,7 @@ function fetchAllData() {
 function openHotel() {
   hotel.launch()
   hotel.returnTodayBookings();
-  document.querySelector('#date-string').innerText = new Date(today).toDateString()
-  displayAvailableRooms();
+  updateDisplay();
 }
 
 function loginUser(username, password) {
@@ -92,14 +88,20 @@ function loginUser(username, password) {
   }
 }
 
+function updateDisplay() {
+  dateString.innerText = new Date(today).toDateString()
+  displayAvailableRooms();
+  document.querySelector('#daily-revenue').innerText = hotel.calculateTotalRoomRevenue();
+  document.querySelector('#percent-rooms-booked').innerText = hotel.percentRoomsBooked;
+}
+
 function updateDashboard(userType) {
   loginView.classList.add('hidden');
   roomsDisplay.classList.remove('hidden');
   if (userType === 'manager') {
-    document.querySelector('#daily-revenue').innerText = hotel.calculateTotalRoomRevenue();
-    document.querySelector('#percent-rooms-booked').innerText = hotel.percentRoomsBooked;
     managerDashboard.classList.remove('hidden');
   } else if (userType === 'guest') {
+    document.querySelector('#user-first-name').innerText = hotel.userDirectory.currentUser.name
     guestDashboard.classList.remove('hidden');
   }
 }
@@ -128,7 +130,14 @@ function displayAvailableRooms() {
 function checkRoomForBidet(room) {
   return (room.bidet === true) ? `<img src="./images/bidet.png" alt="bidet-img" id="bidet-img">` : ''
 }
-// manager dashboard modal:
+
+function updateDate(event) {
+  today = new Date(event.target.value).toDateString();
+  hotel.date = today;
+  dateString.innerText = new Date(today).toDateString()
+  hotel.returnTodayBookings();
+  updateDisplay();
+}
 
 //guest dashboard modal:
 // <div class="flex-column">

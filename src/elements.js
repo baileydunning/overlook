@@ -15,3 +15,4 @@ export const passwordField = document.querySelector('#password-field');
 export const roomsDisplay = document.querySelector('.rooms-display');
 export const sidebar = document.querySelector('.sidebar');
 export const usernameField = document.querySelector('#username-field');
+export const dateString = document.querySelector('#date-string');
