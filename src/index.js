@@ -12,7 +12,7 @@ import {
   availableRoomsDisplay,
   bookingHistoryButton,
   dashboardButton,
-  datepicker,
+  calendar,
   dateString,
   displayAvailableRoomsButton,
   guestDirectoryButton,
@@ -56,7 +56,7 @@ loginButton.addEventListener('click', () => {
   loginUser(usernameField.value, passwordField.value)
 });
 
-datepicker.addEventListener('change', (event) => {
+calendar.addEventListener('change', (event) => {
   updateDate(event);
 });
 
@@ -97,7 +97,12 @@ function fetchAllData() {
 }
 
 function openHotel() {
-  hotel.launch()
+  hotel.launch();
+  let dashedDate = formatDate(today, '-');
+  console.log(dashedDate)
+  calendar.setAttribute('value', `${dashedDate}`);
+  calendar.setAttribute('min', `${dashedDate}`);
+  console.log(calendar)
 }
 
 function loginUser(username, password) {
@@ -105,6 +110,7 @@ function loginUser(username, password) {
   if (username && password && userType !== false) {
     updateDashboard(userType);
     hotel.userDirectory.currentUser.bookingService.sortBookingsByDate(today);
+    totalUserSpent.innerText = hotel.userDirectory.currentUser.returnTotalSpentOnRooms();
   } else {
     alert('Invalid username and/or password')
   }
@@ -115,34 +121,16 @@ function updateDashboard(userType) {
   document.querySelector('#user-first-name').innerText = firstName[0];
   loginView.classList.add('hidden');
   header.classList.remove('hidden');
-  // navigation.classList.remove('hidden');
   displayAvailableRooms();
   if (userType === 'manager') {
     document.querySelector('#daily-revenue').innerText = hotel.calculateTotalRoomRevenue();
     document.querySelector('#percent-rooms-booked').innerText = `${hotel.percentRoomsBooked}%`;
-    // updateManagerDashboard();
     guestDirectoryButton.classList.remove('hidden');
     managerStats.classList.remove('hidden');
   } else if (userType === 'guest') {
-    totalUserSpent.innerText = hotel.userDirectory.currentUser.returnTotalSpentOnRooms();
     guestStats.classList.remove('hidden');
   }
 }
-//
-// function updateManagerDashboard() {
-//   let availabilityPercentage = parseInt(hotel.percentRoomsBooked);
-//
-//   document.querySelector('.circular-chart').innerHTML =
-//   `
-//     <path class="circle" 
-//       stroke-dasharray="${availabilityPercentage}, 100" 
-//       d= "M18 2.0845 
-//       a 15.9155 15.9155 0 0 1 0 31.831 
-//       a 15.9155 15.9155 0 0 1 0 -31.831"
-//       />
-//     <text x="18" y="20.35" id="percentage">${availabilityPercentage}%</text>
-//   `
-// }
 
 function displayAvailableRooms() {
   hotel.returnTodayBookings();
@@ -169,18 +157,22 @@ function createRoomCards() {
         ${checkRoomForBidet(room)}
       </div>
     </div>
-    <div><button id="book-room-button-${room.number}" value="${room.number}" type="button" aria-label="book-room">Book Room</button></div>
+    <div><button id="book-room-button-${room.number}" value="${room.number}" type="button" aria-label="book-room">Book Room</button>${checkManagerStatus(room)}</div>
     </div>`
     availableRoomsDisplay.insertAdjacentHTML('afterbegin', roomCard);
   })
-  addEventListenersToButtons();
+  addEventListenersToRoomCards();
+}
+
+function checkManagerStatus(room) {
+  return hotel.userDirectory.currentUser.type === 'manager' ? `<input type="text" placeholder="Enter Guest's ID" id="id-input-for-room-${room.number}"></input>` : ''
 }
 
 function checkRoomForBidet(room) {
   return (room.bidet === true) ? `<img src="./images/bidet.png" alt="bidet-img" id="bidet-img">` : ''
 }
 
-function addEventListenersToButtons() {
+function addEventListenersToRoomCards() {
   hotel.availableRoomsToday.forEach(availableRoom => {
     let bookRoomButton = document.querySelector(`#book-room-button-${availableRoom.number}`);
     bookRoomButton.addEventListener('click', bookRoom)
@@ -198,10 +190,20 @@ function bookRoom() {
     })
   }
   let roomNumber = Number(event.target.getAttribute('value'));
-  hotel.userDirectory.currentUser.addBooking(roomNumber, formatDate(today), onSuccess);
+  if (hotel.userDirectory.currentUser.type === 'manager') {
+    let userIdField = document.querySelector(`#id-input-for-room-${roomNumber}`)
+    if (userIdField.value !== '') {
+      let userID = parseInt(userIdField.value);
+      hotel.userDirectory.currentUser.addBooking(userID, roomNumber, formatDate(today, '/'), onSuccess);
+    } else {
+      alert('Please enter a User ID number to complete this booking.')
+    }
+  } else {
+    hotel.userDirectory.currentUser.addBooking(roomNumber, formatDate(today, '/'), onSuccess);
+  }
 }
 
-function formatDate(today) {
+function formatDate(today, joinBy) {
     today = new Date(today);
     let month = '' + (today.getMonth() + 1);
     let day = '' + today.getDate();
@@ -210,8 +212,8 @@ function formatDate(today) {
     if (month.length < 2) month = '0' + month;
     if (day.length < 2) day = '0' + day;
 
-    return [year, month, day].join('/');
-  }
+    return [year, month, day].join(joinBy);
+}
 
 function updateDate(event) {
   today = new Date(event.target.value).toDateString();
@@ -235,6 +237,12 @@ function displayGuestDirectory() {
     guestsContainer.insertAdjacentHTML('afterbegin', guestCard);
   })
 }
+
+// displayGuestBookingData(guest) {
+//   guest.bookingService.currentBookings.forEach(booking => {
+//     let guestCurrentBooking = `${booking.date}: ${booking.id}`
+//   })
+// }
 
 function searchGuests() {
   guestsContainer.innerHTML = '';
@@ -277,7 +285,7 @@ function displayBookings(bookings, container, header) {
 }
 
 function checkBookingStatus(booking) {
-  return booking.status === 'current' ? `<button id="delete-booking-${booking.id}" value="${booking.id}" aria-label="delete-booking">Remove Reservation</button>` : '';
+  return booking.status === 'current' ? `<button id="delete-booking-${booking.id}" value="${booking.id}" aria-label="delete-booking">Cancel Reservation</button>` : '';
 }
 
 function addEventListenersToCurrentBookings() {

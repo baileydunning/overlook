@@ -2,7 +2,7 @@
 export const availableRoomsDisplay = document.querySelector('.available-rooms-display');
 export const bookingHistoryButton = document.querySelector('#booking-history-button');
 export const dashboardButton = document.querySelector('#dashboard-button');
-export const datepicker = document.querySelector('#datepicker');
+export const calendar = document.querySelector('#calendar');
 export const dateString = document.querySelector('#date-string');
 export const displayAvailableRoomsButton = document.querySelector('#see-rooms-button');
 export const guestDirectoryButton = document.querySelector('#guest-directory-button');
