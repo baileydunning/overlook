@@ -26,3 +26,4 @@ export const userBookingHistory = document.querySelector('.user-booking-history'
 export const userCurrentBookings = document.querySelector('.current-bookings-container');
 export const usernameField = document.querySelector('#username-field');
 export const userPreviousBookings = document.querySelector('.previous-bookings-container');
+export const closeModal = document.querySelector('.close');

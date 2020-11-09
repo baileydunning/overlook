@@ -4,6 +4,35 @@
     <title>Overlook</title>
   </head>
   <main>
+    <header class="header hidden flex-row">
+      <h1>Welcome To The Overlook, <span id="user-first-name"></span>!</h1>
+      <input type="image" class="logout-button" aria-label="go-back-to-login-screen" src="./images/logout.png" alt="logout" onclick="location.reload()"></input>
+      <nav class="navigation flex-row">
+        <div class="modal" id="modal">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="flex-row">
+              <div class="manager-stats flex-column hidden">
+                  <h3>$<span id="daily-revenue"></span></h3>
+                  <h4>Daily Revenue</h4><br>
+                  <h3 id="percent-rooms-booked"></h3>
+                  <h4>Rooms Occupied</h4>
+                  <!-- <svg viewBox="0 0 36 36" class="circular-chart"></svg> -->
+            </div>
+              <div class="guest-stats hidden">
+                <h3>$<span id="total-user-spent"></span></h3>
+                <h4>Spent On Rooms</h4>
+              </div>
+              </div>
+            </div>
+          </div>
+          <input type="image" id="dashboard-button" src="./images/dashboard-white.png" alt="User Dashboard"></input>
+          <input type="image" aria-label="booking-history" id="booking-history-button" src="./images/bookings-white.png" alt="Booking History"></input>
+          <input type="image" id="see-rooms-button" aria-label="see-available-rooms-display" src="./images/room-white.png" alt="See Rooms"></input>
+          <input type="image" aria-label="guest-directory" id="guest-directory-button" src="./images/users-white.png" alt="Guest Directory" class="hidden"></input>
+        </div>
+      </nav>
+    </header>
     <body class="flex-row">
       <section class="login-screen flex-column">
         <h1>Welcome to the Overlook Hotel!</h1>
@@ -14,35 +43,6 @@
           <button type="button" aria-label="login" id="login-button">Login</button>
         </div>
       </section>
-      <header class="header hidden flex-row">
-        <h1>Welcome To The Overlook, <span id="user-first-name"></span>!</h1>
-        <input type="image" class="logout-button" aria-label="go-back-to-login-screen" src="./images/logout.png" alt="logout" onclick="location.reload()"></input>
-      </header>
-      <nav class="navigation hidden flex-row">
-        <div class="modal" id="modal">
-          <div class="modal-content flex-row">
-            <div class="manager-stats hidden">
-              <div class="flex-row">
-                <h3>$<span id="daily-revenue"></span></h3>
-                <h4>Daily Revenue</h4>
-              </div>
-              <div class="flex-column">
-                <h3 id="percent-rooms-booked"></h3>
-                <h4>Rooms Occupied</h4>
-              </div>
-            </div>
-            <div class="guest-stats hidden">
-              <h3>$<span id="total-user-spent"></span></h3>
-              <h4>Spent On Rooms</h4>
-            </div>
-          </div>
-        </div>
-          <input type="image" id="dashboard-button" src="./images/dashboard-white.png" alt="User Dashboard"></input>
-          <input type="image" aria-label="booking-history" id="booking-history-button" src="./images/bookings-white.png" alt="Booking History"></input>
-          <input type="image" id="see-rooms-button" aria-label="see-available-rooms-display" src="./images/room-white.png" alt="See Rooms"></input>
-          <input type="image" aria-label="guest-directory" id="guest-directory-button" src="./images/users-white.png" alt="Guest Directory" class="hidden"></input>
-        </div>
-      </nav>
       <section class="rooms-display flex-column hidden">
         <section class="search-area">
           <div class="date-display flex-row">
@@ -51,13 +51,10 @@
           </div>
           <div class="flex-row" id="roomType-checkboxes">
             <input type="checkbox" name="roomType" value="">
-            <span class="checkmark"></span>
             <label for="roomType">Single Room</label>
             <input type="checkbox" name="roomType" value="">
-            <span class="checkmark"></span>
             <label for="roomType">Junior Suite</label>
             <input type="checkbox" name="roomType" value="">
-            <span class="checkmark"></span>
             <label for="roomType">Suite</label>
             <input type="checkbox" name="roomType" value="">
             <label for="roomType">Residential Suite</label>

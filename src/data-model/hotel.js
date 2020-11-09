@@ -67,7 +67,7 @@ export default class Hotel {
       return !bookedRoomNumbers.includes(room.number)
     })
 
-    this.percentRoomsBooked = `${((this.rooms.length - this.availableRoomsToday.length) / this.rooms.length) * 100}%`;
+    this.percentRoomsBooked = ((this.rooms.length - this.availableRoomsToday.length) / this.rooms.length) * 100;
   }
 
   calculateTotalRoomRevenue() {

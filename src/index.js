@@ -25,6 +25,7 @@ import {
   managerStats,
   modal,
   navigation,
+  closeModal,
   passwordField,
   roomsDisplay,
   searchArea,
@@ -38,7 +39,7 @@ import {
   userPreviousBookings
 } from './elements.js';
 
-let today = new Date("01/21/2020").toDateString();
+let today = new Date("02/03/2020").toDateString();
 let hotel;
 let userApi;
 let roomApi;
@@ -63,8 +64,11 @@ dashboardButton.addEventListener('click', () => {
   modal.style.display = 'block';
 })
 
-searchBarGuestDirectory.addEventListener('search', searchGuests)
+closeModal.addEventListener('click', () => {
+  modal.style.display = 'none';
+})
 
+searchBarGuestDirectory.addEventListener('search', searchGuests);
 bookingHistoryButton.addEventListener('click', showBookingHistory);
 displayAvailableRoomsButton.addEventListener('click', displayAvailableRooms);
 guestDirectoryButton.addEventListener('click', displayGuestDirectory);
@@ -94,7 +98,6 @@ function fetchAllData() {
 
 function openHotel() {
   hotel.launch()
-  dateString.innerText = new Date(today).toDateString()
 }
 
 function loginUser(username, password) {
@@ -107,20 +110,17 @@ function loginUser(username, password) {
   }
 }
 
-// function updateDisplay() {
-//   dateString.innerText = new Date(today).toDateString()
-// }
-
 function updateDashboard(userType) {
   let firstName = hotel.userDirectory.currentUser.name.split(' ');
   document.querySelector('#user-first-name').innerText = firstName[0];
   loginView.classList.add('hidden');
   header.classList.remove('hidden');
-  navigation.classList.remove('hidden');
+  // navigation.classList.remove('hidden');
   displayAvailableRooms();
   if (userType === 'manager') {
     document.querySelector('#daily-revenue').innerText = hotel.calculateTotalRoomRevenue();
-    document.querySelector('#percent-rooms-booked').innerText = hotel.percentRoomsBooked;
+    document.querySelector('#percent-rooms-booked').innerText = `${hotel.percentRoomsBooked}%`;
+    // updateManagerDashboard();
     guestDirectoryButton.classList.remove('hidden');
     managerStats.classList.remove('hidden');
   } else if (userType === 'guest') {
@@ -128,9 +128,32 @@ function updateDashboard(userType) {
     guestStats.classList.remove('hidden');
   }
 }
+//
+// function updateManagerDashboard() {
+//   let availabilityPercentage = parseInt(hotel.percentRoomsBooked);
+//
+//   document.querySelector('.circular-chart').innerHTML =
+//   `
+//     <path class="circle" 
+//       stroke-dasharray="${availabilityPercentage}, 100" 
+//       d= "M18 2.0845 
+//       a 15.9155 15.9155 0 0 1 0 31.831 
+//       a 15.9155 15.9155 0 0 1 0 -31.831"
+//       />
+//     <text x="18" y="20.35" id="percentage">${availabilityPercentage}%</text>
+//   `
+// }
 
 function displayAvailableRooms() {
   hotel.returnTodayBookings();
+  createRoomCards();
+  dateString.innerText = `Available Rooms: ${hotel.availableRoomsToday.length}`;
+  userBookingHistory.classList.add('hidden');
+  guestDirectoryDisplay.classList.add('hidden');
+  roomsDisplay.classList.remove('hidden');
+}
+
+function createRoomCards() {
   availableRoomsDisplay.innerHTML = '';
   hotel.availableRoomsToday.forEach(room => {
     let roomCard = `<div class="room-card flex-column" id="room-${room.number}">
@@ -149,9 +172,6 @@ function displayAvailableRooms() {
     </div>`
     availableRoomsDisplay.insertAdjacentHTML('afterbegin', roomCard);
   })
-  userBookingHistory.classList.add('hidden');
-  guestDirectoryDisplay.classList.add('hidden');
-  roomsDisplay.classList.remove('hidden');
 }
 
 function checkRoomForBidet(room) {
@@ -161,7 +181,6 @@ function checkRoomForBidet(room) {
 function updateDate(event) {
   today = new Date(event.target.value).toDateString();
   hotel.date = today;
-  dateString.innerText = new Date(today).toDateString();
   hotel.userDirectory.currentUser.bookingService.sortBookingsByDate(today);
   displayAvailableRooms();
 }
@@ -183,7 +202,6 @@ function displayGuestDirectory() {
 }
 
 function searchGuests() {
-  console.log(searchBarGuestDirectory.value)
   guestsContainer.innerHTML = '';
   let matchedGuests = hotel.userDirectory.searchGuests(searchBarGuestDirectory.value);
   matchedGuests.forEach(guest => {
@@ -194,6 +212,7 @@ function searchGuests() {
     </div>`
     guestsContainer.insertAdjacentHTML('afterbegin', guestCard);
   });
+  searchBarGuestDirectory.value = '';
 }
 
 function showBookingHistory() {
@@ -209,9 +228,11 @@ function displayBookings(bookings, container, header) {
   container.innerHTML = ''
   bookings.forEach(booking => {
     booking.date = new Date(booking.date).toDateString();
-    let bookingCard = `<div class="flex-row">
+    let bookingCard = `<div class="booking-card flex-row">
     <p>${booking.date}</p>
-    <p>$${booking.cost}</p>
+    <p><b>Room: </b> ${booking.roomNumber}</p>
+    <p><b>Guest ID: </b> ${booking.userID}</p>
+    <p><b>Cost: </b>$${booking.cost}</p>
     </div>`
     container.insertAdjacentHTML('afterbegin', bookingCard);
   })
