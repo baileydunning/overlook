@@ -61,6 +61,7 @@ export default class UserDirectory {
     if (this.validatePassword(password) === true) {
       if (username === 'manager') {
         this.currentUser = new Manager({id: 0, name: 'Manager'}, this.bookingData);
+        this.currentUser.type = 'manager';
         this.currentUser.bookingService.createBookingHistory();
         return 'manager';
       } else if (username.includes('customer')) {
@@ -77,6 +78,7 @@ export default class UserDirectory {
       let foundUser = this.findGuest(userID);
       let userBookingData = this.filterBookingData(userID);
       this.currentUser = new User(foundUser, userBookingData);
+      this.currentUser.type = 'guest';
       this.currentUser.bookingService.createBookingHistory();
       return 'guest';
     } else {

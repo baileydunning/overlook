@@ -189,28 +189,16 @@ function addEventListenersToButtons() {
 
 function bookRoom() {
   let onSuccess = () => {
-    onSuccessfulBooking();
-    console.log('success!');
+    let updatedBookingData = bookingApi.getRequest()
+    updatedBookingData.then(value => {
+      hotel.rawBookingData = value;
+    }).then(() => {
+      updateBookingData();
+      displayAvailableRooms();
+    })
   }
   let roomNumber = Number(event.target.getAttribute('value'));
   hotel.userDirectory.currentUser.addBooking(roomNumber, formatDate(today), onSuccess);
-}
-
-function onSuccessfulBooking() {
-  let updatedBookingData = bookingApi.getRequest()
-  updatedBookingData.then(value => {
-    hotel.rawBookingData = value;
-  }).then(() => {
-    hotel.updateBookings();
-    hotel.returnTodayBookings();
-    displayAvailableRooms();
-  })
-  console.log(updatedBookingData);
-      //
-
-  // Promise.all(updatedBookingData) {
-  //   .then()
-  // }
 }
 
 function formatDate(today) {
@@ -280,8 +268,51 @@ function displayBookings(bookings, container, header) {
     <p><b>Room: </b> ${booking.roomNumber}</p>
     <p><b>Guest ID: </b> ${booking.userID}</p>
     <p><b>Cost: </b>$${booking.cost}</p>
+    <div>${checkBookingStatus(booking)}</div>
     </div>`
     container.insertAdjacentHTML('afterbegin', bookingCard);
   })
+  addEventListenersToCurrentBookings();
   container.insertAdjacentHTML('afterbegin', header);
+}
+
+function checkBookingStatus(booking) {
+  return booking.status === 'current' ? `<button id="delete-booking-${booking.id}" value="${booking.id}" aria-label="delete-booking">Remove Reservation</button>` : '';
+}
+
+function addEventListenersToCurrentBookings() {
+  hotel.userDirectory.currentUser.bookingService.currentBookings.forEach(booking => {
+    let currentBooking = document.querySelector(`#delete-booking-${booking.id}`);
+    currentBooking.addEventListener('click', deleteBooking);
+  })
+}
+
+function deleteBooking() {
+  let onSuccess = () => {
+    let updatedBookingData = bookingApi.getRequest()
+    updatedBookingData.then(value => {
+      hotel.rawBookingData = value;
+    }).then(() => {
+      updateBookingData()
+      displayBookings(hotel.userDirectory.currentUser.bookingService.currentBookings, userCurrentBookings, 'Current Bookings:');
+    })
+  }
+  let bookingID = event.target.getAttribute('value');
+  bookingApi.deleteRequest({id: parseInt(bookingID)}, onSuccess);
+}
+
+function updateBookingData() {
+  let currentUser = hotel.userDirectory.currentUser;
+  hotel.updateBookings();
+  hotel.returnTodayBookings();
+  hotel.userDirectory.bookingData = hotel.rawBookingData;
+  if (currentUser.type === 'guest') {
+    let updatedUserBookingData = hotel.userDirectory.filterBookingData(currentUser.id);
+    currentUser.bookingService.bookingData = updatedUserBookingData;
+  } else {
+    let updatedBookingData = hotel.userDirectory.bookingData;
+    currentUser.bookingService.bookingData = updatedBookingData;
+  }
+  currentUser.bookingService.createBookingHistory();
+  currentUser.bookingService.sortBookingsByDate(today);
 }

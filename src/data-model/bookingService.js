@@ -34,8 +34,10 @@ export default class BookingService {
     this.bookingHistory.forEach(booking => {
       booking.date = new Date(booking.date);
       if (booking.date >= today) {
+        booking.status = 'current';
         this.currentBookings.push(booking);
       } else {
+        booking.status = 'previous';
         this.previousBookings.push(booking)
       }
     })

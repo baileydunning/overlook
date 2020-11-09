@@ -28,8 +28,4 @@ export default class User {
 
     this.api.postRequest(newBooking, onSuccess);
   }
-
-  deleteBooking() {
-
-  }
 }

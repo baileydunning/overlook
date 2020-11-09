@@ -227,6 +227,12 @@ label {
   p {
     font-size: 10px;
   }
+  button {
+    background-color: $navy-blue;
+    color: $off-white;
+    font-size: 10px;
+    border-radius: 5%;
+  }
 }
 
 .previous-bookings-container, .current-bookings-container {
