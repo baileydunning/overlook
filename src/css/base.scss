@@ -11,10 +11,10 @@
 
 .flex-row {
   @extend .flex;
-  flex-direction: row !important;
+  flex-direction: row;
 }
 
 .flex-column {
   @extend .flex;
-  flex-direction: column !important;
+  flex-direction: column;
 }
