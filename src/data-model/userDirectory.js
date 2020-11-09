@@ -12,11 +12,20 @@ export default class UserDirectory {
   createGuestList() {
     this.guestList = this.rawUserData.reduce((allGuests, user) => {
       if (user !== undefined) {
-
-        allGuests.push(user);
+        let userBookingData = this.bookingData.filter(booking => {
+          return booking.userID === user.id
+        })
+        allGuests.push(new User(user, userBookingData));
       }
       return allGuests
     }, []);
+    this.alphabetizeGuests();
+  }
+
+  alphabetizeGuests() {
+    this.guestList = this.guestList.sort((guestA, guestB) => {
+      return guestA.name > guestB.name ? -1 : 1;
+    })
   }
 
   findGuest(userID) {
@@ -53,6 +62,7 @@ export default class UserDirectory {
       if (username === 'manager') {
         this.currentUser = new Manager({id: 0, name: 'Manager'}, this.bookingData);
         this.currentUser.bookingService.createBookingHistory();
+        return 'manager';
       } else if (username.includes('customer')) {
         return this.loginGuest(username);
       }
@@ -68,6 +78,7 @@ export default class UserDirectory {
       let userBookingData = this.filterBookingData(userID);
       this.currentUser = new User(foundUser, userBookingData);
       this.currentUser.bookingService.createBookingHistory();
+      return 'guest';
     } else {
       return false;
     }
