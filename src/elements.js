@@ -17,6 +17,7 @@ export const managerStats = document.querySelector('.manager-stats');
 export const modal = document.querySelector('#modal');
 export const navigation = document.querySelector('.navigation');
 export const passwordField = document.querySelector('#password-field');
+export const searchBarGuestDirectory = document.querySelector('#search-guests-by-name');
 export const roomsDisplay = document.querySelector('.rooms-display');
 export const searchArea = document.querySelector('.search-area');
 export const sidebar = document.querySelector('.sidebar');

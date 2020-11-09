@@ -19,6 +19,13 @@ export default class UserDirectory {
       }
       return allGuests
     }, []);
+    this.alphabetizeGuests();
+  }
+
+  alphabetizeGuests() {
+    this.guestList = this.guestList.sort((guestA, guestB) => {
+      return guestA.name > guestB.name ? -1 : 1;
+    })
   }
 
   findGuest(userID) {

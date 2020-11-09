@@ -21,6 +21,7 @@ import {
   header,
   loginButton,
   loginView,
+  searchBarGuestDirectory,
   managerStats,
   modal,
   navigation,
@@ -61,6 +62,8 @@ datepicker.addEventListener('change', (event) => {
 dashboardButton.addEventListener('click', () => {
   modal.style.display = 'block';
 })
+
+searchBarGuestDirectory.addEventListener('search', searchGuests)
 
 bookingHistoryButton.addEventListener('click', showBookingHistory);
 displayAvailableRoomsButton.addEventListener('click', displayAvailableRooms);
@@ -172,11 +175,25 @@ function displayGuestDirectory() {
     guest.bookingService.sortBookingsByDate(today);
     let guestCard = `<div class="flex-row">
       <h3 padding-right="25px">${guest.id}</h3>
-      <h4>${guest.name}</h4>
+      <h4>${guest.name.toUpperCase()}</h4>
       <p>Total Spent: $${guest.returnTotalSpentOnRooms()}</p>
     </div>`
     guestsContainer.insertAdjacentHTML('afterbegin', guestCard);
   })
+}
+
+function searchGuests() {
+  console.log(searchBarGuestDirectory.value)
+  guestsContainer.innerHTML = '';
+  let matchedGuests = hotel.userDirectory.searchGuests(searchBarGuestDirectory.value);
+  matchedGuests.forEach(guest => {
+    let guestCard = `<div class="flex-row">
+      <h3 padding-right="25px">${guest.id}</h3>
+      <h4>${guest.name.toUpperCase()}</h4>
+      <p>Total Spent: $${guest.returnTotalSpentOnRooms()}</p>
+    </div>`
+    guestsContainer.insertAdjacentHTML('afterbegin', guestCard);
+  });
 }
 
 function showBookingHistory() {
