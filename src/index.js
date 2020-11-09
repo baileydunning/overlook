@@ -39,7 +39,7 @@ import {
   userPreviousBookings
 } from './elements.js';
 
-let today = new Date("02/03/2020").toDateString();
+let today = new Date().toDateString();
 let hotel;
 let userApi;
 let roomApi;
@@ -162,21 +162,68 @@ function createRoomCards() {
       <img src="./images/bed.png" alt="bed-img" id="bed-img">
       <div class="flex-row">
         <div class="flex-column">
+          <p>Room Number: ${room.number}</p>
           <p>${room.numBeds} ${room.bedSize.toUpperCase()}</p>
           <p>$${room.costPerNight} per night</p>
         </div>
         ${checkRoomForBidet(room)}
       </div>
     </div>
-    <div><button type="button" aria-label="book-room">Book Room</button></div>
+    <div><button id="book-room-button-${room.number}" value="${room.number}" type="button" aria-label="book-room">Book Room</button></div>
     </div>`
     availableRoomsDisplay.insertAdjacentHTML('afterbegin', roomCard);
   })
+  addEventListenersToButtons();
 }
 
 function checkRoomForBidet(room) {
   return (room.bidet === true) ? `<img src="./images/bidet.png" alt="bidet-img" id="bidet-img">` : ''
 }
+
+function addEventListenersToButtons() {
+  hotel.availableRoomsToday.forEach(availableRoom => {
+    let bookRoomButton = document.querySelector(`#book-room-button-${availableRoom.number}`);
+    bookRoomButton.addEventListener('click', bookRoom)
+  })
+}
+
+function bookRoom() {
+  let onSuccess = () => {
+    onSuccessfulBooking();
+    console.log('success!');
+  }
+  let roomNumber = Number(event.target.getAttribute('value'));
+  hotel.userDirectory.currentUser.addBooking(roomNumber, formatDate(today), onSuccess);
+}
+
+function onSuccessfulBooking() {
+  let updatedBookingData = bookingApi.getRequest()
+  updatedBookingData.then(value => {
+    hotel.rawBookingData = value;
+  }).then(() => {
+    hotel.updateBookings();
+    hotel.returnTodayBookings();
+    displayAvailableRooms();
+  })
+  console.log(updatedBookingData);
+      //
+
+  // Promise.all(updatedBookingData) {
+  //   .then()
+  // }
+}
+
+function formatDate(today) {
+    today = new Date(today);
+    let month = '' + (today.getMonth() + 1);
+    let day = '' + today.getDate();
+    let year = today.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('/');
+  }
 
 function updateDate(event) {
   today = new Date(event.target.value).toDateString();
