@@ -10,31 +10,17 @@ import './images/bookings-white.png';
 import './images/room-white.png';
 import {
   availableRoomsDisplay,
-  bookingHistoryButton,
-  dashboardButton,
   calendar,
-  dateString,
-  displayAvailableRoomsButton,
   guestDirectoryButton,
-  guestStats,
   guestsContainer,
-  header,
-  loginButton,
-  loginView,
   searchBarGuestDirectory,
-  managerStats,
   modal,
-  navigation,
   closeModal,
   passwordField,
   roomsDisplay,
-  searchArea,
   guestDirectoryDisplay,
-  sidebar,
-  totalUserSpent,
   userBookingHistory,
   userCurrentBookings,
-  userDashboard,
   usernameField,
   userPreviousBookings
 } from './elements.js';
@@ -52,7 +38,7 @@ window.onclick = () => {
   }
 }
 
-loginButton.addEventListener('click', () => {
+document.querySelector('#login-button').addEventListener('click', () => {
   loginUser(usernameField.value, passwordField.value)
 });
 
@@ -60,7 +46,7 @@ calendar.addEventListener('change', (event) => {
   updateDate(event);
 });
 
-dashboardButton.addEventListener('click', () => {
+document.querySelector('#dashboard-button').addEventListener('click', () => {
   modal.style.display = 'block';
 })
 
@@ -69,8 +55,8 @@ closeModal.addEventListener('click', () => {
 })
 
 searchBarGuestDirectory.addEventListener('search', searchGuests);
-bookingHistoryButton.addEventListener('click', showBookingHistory);
-displayAvailableRoomsButton.addEventListener('click', displayAvailableRooms);
+document.querySelector('#booking-history-button').addEventListener('click', showBookingHistory);
+document.querySelector('#see-rooms-button').addEventListener('click', displayAvailableRooms);
 guestDirectoryButton.addEventListener('click', displayGuestDirectory);
 
 function instantiateApis() {
@@ -99,10 +85,8 @@ function fetchAllData() {
 function openHotel() {
   hotel.launch();
   let dashedDate = formatDate(today, '-');
-  console.log(dashedDate)
   calendar.setAttribute('value', `${dashedDate}`);
   calendar.setAttribute('min', `${dashedDate}`);
-  console.log(calendar)
 }
 
 function loginUser(username, password) {
@@ -110,7 +94,7 @@ function loginUser(username, password) {
   if (username && password && userType !== false) {
     updateDashboard(userType);
     hotel.userDirectory.currentUser.bookingService.sortBookingsByDate(today);
-    totalUserSpent.innerText = hotel.userDirectory.currentUser.returnTotalSpentOnRooms();
+    document.querySelector('#total-user-spent').innerText = hotel.userDirectory.currentUser.returnTotalSpentOnRooms();
   } else {
     alert('Invalid username and/or password')
   }
@@ -119,23 +103,23 @@ function loginUser(username, password) {
 function updateDashboard(userType) {
   let firstName = hotel.userDirectory.currentUser.name.split(' ');
   document.querySelector('#user-first-name').innerText = firstName[0];
-  loginView.classList.add('hidden');
-  header.classList.remove('hidden');
+  document.querySelector('.login-screen').classList.add('hidden');
+  document.querySelector('.header').classList.remove('hidden');
   displayAvailableRooms();
   if (userType === 'manager') {
     document.querySelector('#daily-revenue').innerText = hotel.calculateTotalRoomRevenue();
     document.querySelector('#percent-rooms-booked').innerText = `${hotel.percentRoomsBooked}%`;
     guestDirectoryButton.classList.remove('hidden');
-    managerStats.classList.remove('hidden');
+    document.querySelector('.manager-stats').classList.remove('hidden');
   } else if (userType === 'guest') {
-    guestStats.classList.remove('hidden');
+    document.querySelector('.guest-stats').classList.remove('hidden');
   }
 }
 
 function displayAvailableRooms() {
   hotel.returnTodayBookings();
   createRoomCards();
-  dateString.innerText = `Available Rooms: ${hotel.availableRoomsToday.length}`;
+  document.querySelector('#date-string').innerText = `Available Rooms: ${hotel.availableRoomsToday.length}`;
   userBookingHistory.classList.add('hidden');
   guestDirectoryDisplay.classList.add('hidden');
   roomsDisplay.classList.remove('hidden');
