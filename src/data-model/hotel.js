@@ -71,20 +71,11 @@ export default class Hotel {
   }
 
   calculateTotalRoomRevenue() {
-    const bookedRoomNums = this.rawBookingData.reduce((bookedRoomNumbers, booking) => {
-        if (booking.date === this.date) {
-          bookedRoomNumbers.push(booking.roomNumber);
-        }
-        return bookedRoomNumbers
-      }, [])
-
-    return bookedRoomNums.reduce((totalRevenue, bookedRoom) => {
-      this.rooms.forEach(room => {
-        if (bookedRoom === room.number) {
-          totalRevenue = (totalRevenue += room.costPerNight);
-        }
-      })
-      return parseFloat(totalRevenue).toFixed(2);
+    return this.bookedRoomsToday.reduce((totalRevenue, bookedRoom) => {
+      console.log(bookedRoom)
+      totalRevenue = totalRevenue += parseInt(bookedRoom.bookingInfo.booking.cost);
+      console.log(totalRevenue)
+      return totalRevenue;
     }, 0)
   }
 

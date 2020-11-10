@@ -1,5 +1,6 @@
 import ApiCall from './apiCall';
-import Hotel from './data-model/hotel'
+import Hotel from './data-model/hotel';
+import Manager from './data-model/manager';
 import './css/styles.scss';
 import './images/bed.png';
 import './images/bidet.png';
@@ -59,7 +60,7 @@ closeModal.addEventListener('click', () => {
 })
 
 searchBarGuestDirectory.addEventListener('search', searchGuests);
-searchBarBookingHistory.addEventListener('search', searchBookings);
+searchBarBookingHistory.addEventListener('keyup', searchBookings);
 document.querySelector('#booking-history-button').addEventListener('click', showBookingHistory);
 document.querySelector('#see-rooms-button').addEventListener('click', displayAvailableRooms);
 guestDirectoryButton.addEventListener('click', displayGuestDirectory);
@@ -123,7 +124,7 @@ function openHotel() {
 function loginUser(username, password) {
   let userType = hotel.userDirectory.chooseUser(username, password);
   if (username && password && userType !== false) {
-    updateDashboard(userType);
+    updateDashboard();
     hotel.userDirectory.currentUser.bookingService.sortBookingsByDate(today);
     document.querySelector('#total-user-spent').innerText = hotel.userDirectory.currentUser.returnTotalSpentOnRooms();
   } else {
@@ -131,19 +132,19 @@ function loginUser(username, password) {
   }
 }
 
-function updateDashboard(userType) {
+function updateDashboard() {
   let firstName = hotel.userDirectory.currentUser.name.split(' ');
   document.querySelector('#user-first-name').innerText = firstName[0];
   document.querySelector('.login-screen').classList.add('hidden');
   document.querySelector('.header').classList.remove('hidden');
   displayAvailableRooms();
-  if (userType === 'manager') {
+  if (hotel.userDirectory.currentUser instanceof Manager) {
     document.querySelector('#daily-revenue').innerText = hotel.calculateTotalRoomRevenue();
     document.querySelector('#percent-rooms-booked').innerText = `${hotel.percentRoomsBooked}%`;
     guestDirectoryButton.classList.remove('hidden');
     searchBarBookingHistory.classList.remove('hidden');
     document.querySelector('.manager-stats').classList.remove('hidden');
-  } else if (userType === 'guest') {
+  } else if (hotel.userDirectory.currentUser instanceof User) {
     document.querySelector('.guest-stats').classList.remove('hidden');
   }
 }
@@ -236,7 +237,7 @@ function showBookingHistory() {
   guestDirectoryDisplay.classList.add('hidden');
   userBookingHistory.classList.remove('hidden');
   displayBookings(hotel.userDirectory.currentUser.bookingService.currentBookings, userCurrentBookings, 'Current Bookings:');
-  displayBookings(hotel.userDirectory.currentUser.bookingService.previousBookings.reverse(), userPreviousBookings, 'Previous Bookings:');
+  displayBookings(hotel.userDirectory.currentUser.bookingService.previousBookings, userPreviousBookings, 'Previous Bookings:');
   addEventListenersToCurrentBookings(hotel.userDirectory.currentUser.bookingService.currentBookings)
 }
 
@@ -275,7 +276,8 @@ function deleteBooking() {
       hotel.rawBookingData = value;
     }).then(() => {
       updateBookingData();
-      displayBookings(hotel.userDirectory.currentUser.bookingService.currentBookings, userCurrentBookings, 'Current Bookings:');
+      showBookingHistory();
+      // displayBookings(hotel.userDirectory.currentUser.bookingService.currentBookings, userCurrentBookings, 'Current Bookings:');
     })
   }
   let bookingID = event.target.getAttribute('value');
@@ -285,7 +287,7 @@ function deleteBooking() {
   bookingApi.deleteRequest({id: parseInt(bookingID)}, onSuccess);
   setTimeout(() => {
     bookingMessage.innerText = '';
-  }, 3000)
+  }, 5000)
 }
 
 function updateBookingData() {
@@ -296,7 +298,7 @@ function updateBookingData() {
   if (currentUser.type === 'guest') {
     let updatedUserBookingData = hotel.userDirectory.filterBookingData(currentUser.id);
     currentUser.bookingService.bookingData = updatedUserBookingData;
-  } else {
+  } else if (currentUser.type === 'manager') {
     let updatedBookingData = hotel.userDirectory.bookingData;
     currentUser.bookingService.bookingData = updatedBookingData;
   }
@@ -308,11 +310,17 @@ function searchBookings() {
   userCurrentBookings.innerHTML = '';
   userPreviousBookings.innerHTML = '';
   let userID = parseInt(searchBarBookingHistory.value);
+  let foundGuest = hotel.userDirectory.findGuest(userID);
   let filteredBookings = hotel.userDirectory.currentUser.bookingService.filterBookingsByID(userID);
   let filteredBookingsContainer = document.querySelector('.filtered-bookings');
-  let foundGuest = hotel.userDirectory.findGuest(userID);
-  let header = `Booking History for ${foundGuest.name}`
-  displayBookings(filteredBookings, filteredBookingsContainer, header);
+  if (!foundGuest) {
+    showBookingHistory()
+  } else if (filteredBookings.length >= 1) {
+    console.log(filteredBookings)
+    let header = `Booking History for ${foundGuest.name}`
+    displayBookings(filteredBookings.reverse(), filteredBookingsContainer, header);
+
+  }
 }
 
 // GUEST DIRECTORY
