@@ -19,6 +19,15 @@ export default class User {
     return totalSpentOnRooms.toFixed(2);
   }
 
+  returnBill() {
+    let totalBill = this.bookingService.currentBookings.reduce((totalDue, booking) => {
+      totalDue += booking.cost
+      return totalDue;
+    }, 0)
+
+    return totalBill.toFixed(2);
+  }
+
   addBooking(roomNumber, date, onSuccess) {
     let newBooking = {
       userID: this.id,

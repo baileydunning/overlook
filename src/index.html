@@ -17,19 +17,18 @@
                   <h4>Daily Revenue</h4><br>
                   <h3 id="percent-rooms-booked"></h3>
                   <h4>Rooms Occupied</h4>
-                  <!-- <svg viewBox="0 0 36 36" class="circular-chart"></svg> -->
             </div>
-              <div class="guest-stats hidden">
-                <h3>$<span id="total-user-spent"></span></h3>
-                <h4>Spent On Rooms</h4>
+              <div class="guest-stats flex-column hidden">
+                  <h3>Amount Due: $<span id="total-user-bill"></span></h3>
+                  <h3>Amount Spent: $<span id="total-user-spent"></span></h3>
               </div>
               </div>
             </div>
           </div>
-          <input type="image" id="dashboard-button" src="./images/dashboard-white.png" alt="User Dashboard"></input>
-          <input type="image" aria-label="booking-history" id="booking-history-button" src="./images/bookings-white.png" alt="Booking History"></input>
-          <input type="image" id="see-rooms-button" aria-label="see-available-rooms-display" src="./images/room-white.png" alt="See Rooms"></input>
-          <input type="image" aria-label="guest-directory" id="guest-directory-button" src="./images/users-white.png" alt="Guest Directory" class="hidden"></input>
+          <input type="image" id="dashboard-button" src="./images/dashboard-white.png" alt="User Dashboard" aria-label="user-dashboard" ></input>
+          <input type="image" id="booking-history-button" src="./images/bookings-white.png" alt="Booking History" aria-label="booking-history"></input>
+          <input type="image" id="see-rooms-button" src="./images/room-white.png" alt="See Rooms" aria-label="see-available-rooms-display" ></input>
+          <input type="image" id="guest-directory-button" src="./images/users-white.png" alt="Guest Directory" class="hidden" aria-label="guest-directory"></input>
         </div>
       </nav>
     </header>
@@ -50,14 +49,21 @@
             <input type="date" id="calendar" name="date">
           </div>
           <form class="flex-row" id="roomType-filter">
-            <input type="radio" name="roomType-filter" value="single room">
-            <label for="roomType">Single Room</label>
-            <input type="radio" name="roomType-filter" value="junior suite">
-            <label for="roomType">Junior Suite</label>
-            <input type="radio" name="roomType-filter" value="suite">
-            <label for="roomType">Suite</label>
-            <input type="radio" name="roomType-filter" value="residential suite">
-            <label for="roomType">Residential Suite</label>
+            <label for="roomType-filter">
+              <input type="radio" name="roomType-filter" value="single room">
+            Single Room</label>
+            <label for="roomType-filter">
+              <input type="radio" name="roomType-filter" value="junior suite">
+            Junior Suite</label>
+            <label for="roomType-filter">
+              <input type="radio" name="roomType-filter" value="suite">
+            Suite</label>
+            <label for="roomType-filter">
+              <input type="radio" name="roomType-filter" value="residential suite">
+            Residential Suite</label>
+            <label for="roomType-filter">
+              <input type="radio" name="roomType-filter" value="all">
+            See All</label>
           </form>
         </section>
         <section class="available-rooms-display flex-row">

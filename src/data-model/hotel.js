@@ -72,9 +72,7 @@ export default class Hotel {
 
   calculateTotalRoomRevenue() {
     return this.bookedRoomsToday.reduce((totalRevenue, bookedRoom) => {
-      console.log(bookedRoom)
       totalRevenue = totalRevenue += parseInt(bookedRoom.bookingInfo.booking.cost);
-      console.log(totalRevenue)
       return totalRevenue;
     }, 0)
   }

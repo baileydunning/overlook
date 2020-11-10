@@ -69,9 +69,7 @@ label {
 }
 
 .navigation {
-  position: relative;
   background-color: $brown;
-  z-index: 1;
   width: 100%;
   height: auto;
   justify-content: space-around;
@@ -162,8 +160,14 @@ label {
 }
 
 
-#roomType-checkboxes {
+#roomType-filter {
   justify-content: center;
+  input {
+    display: none;
+  }
+  label {
+    border: 1px solid $navy-blue;
+  }
 }
 
 .available-rooms-display {

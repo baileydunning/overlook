@@ -1,11 +1,12 @@
 import ApiCall from './apiCall';
 import Hotel from './data-model/hotel';
 import Manager from './data-model/manager';
+import User from './data-model/user';
 import './css/styles.scss';
 import './images/bed.png';
 import './images/bidet.png';
 import './images/logout.png';
-import './images/dashboard-white.png';
+import './images/dashboard-navy.png';
 import './images/users-white.png';
 import './images/bookings-white.png';
 import './images/room-white.png';
@@ -126,7 +127,7 @@ function loginUser(username, password) {
   if (username && password && userType !== false) {
     updateDashboard();
     hotel.userDirectory.currentUser.bookingService.sortBookingsByDate(today);
-    document.querySelector('#total-user-spent').innerText = hotel.userDirectory.currentUser.returnTotalSpentOnRooms();
+    displayAvailableRooms();
   } else {
     alert('Invalid username and/or password')
   }
@@ -137,7 +138,6 @@ function updateDashboard() {
   document.querySelector('#user-first-name').innerText = firstName[0];
   document.querySelector('.login-screen').classList.add('hidden');
   document.querySelector('.header').classList.remove('hidden');
-  displayAvailableRooms();
   if (hotel.userDirectory.currentUser instanceof Manager) {
     document.querySelector('#daily-revenue').innerText = hotel.calculateTotalRoomRevenue();
     document.querySelector('#percent-rooms-booked').innerText = `${hotel.percentRoomsBooked}%`;
@@ -145,6 +145,8 @@ function updateDashboard() {
     searchBarBookingHistory.classList.remove('hidden');
     document.querySelector('.manager-stats').classList.remove('hidden');
   } else if (hotel.userDirectory.currentUser instanceof User) {
+    document.querySelector('#total-user-bill').innerText = hotel.userDirectory.currentUser.returnBill();
+    document.querySelector('#total-user-spent').innerText = hotel.userDirectory.currentUser.returnTotalSpentOnRooms();
     document.querySelector('.guest-stats').classList.remove('hidden');
   }
 }
@@ -186,7 +188,7 @@ function createRoomCards(rooms) {
 }
 
 function checkManagerStatus(room) {
-  return hotel.userDirectory.currentUser.type === 'manager' ? `<input type="text" placeholder="Enter Guest's ID" id="id-input-for-room-${room.number}"></input>` : ''
+  return hotel.userDirectory.currentUser instanceof Manager ? `<input type="text" placeholder="Enter Guest's ID" id="id-input-for-room-${room.number}"></input>` : ''
 }
 
 function checkRoomForBidet(room) {
@@ -202,8 +204,12 @@ function addEventListenersToRoomCards(rooms) {
 
 function filterByRoomType() {
   let selection = document.getElementById('roomType-filter').elements['roomType-filter'].value;
-  let filteredRooms = hotel.filterByRoomType(selection);
-  createRoomCards(filteredRooms);
+  if (selection === 'all') {
+    createRoomCards(hotel.availableRoomsToday)
+  } else {
+    let filteredRooms = hotel.filterByRoomType(selection);
+    createRoomCards(filteredRooms);
+  }
 }
 
 function bookRoom() {
@@ -213,11 +219,12 @@ function bookRoom() {
       hotel.rawBookingData = value;
     }).then(() => {
       updateBookingData();
+      updateDashboard();
       displayAvailableRooms();
     })
   }
   let roomNumber = Number(event.target.getAttribute('value'));
-  if (hotel.userDirectory.currentUser.type === 'manager') {
+  if (hotel.userDirectory.currentUser instanceof Manager) {
     let userIdField = document.querySelector(`#id-input-for-room-${roomNumber}`)
     if (userIdField.value !== '') {
       let userID = parseInt(userIdField.value);
@@ -276,12 +283,11 @@ function deleteBooking() {
       hotel.rawBookingData = value;
     }).then(() => {
       updateBookingData();
+      updateDashboard();
       showBookingHistory();
-      // displayBookings(hotel.userDirectory.currentUser.bookingService.currentBookings, userCurrentBookings, 'Current Bookings:');
     })
   }
   let bookingID = event.target.getAttribute('value');
-  console.log(bookingID)
   let bookingMessage = document.querySelector('#booking-message-area');
   bookingMessage.innerText = `Booking ${bookingID} has been removed.`
   bookingApi.deleteRequest({id: parseInt(bookingID)}, onSuccess);
@@ -291,19 +297,18 @@ function deleteBooking() {
 }
 
 function updateBookingData() {
-  let currentUser = hotel.userDirectory.currentUser;
   hotel.updateBookings();
   hotel.returnTodayBookings();
   hotel.userDirectory.bookingData = hotel.rawBookingData;
-  if (currentUser.type === 'guest') {
-    let updatedUserBookingData = hotel.userDirectory.filterBookingData(currentUser.id);
-    currentUser.bookingService.bookingData = updatedUserBookingData;
-  } else if (currentUser.type === 'manager') {
-    let updatedBookingData = hotel.userDirectory.bookingData;
-    currentUser.bookingService.bookingData = updatedBookingData;
+  if (hotel.userDirectory.currentUser instanceof User) {
+    let updatedUserBookingData = hotel.userDirectory.filterBookingData(hotel.userDirectory.currentUser.id);
+    hotel.userDirectory.currentUser.bookingService.bookingData = updatedUserBookingData;
+  } else if (hotel.userDirectory.currentUser instanceof Manager) {
+    hotel.userDirectory.currentUser.bookingService.bookingData = hotel.userDirectory.bookingData;
   }
-  currentUser.bookingService.createBookingHistory();
-  currentUser.bookingService.sortBookingsByDate(today);
+  hotel.userDirectory.currentUser.bookingService.bookingData = hotel.rawBookingData;
+  hotel.userDirectory.currentUser.bookingService.createBookingHistory();
+  hotel.userDirectory.currentUser.bookingService.sortBookingsByDate(today);
 }
 
 function searchBookings() {
@@ -319,7 +324,6 @@ function searchBookings() {
     console.log(filteredBookings)
     let header = `Booking History for ${foundGuest.name}`
     displayBookings(filteredBookings.reverse(), filteredBookingsContainer, header);
-
   }
 }
 
