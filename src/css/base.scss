@@ -6,7 +6,6 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  flex-wrap: wrap;
 }
 
 .flex-row {
@@ -17,4 +16,13 @@
 .flex-column {
   @extend .flex;
   flex-direction: column;
+}
+
+button {
+  background-color: $navy-blue;
+  color: $off-white;
+  font-size: 10px;
+  border-radius: 5%;
+  margin: 10px;
+  padding: 5px;
 }

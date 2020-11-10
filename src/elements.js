@@ -16,3 +16,6 @@ export const userPreviousBookings = document.querySelector('.previous-bookings-c
 export const closeModal = document.querySelector('.close');
 export const roomFilter = document.querySelector('#roomType-filter');
 export const searchBarBookingHistory = document.querySelector('#booking-search');
+export const showAllGuestsButton = document.querySelector('#show-all-guests-button');
+export const seeAllBookingsButton = document.querySelector('#see-all-bookings-button');
+export const userFilteredBookings = document.querySelector('.filtered-bookings');

@@ -34,11 +34,11 @@ export default class UserDirectory {
     })
   }
 
-  searchGuests(input) {
-    input = input.toLowerCase();
+  searchGuests(nameInput) {
+    nameInput = nameInput.toLowerCase();
     return this.guestList.filter(guest => {
       guest.name = guest.name.toLowerCase();
-      return guest.name.includes(input)
+      return guest.name.includes(nameInput)
     })
   }
 

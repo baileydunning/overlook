@@ -46,6 +46,7 @@ label {
 }
 
 .header {
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   height: 100px;
@@ -141,20 +142,6 @@ label {
   }
 }
 
-#roomType-checkboxes {
-  .checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 25px;
-    width: 25px;
-    background-color: $off-white;
-  }
-  input:hover {
-    transform: scale(1.2)
-  }
-}
-
 .rooms-display {
   background-color: $navy-blue;
 }
@@ -162,12 +149,7 @@ label {
 
 #roomType-filter {
   justify-content: center;
-  input {
-    display: none;
-  }
-  label {
-    border: 1px solid $navy-blue;
-  }
+  flex-wrap: wrap;
 }
 
 .available-rooms-display {
@@ -207,10 +189,9 @@ label {
 }
 
 #dashboard-button, #guest-directory-button, #booking-history-button, #see-rooms-button {
-  // background-image: url('../images/dashboard-navy.png');
   display: block;
-  height: 50px;
-  width: 60px;
+  height: 40px;
+  width: 50px;
   border: 0;
   object-fit: contain;
 }
@@ -228,12 +209,6 @@ label {
   padding: 20px;
   p {
     font-size: 10px;
-  }
-  button {
-    background-color: $navy-blue;
-    color: $off-white;
-    font-size: 10px;
-    border-radius: 5%;
   }
 }
 

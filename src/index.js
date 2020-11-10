@@ -6,13 +6,14 @@ import './css/styles.scss';
 import './images/bed.png';
 import './images/bidet.png';
 import './images/logout.png';
-import './images/dashboard-navy.png';
+import './images/dashboard-white.png';
 import './images/users-white.png';
 import './images/bookings-white.png';
 import './images/room-white.png';
 import {
   availableRoomsDisplay,
   calendar,
+  userFilteredBookings,
   guestDirectoryButton,
   guestsContainer,
   roomFilter,
@@ -20,12 +21,14 @@ import {
   modal,
   searchBarBookingHistory,
   closeModal,
+  showAllGuestsButton,
   passwordField,
   roomsDisplay,
   guestDirectoryDisplay,
   userBookingHistory,
   userCurrentBookings,
   usernameField,
+  seeAllBookingsButton,
   userPreviousBookings
 } from './elements.js';
 
@@ -60,13 +63,14 @@ closeModal.addEventListener('click', () => {
   modal.style.display = 'none';
 })
 
-searchBarGuestDirectory.addEventListener('search', searchGuests);
-searchBarBookingHistory.addEventListener('keyup', searchBookings);
+searchBarGuestDirectory.addEventListener('keyup', searchGuests);
+searchBarBookingHistory.addEventListener('search', searchBookings);
 document.querySelector('#booking-history-button').addEventListener('click', showBookingHistory);
 document.querySelector('#see-rooms-button').addEventListener('click', displayAvailableRooms);
 guestDirectoryButton.addEventListener('click', displayGuestDirectory);
 roomFilter.addEventListener('change', filterByRoomType);
-
+showAllGuestsButton.addEventListener('click', displayGuestDirectory);
+seeAllBookingsButton.addEventListener('click', showBookingHistory);
 // API INSTANTIATION
 
 function instantiateApis() {
@@ -243,6 +247,8 @@ function showBookingHistory() {
   roomsDisplay.classList.add('hidden');
   guestDirectoryDisplay.classList.add('hidden');
   userBookingHistory.classList.remove('hidden');
+  seeAllBookingsButton.classList.add('hidden');
+  userFilteredBookings.innerHTML = '';
   displayBookings(hotel.userDirectory.currentUser.bookingService.currentBookings, userCurrentBookings, 'Current Bookings:');
   displayBookings(hotel.userDirectory.currentUser.bookingService.previousBookings, userPreviousBookings, 'Previous Bookings:');
   addEventListenersToCurrentBookings(hotel.userDirectory.currentUser.bookingService.currentBookings)
@@ -312,18 +318,18 @@ function updateBookingData() {
 }
 
 function searchBookings() {
-  userCurrentBookings.innerHTML = '';
-  userPreviousBookings.innerHTML = '';
+  seeAllBookingsButton.classList.remove('hidden');
   let userID = parseInt(searchBarBookingHistory.value);
+  searchBarBookingHistory.value = '';
   let foundGuest = hotel.userDirectory.findGuest(userID);
   let filteredBookings = hotel.userDirectory.currentUser.bookingService.filterBookingsByID(userID);
-  let filteredBookingsContainer = document.querySelector('.filtered-bookings');
   if (!foundGuest) {
     showBookingHistory()
   } else if (filteredBookings.length >= 1) {
-    console.log(filteredBookings)
     let header = `Booking History for ${foundGuest.name}`
-    displayBookings(filteredBookings.reverse(), filteredBookingsContainer, header);
+    userCurrentBookings.innerHTML = '';
+    userPreviousBookings.innerHTML = '';
+    displayBookings(filteredBookings.reverse(), userFilteredBookings, header);
   }
 }
 
@@ -333,6 +339,7 @@ function displayGuestDirectory() {
   roomsDisplay.classList.add('hidden');
   userBookingHistory.classList.add('hidden');
   guestDirectoryDisplay.classList.remove('hidden');
+  showAllGuestsButton.classList.add('hidden');
   createGuestCards(hotel.userDirectory.guestList);
 }
 
@@ -369,8 +376,5 @@ function searchGuests() {
   guestsContainer.innerHTML = '';
   let matchedGuests = hotel.userDirectory.searchGuests(searchBarGuestDirectory.value);
   createGuestCards(matchedGuests);
-  let showAllButton = `<button type="button" id="show-all-guests-button">Show All</button>`
-  document.querySelector('#show-all-guests').insertAdjacentHTML('afterend', showAllButton)
-  document.querySelector('#show-all-guests-button').addEventListener('click', displayGuestDirectory);
-  searchBarGuestDirectory.value = '';
+  showAllGuestsButton.classList.remove('hidden');
 }

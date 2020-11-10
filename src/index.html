@@ -71,16 +71,18 @@
       </section>
       <section class="guest-directory-display flex-column hidden">
         <h2>Guest Directory</h2>
-        <input type="search" placeholder="Search By Name" id="search-guests-by-name">
+        <input type="text" placeholder="Search By Name" id="search-guests-by-name">
+        <button type="button" id="show-all-guests-button" aria-label="show-all-guests">Show All</button>
         <div id="show-all-guests"></div>
         <div class="guests-container">
         </div>
       </section>
       <section class="user-booking-history flex-column hidden">
         <div class="flex-column">
+          <h2>Booking History</h2>
           <div class="flex-row">
-            <h2>Booking History</h2>
             <input class="hidden" type="search" name="booking-search" id="booking-search" placeholder="Search By Guest ID">
+            <button type="button" id="see-all-bookings-button">See All</button>
           </div>
           <h3 id="booking-message-area"></h3>
         </div>
@@ -88,10 +90,8 @@
           <div class="current-bookings-container flex-column">
 
           </div>
+          <div class="filtered-bookings flex-column"></div>
           <div class="previous-bookings-container flex-column">
-
-          </div>
-          <div class="filtered-bookings flex-column">
 
           </div>
         </div>
