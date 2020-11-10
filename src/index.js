@@ -16,6 +16,7 @@ import {
   roomFilter,
   searchBarGuestDirectory,
   modal,
+  searchBarBookingHistory,
   closeModal,
   passwordField,
   roomsDisplay,
@@ -31,6 +32,8 @@ let hotel;
 let userApi;
 let roomApi;
 let bookingApi;
+
+// EVENT LISTENERS
 
 window.onload = instantiateApis();
 window.onclick = () => {
@@ -56,10 +59,13 @@ closeModal.addEventListener('click', () => {
 })
 
 searchBarGuestDirectory.addEventListener('search', searchGuests);
+searchBarBookingHistory.addEventListener('search', searchBookings);
 document.querySelector('#booking-history-button').addEventListener('click', showBookingHistory);
 document.querySelector('#see-rooms-button').addEventListener('click', displayAvailableRooms);
 guestDirectoryButton.addEventListener('click', displayGuestDirectory);
 roomFilter.addEventListener('change', filterByRoomType);
+
+// API INSTANTIATION
 
 function instantiateApis() {
   userApi = new ApiCall('https://fe-apps.herokuapp.com/api/v1/overlook/1904/users/users', 'users');
@@ -83,6 +89,29 @@ function fetchAllData() {
     // alert('Sorry, we are unable to retrieve data at this time, please try again later.')
   })
 }
+
+// DATE HANDLING
+
+function formatDate(today, joinBy) {
+    today = new Date(today);
+    let month = '' + (today.getMonth() + 1);
+    let day = '' + today.getDate();
+    let year = today.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join(joinBy);
+}
+
+function updateDate(event) {
+  today = new Date(event.target.value).toDateString();
+  hotel.date = today;
+  hotel.userDirectory.currentUser.bookingService.sortBookingsByDate(today);
+  displayAvailableRooms();
+}
+
+// LAUNCH APP
 
 function openHotel() {
   hotel.launch();
@@ -112,11 +141,14 @@ function updateDashboard(userType) {
     document.querySelector('#daily-revenue').innerText = hotel.calculateTotalRoomRevenue();
     document.querySelector('#percent-rooms-booked').innerText = `${hotel.percentRoomsBooked}%`;
     guestDirectoryButton.classList.remove('hidden');
+    searchBarBookingHistory.classList.remove('hidden');
     document.querySelector('.manager-stats').classList.remove('hidden');
   } else if (userType === 'guest') {
     document.querySelector('.guest-stats').classList.remove('hidden');
   }
 }
+
+// AVAILABLE ROOMS
 
 function displayAvailableRooms() {
   hotel.returnTodayBookings();
@@ -197,24 +229,7 @@ function bookRoom() {
   }
 }
 
-function formatDate(today, joinBy) {
-    today = new Date(today);
-    let month = '' + (today.getMonth() + 1);
-    let day = '' + today.getDate();
-    let year = today.getFullYear();
-
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
-
-    return [year, month, day].join(joinBy);
-}
-
-function updateDate(event) {
-  today = new Date(event.target.value).toDateString();
-  hotel.date = today;
-  hotel.userDirectory.currentUser.bookingService.sortBookingsByDate(today);
-  displayAvailableRooms();
-}
+// BOOKING HISTORY
 
 function showBookingHistory() {
   roomsDisplay.classList.add('hidden');
@@ -222,6 +237,7 @@ function showBookingHistory() {
   userBookingHistory.classList.remove('hidden');
   displayBookings(hotel.userDirectory.currentUser.bookingService.currentBookings, userCurrentBookings, 'Current Bookings:');
   displayBookings(hotel.userDirectory.currentUser.bookingService.previousBookings.reverse(), userPreviousBookings, 'Previous Bookings:');
+  addEventListenersToCurrentBookings(hotel.userDirectory.currentUser.bookingService.currentBookings)
 }
 
 function displayBookings(bookings, container, header) {
@@ -238,7 +254,6 @@ function displayBookings(bookings, container, header) {
     </div>`
     container.insertAdjacentHTML('afterbegin', bookingCard);
   })
-  addEventListenersToCurrentBookings(hotel.userDirectory.currentUser.bookingService.currentBookings);
   container.insertAdjacentHTML('afterbegin', header);
 }
 
@@ -259,13 +274,17 @@ function deleteBooking() {
     updatedBookingData.then(value => {
       hotel.rawBookingData = value;
     }).then(() => {
-      updateBookingData()
+      updateBookingData();
       displayBookings(hotel.userDirectory.currentUser.bookingService.currentBookings, userCurrentBookings, 'Current Bookings:');
     })
   }
   let bookingID = event.target.getAttribute('value');
-  document.querySelector('#booking-message-area').innerText = `Booking ${bookingID} has been removed.`
+  let bookingMessage = document.querySelector('#booking-message-area');
+  bookingMessage.innerText = `Booking ${bookingID} has been removed.`
   bookingApi.deleteRequest({id: parseInt(bookingID)}, onSuccess);
+  setTimeout(() => {
+    bookingMessage.innerText = '';
+  }, 3000)
 }
 
 function updateBookingData() {
@@ -284,14 +303,29 @@ function updateBookingData() {
   currentUser.bookingService.sortBookingsByDate(today);
 }
 
-// GUEST Directory
+function searchBookings() {
+  userCurrentBookings.innerHTML = '';
+  userPreviousBookings.innerHTML = '';
+  let userID = parseInt(searchBarBookingHistory.value);
+  let filteredBookings = hotel.userDirectory.currentUser.bookingService.filterBookingsByID(userID);
+  let filteredBookingsContainer = document.querySelector('.filtered-bookings');
+  let foundGuest = hotel.userDirectory.findGuest(userID);
+  let header = `Booking History for ${foundGuest.name}`
+  displayBookings(filteredBookings, filteredBookingsContainer, header);
+}
+
+// GUEST DIRECTORY
 
 function displayGuestDirectory() {
   roomsDisplay.classList.add('hidden');
   userBookingHistory.classList.add('hidden');
   guestDirectoryDisplay.classList.remove('hidden');
+  createGuestCards(hotel.userDirectory.guestList);
+}
+
+function createGuestCards(guests) {
   guestsContainer.innerHTML = '';
-  hotel.userDirectory.guestList.forEach(guest => {
+  guests.forEach(guest => {
     guest.bookingService.sortBookingsByDate(today);
     let guestCard = `<div class="flex-column">
       <div class="flex-row">
@@ -302,35 +336,23 @@ function displayGuestDirectory() {
       <div id="guest-booking-history">${displayGuestBookingHistory(guest)}</div>
     </div>`
     guestsContainer.insertAdjacentHTML('afterbegin', guestCard);
-    if (guest.bookingService.currentBookings.length > 1) {
-      addEventListenersToCurrentBookings(guest.bookingService.currentBookings)
-    }
   })
 }
 
 function displayGuestBookingHistory(guest) {
   let guestBookingHistory = guest.bookingService.bookingHistory.map(booking => {
-    let deleteBookingButton = checkBookingStatus(booking);
-    return booking = `${deleteBookingButton} ${new Date(booking.date).toDateString()}: $${booking.cost}<br>`
+    return booking = `${new Date(booking.date).toDateString()}: $${booking.cost}<br>`
   })
   guestBookingHistory = guestBookingHistory.join(',').replace(',', '');
-  console.log(guestBookingHistory)
   return guestBookingHistory;
 }
 
 function searchGuests() {
   guestsContainer.innerHTML = '';
   let matchedGuests = hotel.userDirectory.searchGuests(searchBarGuestDirectory.value);
-  matchedGuests.forEach(guest => {
-    let guestCard = `<div class="flex-row">
-      <h3 padding-right="25px">${guest.id}</h3>
-      <h4>${guest.name.toUpperCase()}</h4>
-      <p>Total Spent: $${guest.returnTotalSpentOnRooms()}</p>
-    </div>`
-    guestsContainer.insertAdjacentHTML('afterbegin', guestCard);
-  });
+  createGuestCards(matchedGuests);
   let showAllGuestsButton = `<button type="button" id="show-all-guests-button">Show All</button>`
-  guestDirectoryDisplay.insertAdjacentHTML('afterend', showAllGuestsButton)
+  document.querySelector('#show-all-guests').insertAdjacentHTML('afterend', showAllGuestsButton)
   document.querySelector('#show-all-guests-button').addEventListener('click', displayGuestDirectory);
   searchBarGuestDirectory.value = '';
 }
