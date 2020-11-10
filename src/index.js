@@ -279,6 +279,7 @@ function deleteBooking() {
     })
   }
   let bookingID = event.target.getAttribute('value');
+  console.log(bookingID)
   let bookingMessage = document.querySelector('#booking-message-area');
   bookingMessage.innerText = `Booking ${bookingID} has been removed.`
   bookingApi.deleteRequest({id: parseInt(bookingID)}, onSuccess);
@@ -327,13 +328,18 @@ function createGuestCards(guests) {
   guestsContainer.innerHTML = '';
   guests.forEach(guest => {
     guest.bookingService.sortBookingsByDate(today);
-    let guestCard = `<div class="flex-column">
-      <div class="flex-row">
-      <h3 padding-right="25px">${guest.id}</h3>
-      <h4>${guest.name.toUpperCase()}</h4>
-      <p>Total Spent: $${guest.returnTotalSpentOnRooms()}</p>
+    let guestCard = `<div class="flip-box">
+    <div class="flip-box-inner">
+      <div class="flip-box-front flex-column">
+        <h3 padding-right="25px">${guest.id}</h3>
+        <h4>${guest.name.toUpperCase()}</h4>
+        <p>Total Spent: $${guest.returnTotalSpentOnRooms()}</p>
       </div>
-      <div id="guest-booking-history">${displayGuestBookingHistory(guest)}</div>
+      <div class="flip-box-back" id="guest-booking-history">
+        <h3>${guest.name.toUpperCase()}'S BOOKING HISTORY</h3>
+        <p>${displayGuestBookingHistory(guest)}</p>
+      </div>
+    </div>
     </div>`
     guestsContainer.insertAdjacentHTML('afterbegin', guestCard);
   })
@@ -341,9 +347,9 @@ function createGuestCards(guests) {
 
 function displayGuestBookingHistory(guest) {
   let guestBookingHistory = guest.bookingService.bookingHistory.map(booking => {
-    return booking = `${new Date(booking.date).toDateString()}: $${booking.cost}<br>`
+    return booking = `<b>${new Date(booking.date).toDateString()}:</b> Room ${booking.roomNumber}, $${booking.cost}<br>`
   })
-  guestBookingHistory = guestBookingHistory.join(',').replace(',', '');
+  guestBookingHistory = guestBookingHistory.join(' ');
   return guestBookingHistory;
 }
 
@@ -351,8 +357,8 @@ function searchGuests() {
   guestsContainer.innerHTML = '';
   let matchedGuests = hotel.userDirectory.searchGuests(searchBarGuestDirectory.value);
   createGuestCards(matchedGuests);
-  let showAllGuestsButton = `<button type="button" id="show-all-guests-button">Show All</button>`
-  document.querySelector('#show-all-guests').insertAdjacentHTML('afterend', showAllGuestsButton)
+  let showAllButton = `<button type="button" id="show-all-guests-button">Show All</button>`
+  document.querySelector('#show-all-guests').insertAdjacentHTML('afterend', showAllButton)
   document.querySelector('#show-all-guests-button').addEventListener('click', displayGuestDirectory);
   searchBarGuestDirectory.value = '';
 }
