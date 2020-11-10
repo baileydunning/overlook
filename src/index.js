@@ -148,7 +148,7 @@ function createRoomCards(rooms) {
     availableRoomsDisplay.insertAdjacentHTML('afterbegin', roomCard);
   })
   if (rooms.length >= 1) {
-    addEventListenersToRoomCards();
+    addEventListenersToRoomCards(rooms);
   }
 }
 
@@ -160,9 +160,9 @@ function checkRoomForBidet(room) {
   return (room.bidet === true) ? `<img src="./images/bidet.png" alt="bidet-img" id="bidet-img">` : ''
 }
 
-function addEventListenersToRoomCards() {
-  hotel.availableRoomsToday.forEach(availableRoom => {
-    let bookRoomButton = document.querySelector(`#book-room-button-${availableRoom.number}`);
+function addEventListenersToRoomCards(rooms) {
+  rooms.forEach(room => {
+    let bookRoomButton = document.querySelector(`#book-room-button-${room.number}`);
     bookRoomButton.addEventListener('click', bookRoom)
   })
 }
@@ -216,53 +216,17 @@ function updateDate(event) {
   displayAvailableRooms();
 }
 
-function displayGuestDirectory() {
-  roomsDisplay.classList.add('hidden');
-  userBookingHistory.classList.add('hidden');
-  guestDirectoryDisplay.classList.remove('hidden');
-  guestsContainer.innerHTML = '';
-  hotel.userDirectory.guestList.forEach(guest => {
-    guest.bookingService.sortBookingsByDate(today);
-    let guestCard = `<div class="flex-row">
-      <h3 padding-right="25px">${guest.id}</h3>
-      <h4>${guest.name.toUpperCase()}</h4>
-      <p>Total Spent: $${guest.returnTotalSpentOnRooms()}</p>
-    </div>`
-    guestsContainer.insertAdjacentHTML('afterbegin', guestCard);
-  })
-}
-
-// displayGuestBookingData(guest) {
-//   guest.bookingService.currentBookings.forEach(booking => {
-//     let guestCurrentBooking = `${booking.date}: ${booking.id}`
-//   })
-// }
-
-function searchGuests() {
-  guestsContainer.innerHTML = '';
-  let matchedGuests = hotel.userDirectory.searchGuests(searchBarGuestDirectory.value);
-  matchedGuests.forEach(guest => {
-    let guestCard = `<div class="flex-row">
-      <h3 padding-right="25px">${guest.id}</h3>
-      <h4>${guest.name.toUpperCase()}</h4>
-      <p>Total Spent: $${guest.returnTotalSpentOnRooms()}</p>
-    </div>`
-    guestsContainer.insertAdjacentHTML('afterbegin', guestCard);
-  });
-  searchBarGuestDirectory.value = '';
-}
-
 function showBookingHistory() {
   roomsDisplay.classList.add('hidden');
   guestDirectoryDisplay.classList.add('hidden');
   userBookingHistory.classList.remove('hidden');
   displayBookings(hotel.userDirectory.currentUser.bookingService.currentBookings, userCurrentBookings, 'Current Bookings:');
-  displayBookings(hotel.userDirectory.currentUser.bookingService.previousBookings, userPreviousBookings, 'Previous Bookings:');
+  displayBookings(hotel.userDirectory.currentUser.bookingService.previousBookings.reverse(), userPreviousBookings, 'Previous Bookings:');
 }
 
 function displayBookings(bookings, container, header) {
   header = `<h3>${header}</h3>`
-  container.innerHTML = ''
+  container.innerHTML = '';
   bookings.forEach(booking => {
     booking.date = new Date(booking.date).toDateString();
     let bookingCard = `<div class="booking-card flex-row">
@@ -274,7 +238,7 @@ function displayBookings(bookings, container, header) {
     </div>`
     container.insertAdjacentHTML('afterbegin', bookingCard);
   })
-  addEventListenersToCurrentBookings();
+  addEventListenersToCurrentBookings(hotel.userDirectory.currentUser.bookingService.currentBookings);
   container.insertAdjacentHTML('afterbegin', header);
 }
 
@@ -282,8 +246,8 @@ function checkBookingStatus(booking) {
   return booking.status === 'current' ? `<button id="delete-booking-${booking.id}" value="${booking.id}" aria-label="delete-booking">Cancel Reservation</button>` : '';
 }
 
-function addEventListenersToCurrentBookings() {
-  hotel.userDirectory.currentUser.bookingService.currentBookings.forEach(booking => {
+function addEventListenersToCurrentBookings(bookings) {
+  bookings.forEach(booking => {
     let currentBooking = document.querySelector(`#delete-booking-${booking.id}`);
     currentBooking.addEventListener('click', deleteBooking);
   })
@@ -300,6 +264,7 @@ function deleteBooking() {
     })
   }
   let bookingID = event.target.getAttribute('value');
+  document.querySelector('#booking-message-area').innerText = `Booking ${bookingID} has been removed.`
   bookingApi.deleteRequest({id: parseInt(bookingID)}, onSuccess);
 }
 
@@ -317,4 +282,55 @@ function updateBookingData() {
   }
   currentUser.bookingService.createBookingHistory();
   currentUser.bookingService.sortBookingsByDate(today);
+}
+
+// GUEST Directory
+
+function displayGuestDirectory() {
+  roomsDisplay.classList.add('hidden');
+  userBookingHistory.classList.add('hidden');
+  guestDirectoryDisplay.classList.remove('hidden');
+  guestsContainer.innerHTML = '';
+  hotel.userDirectory.guestList.forEach(guest => {
+    guest.bookingService.sortBookingsByDate(today);
+    let guestCard = `<div class="flex-column">
+      <div class="flex-row">
+      <h3 padding-right="25px">${guest.id}</h3>
+      <h4>${guest.name.toUpperCase()}</h4>
+      <p>Total Spent: $${guest.returnTotalSpentOnRooms()}</p>
+      </div>
+      <div id="guest-booking-history">${displayGuestBookingHistory(guest)}</div>
+    </div>`
+    guestsContainer.insertAdjacentHTML('afterbegin', guestCard);
+    if (guest.bookingService.currentBookings.length > 1) {
+      addEventListenersToCurrentBookings(guest.bookingService.currentBookings)
+    }
+  })
+}
+
+function displayGuestBookingHistory(guest) {
+  let guestBookingHistory = guest.bookingService.bookingHistory.map(booking => {
+    let deleteBookingButton = checkBookingStatus(booking);
+    return booking = `${deleteBookingButton} ${new Date(booking.date).toDateString()}: $${booking.cost}<br>`
+  })
+  guestBookingHistory = guestBookingHistory.join(',').replace(',', '');
+  console.log(guestBookingHistory)
+  return guestBookingHistory;
+}
+
+function searchGuests() {
+  guestsContainer.innerHTML = '';
+  let matchedGuests = hotel.userDirectory.searchGuests(searchBarGuestDirectory.value);
+  matchedGuests.forEach(guest => {
+    let guestCard = `<div class="flex-row">
+      <h3 padding-right="25px">${guest.id}</h3>
+      <h4>${guest.name.toUpperCase()}</h4>
+      <p>Total Spent: $${guest.returnTotalSpentOnRooms()}</p>
+    </div>`
+    guestsContainer.insertAdjacentHTML('afterbegin', guestCard);
+  });
+  let showAllGuestsButton = `<button type="button" id="show-all-guests-button">Show All</button>`
+  guestDirectoryDisplay.insertAdjacentHTML('afterend', showAllGuestsButton)
+  document.querySelector('#show-all-guests-button').addEventListener('click', displayGuestDirectory);
+  searchBarGuestDirectory.value = '';
 }

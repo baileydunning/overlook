@@ -37,7 +37,7 @@ export default class ApiCall {
     })
     .then(response => response.json())
     .then(json => {
-      onSuccess();
+      onSuccess(json);
       console.log(json);
     })
     .catch(err => console.log(err))
