@@ -14,3 +14,4 @@ export const userCurrentBookings = document.querySelector('.current-bookings-con
 export const usernameField = document.querySelector('#username-field');
 export const userPreviousBookings = document.querySelector('.previous-bookings-container');
 export const closeModal = document.querySelector('.close');
+export const roomFilter = document.querySelector('#roomType-filter');

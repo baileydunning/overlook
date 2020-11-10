@@ -13,6 +13,7 @@ import {
   calendar,
   guestDirectoryButton,
   guestsContainer,
+  roomFilter,
   searchBarGuestDirectory,
   modal,
   closeModal,
@@ -58,6 +59,7 @@ searchBarGuestDirectory.addEventListener('search', searchGuests);
 document.querySelector('#booking-history-button').addEventListener('click', showBookingHistory);
 document.querySelector('#see-rooms-button').addEventListener('click', displayAvailableRooms);
 guestDirectoryButton.addEventListener('click', displayGuestDirectory);
+roomFilter.addEventListener('change', filterByRoomType);
 
 function instantiateApis() {
   userApi = new ApiCall('https://fe-apps.herokuapp.com/api/v1/overlook/1904/users/users', 'users');
@@ -118,16 +120,16 @@ function updateDashboard(userType) {
 
 function displayAvailableRooms() {
   hotel.returnTodayBookings();
-  createRoomCards();
+  createRoomCards(hotel.availableRoomsToday);
   document.querySelector('#date-string').innerText = `Available Rooms: ${hotel.availableRoomsToday.length}`;
   userBookingHistory.classList.add('hidden');
   guestDirectoryDisplay.classList.add('hidden');
   roomsDisplay.classList.remove('hidden');
 }
 
-function createRoomCards() {
+function createRoomCards(rooms) {
   availableRoomsDisplay.innerHTML = '';
-  hotel.availableRoomsToday.forEach(room => {
+  rooms.forEach(room => {
     let roomCard = `<div class="room-card flex-column" id="room-${room.number}">
     <h3>${room.roomType.toUpperCase()}</h3>
     <div id="room-information">
@@ -145,7 +147,9 @@ function createRoomCards() {
     </div>`
     availableRoomsDisplay.insertAdjacentHTML('afterbegin', roomCard);
   })
-  addEventListenersToRoomCards();
+  if (rooms.length >= 1) {
+    addEventListenersToRoomCards();
+  }
 }
 
 function checkManagerStatus(room) {
@@ -161,6 +165,12 @@ function addEventListenersToRoomCards() {
     let bookRoomButton = document.querySelector(`#book-room-button-${availableRoom.number}`);
     bookRoomButton.addEventListener('click', bookRoom)
   })
+}
+
+function filterByRoomType() {
+  let selection = document.getElementById('roomType-filter').elements['roomType-filter'].value;
+  let filteredRooms = hotel.filterByRoomType(selection);
+  createRoomCards(filteredRooms);
 }
 
 function bookRoom() {

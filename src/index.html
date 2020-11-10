@@ -49,16 +49,16 @@
             <h3 id="date-string"></h3>
             <input type="date" id="calendar" name="date">
           </div>
-          <div class="flex-row" id="roomType-checkboxes">
-            <input type="checkbox" name="roomType" value="">
+          <form class="flex-row" id="roomType-filter">
+            <input type="radio" name="roomType-filter" value="single room">
             <label for="roomType">Single Room</label>
-            <input type="checkbox" name="roomType" value="">
+            <input type="radio" name="roomType-filter" value="junior suite">
             <label for="roomType">Junior Suite</label>
-            <input type="checkbox" name="roomType" value="">
+            <input type="radio" name="roomType-filter" value="suite">
             <label for="roomType">Suite</label>
-            <input type="checkbox" name="roomType" value="">
+            <input type="radio" name="roomType-filter" value="residential">
             <label for="roomType">Residential Suite</label>
-          </div>
+          </form>
         </section>
         <section class="available-rooms-display flex-row">
         </section>
