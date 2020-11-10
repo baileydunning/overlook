@@ -83,7 +83,7 @@ function fetchAllData() {
   .then(data => {
     hotel = new Hotel(data[0], data[1], data[2], today);
   })
-  .then(response => openHotel())
+  .then(() => openHotel())
   .catch(error => {
     console.log(error);
     // alert('Sorry, we are unable to retrieve data at this time, please try again later.')
@@ -98,8 +98,8 @@ function formatDate(today, joinBy) {
     let day = '' + today.getDate();
     let year = today.getFullYear();
 
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
+    if (month.length < 2) { month = '0' + month };
+    if (day.length < 2) { day = '0' + day };
 
     return [year, month, day].join(joinBy);
 }

@@ -1,7 +1,6 @@
 import chai from 'chai';
 const expect = chai.expect;
 import {sampleTestData} from './sampleTestData.js'
-import Room from '../src/data-model/room';
 import Booking from '../src/data-model/booking';
 import BookingService from '../src/data-model/bookingService';
 
