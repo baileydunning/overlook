@@ -15,18 +15,6 @@ export default class BookingService {
     }, []);
   }
 
-  formatDate(today) {
-    today = new Date(today),
-    month = '' + (today.getMonth() + 1),
-    day = '' + today.getDate(),
-    year = today.getFullYear();
-
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
-
-    return [year, month, day].join('-');
-  }
-
   sortBookingsByDate(today) {
     today = new Date(today);
     this.currentBookings = [];
@@ -34,8 +22,10 @@ export default class BookingService {
     this.bookingHistory.forEach(booking => {
       booking.date = new Date(booking.date);
       if (booking.date >= today) {
+        booking.status = 'current';
         this.currentBookings.push(booking);
       } else {
+        booking.status = 'previous';
         this.previousBookings.push(booking)
       }
     })
@@ -43,11 +33,20 @@ export default class BookingService {
   }
 
   organizeBookings() {
+    this.bookingHistory.sort((bookingA, bookingB) => {
+      return bookingA.date > bookingB.date ? -1 : 1;
+    })
     this.currentBookings.sort((bookingA, bookingB) => {
       return bookingA.date > bookingB.date ? -1 : 1;
     })
     this.previousBookings.sort((bookingA, bookingB) => {
       return bookingA.date > bookingB.date ? -1 : 1;
+    })
+  }
+
+  filterBookingsByID(idInput) {
+    return this.bookingHistory.filter(booking => {
+      return booking.userID === idInput;
     })
   }
 }

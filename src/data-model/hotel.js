@@ -67,35 +67,19 @@ export default class Hotel {
       return !bookedRoomNumbers.includes(room.number)
     })
 
-    this.percentRoomsBooked = `${((this.rooms.length - this.availableRoomsToday.length) / this.rooms.length) * 100}%`;
+    this.percentRoomsBooked = parseInt(((this.rooms.length - this.availableRoomsToday.length) / this.rooms.length) * 100).toFixed(0);
   }
 
   calculateTotalRoomRevenue() {
-    const bookedRoomNums = this.rawBookingData.reduce((bookedRoomNumbers, booking) => {
-        if (booking.date === this.date) {
-          bookedRoomNumbers.push(booking.roomNumber);
-        }
-        return bookedRoomNumbers
-      }, [])
-
-    return bookedRoomNums.reduce((totalRevenue, bookedRoom) => {
-      this.rooms.forEach(room => {
-        if (bookedRoom === room.number) {
-          totalRevenue = (totalRevenue += room.costPerNight);
-        }
-      })
-      return parseFloat(totalRevenue).toFixed(2);
+    return this.bookedRoomsToday.reduce((totalRevenue, bookedRoom) => {
+      totalRevenue = totalRevenue += parseInt(bookedRoom.bookingInfo.booking.cost);
+      return totalRevenue;
     }, 0)
   }
 
-  filterByRoomType(inputs) {
-    return this.availableRoomsToday.reduce((roomsByType, room) => {
-      inputs.forEach(input => {
-        if (input === room.roomType) {
-          roomsByType.push(room)
-        }
-      })
-      return roomsByType;
-    }, [])
+  filterByRoomType(input) {
+    return this.availableRoomsToday.filter(room => {
+      return room.roomType === input;
+    })
   }
 }

@@ -19,7 +19,7 @@ export const sampleTestData = {
     "numBeds": 2,
     "costPerNight": 275},
     {"number": 12,
-    "roomType":"single room",
+    "roomType": "single room",
     "bidet": false,
     "bedSize": "queen",
     "numBeds": 1,

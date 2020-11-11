@@ -27,7 +27,19 @@ export default class ApiCall {
     .catch(err => console.log(err))
   }
 
-  deleteRequest() {
-
+  deleteRequest(bookingID, onSuccess) {
+    return fetch(this.url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(bookingID)
+    })
+    .then(response => response.json())
+    .then(json => {
+      onSuccess(json);
+      console.log(json);
+    })
+    .catch(err => console.log(err))
   }
 }
