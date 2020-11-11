@@ -28,7 +28,7 @@ describe('Booking', () => {
     });
 
     it('should have a date', () => {
-      expect(booking.date).to.deep.equal("2020/11/03");
+      expect(booking.date).to.deep.equal("Tue Nov 03 2020");
     });
 
     it('should have a room number', () => {

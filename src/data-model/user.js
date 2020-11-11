@@ -12,7 +12,9 @@ export default class User {
 
   returnTotalSpentOnRooms() {
     let totalSpentOnRooms = this.bookingService.previousBookings.reduce((totalSpent, booking) => {
-      totalSpent += booking.cost
+      if (booking.cost) {
+        totalSpent += booking.cost
+      }
       return totalSpent;
     }, 0)
 
@@ -21,7 +23,9 @@ export default class User {
 
   returnBill() {
     let totalBill = this.bookingService.currentBookings.reduce((totalDue, booking) => {
-      totalDue += booking.cost
+      if (booking.cost) {
+        totalDue += booking.cost
+      }
       return totalDue;
     }, 0)
 
