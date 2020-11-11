@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Overlook</title>
+  </head>
+  <main>
+    <header class="header hidden flex-row">
+      <h1>Welcome To The Overlook, <span id="user-first-name"></span>!</h1>
+      <input type="image" class="logout-button" aria-label="go-back-to-login-screen" src="./images/logout.png" alt="logout" onclick="location.reload()"></input>
+      <nav class="navigation flex-row">
+        <div class="modal" id="modal">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="flex-row">
+              <div class="manager-stats flex-column hidden">
+                  <h3>$<span id="daily-revenue"></span></h3>
+                  <h4>Daily Revenue</h4><br>
+                  <h3 id="percent-rooms-booked"></h3>
+                  <h4>Rooms Occupied</h4>
+            </div>
+              <div class="guest-stats flex-column hidden">
+                  <h3>Amount Due: $<span id="total-user-bill"></span></h3>
+                  <h3>Amount Spent: $<span id="total-user-spent"></span></h3>
+              </div>
+              </div>
+            </div>
+          </div>
+          <input type="image" id="dashboard-button" src="./images/dashboard-white.png" alt="User Dashboard" aria-label="user-dashboard" ></input>
+          <input type="image" id="booking-history-button" src="./images/bookings-white.png" alt="Booking History" aria-label="booking-history"></input>
+          <input type="image" id="see-rooms-button" src="./images/room-white.png" alt="See Rooms" aria-label="see-available-rooms-display" ></input>
+          <input type="image" id="guest-directory-button" src="./images/users-white.png" alt="Guest Directory" class="hidden" aria-label="guest-directory"></input>
+        </div>
+      </nav>
+    </header>
+    <body class="flex-row">
+      <section class="login-screen flex-column">
+        <h1>Welcome to the Overlook Hotel!</h1>
+        <div class="login-form">
+          <h2>Login:</h2>
+          <input type="text" placeholder="Username" id="username-field">
+          <input type="text" placeholder="Password" id="password-field">
+          <button type="button" aria-label="login" id="login-button">Login</button>
+        </div>
+      </section>
+      <section class="rooms-display flex-column hidden">
+        <section class="search-area">
+          <div class="date-display flex-row">
+            <h3 id="date-string"></h3>
+            <input type="date" id="calendar" name="date">
+          </div>
+          <form class="flex-row" id="roomType-filter">
+            <label for="roomType-filter">
+              <input type="radio" name="roomType-filter" value="single room">
+            Single Room</label>
+            <label for="roomType-filter">
+              <input type="radio" name="roomType-filter" value="junior suite">
+            Junior Suite</label>
+            <label for="roomType-filter">
+              <input type="radio" name="roomType-filter" value="suite">
+            Suite</label>
+            <label for="roomType-filter">
+              <input type="radio" name="roomType-filter" value="residential suite">
+            Residential Suite</label>
+            <label for="roomType-filter">
+              <input type="radio" name="roomType-filter" value="all">
+            See All</label>
+          </form>
+        </section>
+        <section class="available-rooms-display flex-row">
+        </section>
+      </section>
+      <section class="guest-directory-display flex-column hidden">
+        <h2>Guest Directory</h2>
+        <input type="text" placeholder="Search By Name" id="search-guests-by-name">
+        <button type="button" id="show-all-guests-button" aria-label="show-all-guests">Show All</button>
+        <div id="show-all-guests"></div>
+        <div class="guests-container">
+        </div>
+      </section>
+      <section class="user-booking-history flex-column hidden">
+        <div class="flex-column">
+          <h2>Booking History</h2>
+          <div class="flex-row">
+            <input class="hidden" type="search" name="booking-search" id="booking-search" placeholder="Search By Guest ID">
+            <button type="button" id="see-all-bookings-button">See All</button>
+          </div>
+          <h3 id="booking-message-area"></h3>
+        </div>
+        <div class="flex-row">
+          <div class="current-bookings-container flex-column">
+
+          </div>
+          <div class="filtered-bookings flex-column"></div>
+          <div class="previous-bookings-container flex-column">
+
+          </div>
+        </div>
+      </section>
+    <script type="text/javascript" src="main.bundle.js"></script></body>
+  </main>
+</html>
