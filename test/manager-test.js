@@ -1,12 +1,13 @@
 import chai from 'chai';
 const expect = chai.expect;
+import {sampleTestData} from './sampleTestData'
 import User from '../src/data-model/user';
 import Manager from '../src/data-model/manager';
 
 describe('Manager', () => {
   let manager;
   beforeEach(() => {
-    manager = new Manager({id: 0, name: "Manager"})
+    manager = new Manager({id: 0, name: "Manager"}, sampleTestData.mappedBookingData)
   });
 
   describe('Constructor', () => {
