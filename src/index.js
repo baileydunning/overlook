@@ -129,8 +129,8 @@ function openHotel() {
 function loginUser(username, password) {
   let userType = hotel.userDirectory.chooseUser(username, password);
   if (username && password && userType !== false) {
-    updateDashboard();
     hotel.userDirectory.currentUser.bookingService.sortBookingsByDate(today);
+    updateDashboard();
     displayAvailableRooms();
   } else {
     alert('Invalid username and/or password')
@@ -143,7 +143,7 @@ function updateDashboard() {
   document.querySelector('.login-screen').classList.add('hidden');
   document.querySelector('.header').classList.remove('hidden');
   if (hotel.userDirectory.currentUser instanceof Manager) {
-    document.querySelector('#daily-revenue').innerText = hotel.calculateTotalRoomRevenue();
+    document.querySelector('#daily-revenue').innerText = `${hotel.calculateTotalRoomRevenue()}`;
     document.querySelector('#percent-rooms-booked').innerText = `${hotel.percentRoomsBooked}%`;
     guestDirectoryButton.classList.remove('hidden');
     searchBarBookingHistory.classList.remove('hidden');
