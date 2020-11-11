@@ -5,7 +5,7 @@ import Room from '../src/data-model/room'
 import UserDirectory from '../src/data-model/userDirectory';
 import Hotel from '../src/data-model/hotel';
 
-describe('Hotel', () => {
+describe.only('Hotel', () => {
   let hotel;
   let today = new Date("2020/11/03").toLocaleDateString();
   beforeEach(() => {
@@ -54,7 +54,7 @@ describe('Hotel', () => {
     });
 
     it('should calculate the percentage of rooms booked', () => {
-      expect(hotel.percentRoomsBooked).to.deep.equal("50%");
+      expect(hotel.percentRoomsBooked).to.deep.equal('50');
     });
   });
 });

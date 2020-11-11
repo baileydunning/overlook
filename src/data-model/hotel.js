@@ -3,7 +3,7 @@ import UserDirectory from './userDirectory';
 
 export default class Hotel {
   constructor(userData, roomData, bookingData, date) {
-    this.date = date,
+    this.date = new Date(date).toDateString(),
     this.user = null,
     this.rawUserData = userData,
     this.rawRoomData = roomData,
@@ -16,9 +16,9 @@ export default class Hotel {
   launch() {
     this.createRoomRecord();
     this.updateBookings();
+    this.returnTodayBookings();
     this.userDirectory = new UserDirectory(this.rawUserData, this.rawBookingData)
     this.userDirectory.createGuestList();
-    this.returnTodayBookings()
   }
 
   createRoomRecord() {
@@ -77,9 +77,14 @@ export default class Hotel {
     }, 0)
   }
 
-  filterByRoomType(input) {
-    return this.availableRoomsToday.filter(room => {
-      return room.roomType === input;
-    })
+  filterByRoomType(inputs) {
+    return this.availableRoomsToday.reduce((roomsByType, room) => {
+      inputs.forEach(input => {
+        if (input === room.roomType) {
+          roomsByType.push(room)
+        }
+      })
+      return roomsByType;
+    }, [])
   }
 }
