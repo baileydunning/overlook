@@ -5,7 +5,7 @@ import Manager from '../src/data-model/manager';
 import User from '../src/data-model/user';
 import UserDirectory from '../src/data-model/userDirectory';
 
-describe('UserDirectory', () => {
+describe.only('UserDirectory', () => {
   let userDirectory;
   beforeEach(() => {
     userDirectory = new UserDirectory(sampleTestData.userData, sampleTestData.mappedBookingData);
@@ -43,9 +43,10 @@ describe('UserDirectory', () => {
     })
 
     it('should put Guests in the guest list', () => {
-      expect(userDirectory.guestList[0].id).to.deep.equal(1);
-      expect(userDirectory.guestList[1].id).to.deep.equal(2);
-      expect(userDirectory.guestList[2].id).to.deep.equal(3);
+      expect(userDirectory.guestList[0].id).to.deep.equal(3);
+      expect(userDirectory.guestList[1].id).to.deep.equal(1);
+      expect(userDirectory.guestList[2].id).to.deep.equal(2);
+      expect(userDirectory.guestList[3].id).to.deep.equal(4);
     });
 
     it('should be able to find a guest with an id', () => {

@@ -17,6 +17,7 @@ describe('User', () => {
     let filteredBookingData = filterBookingData(1);
     user = new User(sampleTestData.userData[0], filteredBookingData);
     user.bookingService.createBookingHistory();
+    user.bookingService.sortBookingsByDate("11/03/2020");
   });
 
   describe('Constructor', () => {
@@ -42,7 +43,7 @@ describe('User', () => {
   });
 
   describe('Methods', () => {
-    it('should return the total spent on rooms', () => {
+    it('should return the total spent on previous bookings', () => {
       const result = user.returnTotalSpentOnRooms();
 
       expect(result).to.deep.equal(550);

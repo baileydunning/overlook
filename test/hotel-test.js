@@ -5,7 +5,7 @@ import Room from '../src/data-model/room'
 import UserDirectory from '../src/data-model/userDirectory';
 import Hotel from '../src/data-model/hotel';
 
-describe.only('Hotel', () => {
+describe('Hotel', () => {
   let hotel;
   let today = new Date("2020/11/03").toLocaleDateString();
   beforeEach(() => {
