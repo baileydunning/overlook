@@ -77,14 +77,9 @@ export default class Hotel {
     }, 0)
   }
 
-  filterByRoomType(inputs) {
-    return this.availableRoomsToday.reduce((roomsByType, room) => {
-      inputs.forEach(input => {
-        if (input === room.roomType) {
-          roomsByType.push(room)
-        }
-      })
-      return roomsByType;
-    }, [])
+  filterByRoomType(input) {
+    return this.availableRoomsToday.filter(room => {
+      return room.roomType === input;
+    })
   }
 }

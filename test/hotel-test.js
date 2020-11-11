@@ -54,7 +54,13 @@ describe('Hotel', () => {
     });
 
     it('should calculate the percentage of rooms booked', () => {
-      expect(hotel.percentRoomsBooked).to.deep.equal('50');
+      expect(hotel.percentRoomsBooked).to.deep.equal("50");
     });
+
+    it('should filter rooms by room type', () => {
+      const result = hotel.filterByRoomType("suite");
+
+      expect(result[0].roomType).to.deep.equal("suite");
+    })
   });
 });

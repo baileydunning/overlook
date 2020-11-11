@@ -46,7 +46,13 @@ describe('User', () => {
     it('should return the total spent on previous bookings', () => {
       const result = user.returnTotalSpentOnRooms();
 
-      expect(result).to.deep.equal(550);
+      expect(result).to.deep.equal('200.00');
+    });
+
+    it('should return the total due on current bookings', () => {
+      const result = user.returnBill();
+
+      expect(result).to.deep.equal('350.00');
     });
   });
 });

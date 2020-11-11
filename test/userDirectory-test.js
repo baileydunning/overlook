@@ -5,7 +5,7 @@ import Manager from '../src/data-model/manager';
 import User from '../src/data-model/user';
 import UserDirectory from '../src/data-model/userDirectory';
 
-describe.only('UserDirectory', () => {
+describe('UserDirectory', () => {
   let userDirectory;
   beforeEach(() => {
     userDirectory = new UserDirectory(sampleTestData.userData, sampleTestData.mappedBookingData);
